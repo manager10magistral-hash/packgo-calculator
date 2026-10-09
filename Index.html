@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pack&Go — Калькулятор v11.1</title>
+<style>
+:root {
+  --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
+  --app-bg: #fff; --app-border: #cbd8e8; --card-bg: #fff; --card-border: #e2e8f0;
+  --text-main: #1f2937; --text-muted: #4b5563; --text-dim: #6b7280; --text-faint: #9ca3af;
+  --heading: #111827; --accent: #2c5282; --accent-dark: #1e3a5f; --accent-bg: #eef2f7;
+  --input-bg: #fff; --input-border: #e5e7eb; --input-hover: #cbd5e0;
+  --readonly-bg: #f4f7fb; --readonly-text: #1e3a5f;
+  --subtle-bg: #f4f7fb; --subtle-border: #e2e8f0; --subblock-bg: #f8fafc;
+  --client-price-bg: #fffaf0; --client-price-border: #f6ad55;
+  --tabs-border: #e5eaf1; --tab-inactive: #6b7280;
+  --section-bg: #f4f7fb; --dashed-line: #e2e8f0;
+  --result-bg: #f4f7fb; --checkbox-bg: #f4f7fb; --checkbox-hover: #e6eef7;
+  --info-value: #1e3a5f; --info-label: #6b7280;
+  --status-ok-bg: #ecfdf5; --status-ok-text: #065f46;
+  --status-err-bg: #fef2f2; --status-err-text: #991b1b;
+  --status-info-bg: #eef2f7; --status-info-text: #1e3a5f;
+  --kpi-value: #2c5282; --chart-bar-1: #2c5282; --chart-bar-2: #60a5fa;
+  --table-header-bg: #f4f7fb; --table-row-border: #e2e8f0;
+}
+body.dark {
+  --body-bg: linear-gradient(135deg, #0f172a 0%, #1a2332 100%);
+  --app-bg: #1e293b; --app-border: #334155; --card-bg: #1e293b; --card-border: #334155;
+  --text-main: #e2e8f0; --text-muted: #cbd5e1; --text-dim: #94a3b8; --text-faint: #64748b;
+  --heading: #f1f5f9; --accent: #60a5fa; --accent-dark: #93c5fd; --accent-bg: #1e3a5f;
+  --input-bg: #0f172a; --input-border: #334155; --input-hover: #475569;
+  --readonly-bg: #0f172a; --readonly-text: #93c5fd;
+  --subtle-bg: #0f172a; --subtle-border: #334155; --subblock-bg: #0f172a;
+  --client-price-bg: #422006; --client-price-border: #d97706;
+  --tabs-border: #334155; --tab-inactive: #94a3b8;
+  --section-bg: #0f172a; --dashed-line: #334155;
+  --result-bg: #0f172a; --checkbox-bg: #0f172a; --checkbox-hover: #334155;
+  --info-value: #93c5fd; --info-label: #94a3b8;
+  --status-ok-bg: #064e3b; --status-ok-text: #6ee7b7;
+  --status-err-bg: #7f1d1d; --status-err-text: #fca5a5;
+  --status-info-bg: #1e3a5f; --status-info-text: #93c5fd;
+  --kpi-value: #60a5fa; --chart-bar-1: #3b82f6; --chart-bar-2: #60a5fa;
+  --table-header-bg: #0f172a; --table-row-border: #334155;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--body-bg); min-height: 100vh; padding: 24px 16px; color: var(--text-main);
+  font-size: 14px; line-height: 1.5; }
+.app { max-width: 1320px; margin: 0 auto; background: var(--app-bg); border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(44,82,130,0.10); overflow: hidden; border: 1px solid var(--app-border); }
+.header { background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+  padding: 20px 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.header .logo { width: 42px; height: 42px; background: rgba(255,255,255,0.18);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; font-size: 15px; }
+.header h1 { font-size: 20px; font-weight: 600; color: #fff; }
+.header p { color: rgba(255,255,255,0.82); font-size: 13px; margin-top: 2px; }
+.header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.header .version { background: rgba(255,255,255,0.2); color: #fff;
+  padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.manager-select { display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 6px 4px 14px; }
+.manager-select label { color: rgba(255,255,255,0.85); font-size: 12px; font-weight: 500; margin: 0; }
+.manager-select select { background: #fff; border: none; border-radius: 16px; padding: 6px 12px;
+  font-size: 13px; font-weight: 600; color: #1e3a5f; cursor: pointer; font-family: inherit;
+  outline: none; width: auto; min-width: 120px; }
+.theme-toggle { width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.18); color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; }
+.tabs { display: flex; padding: 0 24px; background: var(--app-bg);
+  border-bottom: 1px solid var(--tabs-border); gap: 4px; overflow-x: auto; }
+.tab { padding: 16px 20px; color: var(--tab-inactive); cursor: pointer; border: none;
+  background: none; font-size: 14px; font-weight: 500; white-space: nowrap;
+  border-bottom: 2px solid transparent; font-family: inherit; }
+.tab:hover { color: var(--accent); }
+.tab.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
+.panel { display: none; padding: 28px; }
+.panel.active { display: block; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+@media (max-width: 960px) { .grid { grid-template-columns: 1fr; gap: 20px; }
+  .panel { padding: 18px; } .header { padding: 16px 20px; } .header-right { width: 100%; margin-left: 0; } }
+.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+  padding: 20px; margin-bottom: 16px; }
+.card:last-child { margin-bottom: 0; }
+.card-title { font-size: 14px; font-weight: 600; color: var(--accent-dark); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card-title::before { content: ''; width: 3px; height: 16px; background: var(--accent); border-radius: 2px; }
+.card-title .badge { margin-left: auto; font-size: 11px; font-weight: 500;
+  background: var(--accent-bg); color: var(--accent); padding: 3px 8px; border-radius: 20px; }
+label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+label .hint-inline { color: var(--text-faint); font-weight: 400; font-size: 12px; }
+input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--input-border);
+  border-radius: 8px; font-size: 14px; margin-bottom: 14px; background: var(--input-bg);
+  font-family: inherit; color: var(--text-main); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(44,82,130,0.15); }
+input[readonly] { background: var(--readonly-bg); color: var(--readonly-text); cursor: default; }
+input.client-price, textarea.client-price { border-color: var(--client-price-border); background: var(--client-price-bg); }
+input.invalid { border-color: #ef4444; background: #fef2f2; }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.row-2 > div { margin-bottom: 0; }
+.checkbox-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  background: var(--checkbox-bg); border-radius: 8px; border: 1px solid var(--subtle-border); cursor: pointer; }
+.checkbox-row input[type="checkbox"] { width: 18px; height: 18px; margin: 0;
+  accent-color: var(--accent); cursor: pointer; }
+.checkbox-row label { margin: 0; font-size: 14px; cursor: pointer; color: var(--text-main); font-weight: 500; }
+.subblock { margin-top: 12px; padding: 14px; background: var(--subblock-bg);
+  border-left: 3px solid var(--accent); border-radius: 6px; }
+.info-line { display: flex; justify-content: space-between; padding: 7px 0; font-size: 13px;
+  border-bottom: 1px dashed var(--dashed-line); }
+.info-line:last-child { border-bottom: none; }
+.info-line .label { color: var(--info-label); margin: 0; font-weight: 400; }
+.info-line .value { color: var(--info-value); font-weight: 600; font-family: 'SF Mono', Monaco, monospace; }
+.info-line.total { border-top: 2px solid var(--app-border); border-bottom: none; margin-top: 6px; padding-top: 12px; }
+.info-line.total .label { color: var(--accent-dark); font-weight: 600; font-size: 14px; }
+.info-line.total .value { color: var(--accent); font-size: 16px; }
+.info-line.highlight .value { color: #2f855a; }
+.info-line.section { background: var(--section-bg); margin: 8px -8px 4px; padding: 6px 8px;
+  border-radius: 4px; border: none; font-weight: 700; font-size: 12px;
+  text-transform: uppercase; color: var(--accent); }
+.info-line.section .label { color: var(--accent); font-weight: 700; }
+.result-box { background: var(--result-bg); border: 1px solid var(--subtle-border); border-radius: 10px;
+  padding: 16px; min-height: 240px; white-space: pre-wrap; font-size: 13px;
+  line-height: 1.65; color: var(--text-main); font-family: 'SF Mono', Monaco, monospace; }
+.result-box.small { min-height: 120px; font-size: 12.5px; }
+.btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer;
+  font-weight: 500; font-family: inherit; }
+.btn-primary { background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%); color: #fff; }
+.btn-secondary { background: var(--accent-bg); color: var(--text-muted); }
+.btn-copy { background: #2f855a; color: #fff; }
+.btn-pdf { background: linear-gradient(135deg, #c05621 0%, #dd6b20 100%); color: #fff; }
+.btn-icon { padding: 4px 8px; font-size: 14px; border-radius: 6px; background: var(--accent-bg);
+  color: var(--accent); border: none; cursor: pointer; font-family: inherit; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.status { padding: 12px 16px; border-radius: 8px; font-size: 13px; border-left: 4px solid; margin-top: 12px; }
+.status.ok { background: var(--status-ok-bg); color: var(--status-ok-text); border-color: #2f855a; }
+.status.err { background: var(--status-err-bg); color: var(--status-err-text); border-color: #ef4444; }
+.status.info { background: var(--status-info-bg); color: var(--status-info-text); border-color: var(--accent); }
+code { background: var(--accent-bg); padding: 2px 6px; border-radius: 4px; font-size: 12px;
+  font-family: 'SF Mono', Monaco, monospace; color: var(--accent-dark); }
+ol { font-size: 14px; line-height: 1.9; color: var(--text-muted); padding-left: 20px; }
+ol li { margin-bottom: 8px; }
+.changelog { display: flex; flex-direction: column; gap: 20px; }
+.version-card { background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 12px; padding: 22px 24px; }
+.version-card.current { border-color: var(--accent); border-width: 2px; }
+.version-header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+.version-number { font-size: 22px; font-weight: 700; color: var(--accent-dark); }
+.version-card.current .version-number { color: var(--accent); }
+.version-title { font-size: 15px; font-weight: 600; color: var(--text-main); }
+.version-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+  background: #dcfce7; color: #166534; text-transform: uppercase; margin-left: auto; }
+.version-tag.archive { background: var(--accent-bg); color: var(--text-dim); }
+.version-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.version-list li { position: relative; padding-left: 24px; color: var(--text-muted);
+  font-size: 14px; line-height: 1.6; }
+.version-list li::before { content: ''; position: absolute; left: 6px; top: 8px;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.version-list li b { color: var(--accent-dark); font-weight: 600; }
+.version-note { margin-top: 14px; padding: 10px 14px; background: var(--client-price-bg);
+  border-left: 3px solid var(--client-price-border); border-radius: 6px;
+  font-size: 13px; color: var(--text-muted); }
+.legend-note { background: var(--accent-bg); border-left: 4px solid var(--accent);
+  padding: 14px 18px; border-radius: 8px; font-size: 13px; color: var(--accent-dark); margin-bottom: 20px; }
+.dash-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+.dash-filters .filter-label { font-size: 12px; color: var(--text-dim); margin-right: 4px;
+  font-weight: 600; text-transform: uppercase; }
+.dash-filter { padding: 8px 16px; border-radius: 20px; border: 1px solid var(--card-border);
+  background: var(--card-bg); color: var(--text-muted); cursor: pointer;
+  font-size: 13px; font-weight: 500; font-family: inherit; }
+.dash-filter:hover { border-color: var(--accent); color: var(--accent); }
+.dash-filter.active { background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+  color: #fff; border-color: transparent; }
+.dash-status-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: var(--accent-bg); border-radius: 8px; margin-bottom: 16px;
+  font-size: 12px; color: var(--accent-dark); }
+.dash-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #2f855a; }
+.dash-status-dot.offline { background: #f59e0b; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+@media (max-width: 720px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+.kpi-card { background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 12px; padding: 18px; }
+.kpi-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase;
+  font-weight: 600; margin-bottom: 8px; }
+.kpi-value { font-size: 24px; font-weight: 700; color: var(--kpi-value); }
+.chart-wrap { display: flex; align-items: flex-end; gap: 10px; height: 220px; padding: 24px 8px 8px; }
+.chart-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-end; height: 100%; }
+.chart-bar { width: 100%; max-width: 60px; min-height: 4px;
+  background: linear-gradient(180deg, var(--chart-bar-2) 0%, var(--chart-bar-1) 100%);
+  border-radius: 6px 6px 0 0; position: relative; }
+.chart-bar .chart-count { position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 12px; font-weight: 700; color: var(--accent); }
+.chart-label { font-size: 11px; color: var(--text-dim); margin-top: 8px; }
+.chart-empty { display: flex; align-items: center; justify-content: center;
+  height: 200px; color: var(--text-faint); font-size: 13px; }
+.manager-bar-row { margin-bottom: 14px; }
+.manager-bar-header { display: flex; justify-content: space-between; margin-bottom: 6px;
+  font-size: 13px; gap: 10px; flex-wrap: wrap; }
+.manager-bar-name { font-weight: 600; color: var(--text-main); }
+.manager-bar-stats { color: var(--text-dim); font-size: 12px; }
+.manager-bar-track { height: 24px; background: var(--accent-bg); border-radius: 6px; overflow: hidden; }
+.manager-bar-fill { height: 100%; display: flex; align-items: center;
+  justify-content: flex-end; padding-right: 10px; color: #fff; font-size: 12px; font-weight: 600; }
+.manager-bar-fill.julia { background: linear-gradient(90deg, #2c5282 0%, #3b82f6 100%); }
+.manager-bar-fill.alexander { background: linear-gradient(90deg, #1e3a5f 0%, #60a5fa 100%); }
+.stats-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.stats-table th { text-align: left; padding: 10px 12px; background: var(--table-header-bg);
+  color: var(--text-dim); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+.stats-table td { padding: 10px 12px; border-bottom: 1px solid var(--table-row-border); }
+.stats-table tr:hover td { background: var(--section-bg); }
+.stats-table .manager-pill { display: inline-block; padding: 2px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; }
+.stats-table .manager-pill.julia { background: #dbeafe; color: #1e40af; }
+.stats-table .manager-pill.alexander { background: #e0e7ff; color: #3730a3; }
+.stats-table .type-pill { display: inline-block; padding: 2px 8px; border-radius: 20px;
+  font-size: 10px; font-weight: 600; margin-left: 6px; }
+.stats-table .type-pill.final { background: #dcfce7; color: #166534; }
+.stats-table .type-pill.precalc { background: #fef3c7; color: #92400e; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-faint); font-size: 13px; }
+.modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.55);
+  z-index: 1000; justify-content: center; align-items: flex-start; padding: 40px 16px; overflow-y: auto; }
+.modal-backdrop.open { display: flex; }
+.modal-content { background: var(--card-bg); border-radius: 14px; padding: 24px;
+  max-width: 640px; width: 100%; }
+.modal-content h3 { font-size: 18px; color: var(--accent-dark); margin-bottom: 18px; }
+.modal-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; margin-bottom: 18px; }
+.modal-detail-item { padding: 6px 0; border-bottom: 1px dashed var(--dashed-line); font-size: 13px; }
+.modal-detail-item b { color: var(--accent-dark); display: block; font-size: 11px;
+  text-transform: uppercase; margin-bottom: 2px; }
+.modal-section-title { font-size: 12px; color: var(--accent); font-weight: 700;
+  text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--subtle-border); }
+.fb-item { padding: 14px 16px; border: 1px solid var(--card-border);
+  border-radius: 10px; margin-bottom: 12px; background: var(--card-bg); }
+.fb-item.fb-done { border-color: #10b981; background: #ecfdf5; }
+.fb-item.fb-progress { border-color: #f59e0b; background: #fffbeb; }
+.fb-item.fb-unclear { border-color: #6366f1; background: #eef2ff; }
+.fb-item.fb-cancel { border-color: #ef4444; background: #fef2f2; opacity: 0.75; }
+body.dark .fb-item.fb-done { background: #064e3b; }
+body.dark .fb-item.fb-progress { background: #78350f; }
+body.dark .fb-item.fb-unclear { background: #312e81; }
+body.dark .fb-item.fb-cancel { background: #7f1d1d; }
+.fb-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim);
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; gap: 10px; flex-wrap: wrap; }
+.fb-request { font-size: 14px; color: var(--text-main); margin-bottom: 8px; white-space: pre-wrap; }
+.fb-example { font-size: 12px; color: var(--text-muted); padding: 8px 10px;
+  background: var(--subblock-bg); border-radius: 6px; margin-bottom: 10px; white-space: pre-wrap; }
+.fb-status-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.fb-status-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--subtle-border);
+  background: var(--card-bg); color: var(--text-muted); cursor: pointer;
+  font-size: 16px; font-family: inherit; transition: all 0.2s; }
+.fb-status-btn:hover { border-color: var(--accent); }
+.fb-status-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+#pdfTemplate { display: none; }
+.pdf-doc { font-family: 'Segoe UI', Arial, sans-serif; color: #1f2937; font-size: 12px;
+  line-height: 1.5; background: #fff; }
+.pdf-header { display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 3px solid #2c5282; padding-bottom: 16px; margin-bottom: 24px; }
+.pdf-logo-wrap { display: flex; align-items: center; gap: 12px; }
+.pdf-logo-text { font-size: 26px; font-weight: 900; letter-spacing: 0.02em; }
+.pdf-company { text-align: right; font-size: 11px; color: #6b7280; line-height: 1.6; }
+.pdf-title { font-size: 22px; font-weight: 700; color: #1e3a5f; margin-bottom: 20px; }
+.pdf-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px;
+  margin-bottom: 24px; font-size: 12px; }
+.pdf-meta-item { padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
+.pdf-meta-item b { color: #1e3a5f; display: inline-block; min-width: 90px; }
+.pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 12px; }
+.pdf-table th { background: #1e3a5f; color: #fff; text-align: left; padding: 10px 12px;
+  font-weight: 600; font-size: 11px; text-transform: uppercase; }
+.pdf-table th.num, .pdf-table td.num { text-align: right; }
+.pdf-table td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
+.pdf-table tr:nth-child(even) td { background: #f8fafc; }
+.pdf-table tfoot td { padding: 10px 12px; border: none; font-weight: 700; }
+.pdf-table tfoot tr.total td { background: #eef2f7; color: #1e3a5f; font-size: 14px;
+  border-top: 2px solid #2c5282; border-bottom: 2px solid #2c5282; }
+.pdf-table tfoot tr.prepay td { color: #2f855a; font-size: 13px; }
+.pdf-block { margin-bottom: 20px; padding: 14px 16px; background: #f8fafc;
+  border-left: 3px solid #2c5282; border-radius: 4px; }
+.pdf-block h3 { font-size: 12px; font-weight: 700; color: #1e3a5f;
+  text-transform: uppercase; margin-bottom: 10px; }
+.pdf-block p { font-size: 12px; margin-bottom: 4px; white-space: pre-line; }
+.pdf-signature { display: flex; justify-content: space-between; margin-top: 40px;
+  font-size: 12px; color: #4b5563; }
+.pdf-small { font-size: 10px; color: #6b7280; font-weight: 400; }
+@media print { body { padding: 0; background: #fff; }
+  .app { display: none !important; }
+  #pdfTemplate { display: block !important; }
+  @page { margin: 15mm; size: A4; } }
+</style>
+</head>
+<body>
+
+<div id="pdfTemplate">
+  <div class="pdf-doc">
+    <div class="pdf-header">
+      <div class="pdf-logo-wrap">
+        <svg width="48" height="48" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+          <rect x="4" y="18" width="22" height="22" rx="2" fill="#3ab880"/>
+          <path d="M 4 18 L 13 9 L 35 9 L 26 18 Z" fill="#2d9d6a"/>
+          <path d="M 26 18 L 35 9 L 35 31 L 26 40 Z" fill="#2d9d6a"/>
+          <path d="M 26 26 L 40 26 L 40 20 L 50 28 L 40 36 L 40 30 L 26 30 Z" fill="#ffc107"/>
+        </svg>
+        <div class="pdf-logo-text">
+          <span style="color:#3ab880;">PACK</span>
+          <span style="color:#3ab880;">&amp;</span>
+          <span style="color:#ffc107;">GO</span>
+        </div>
+      </div>
+      <div class="pdf-company">
+        <div>Переезды по России</div>
+        <div>Партнёр ТК Магистраль</div>
+      </div>
+    </div>
+    <div class="pdf-title" id="pdfTitle">Коммерческое предложение</div>
+    <div class="pdf-meta">
+      <div class="pdf-meta-item"><b>Клиент:</b> <span id="pdfClientName">—</span></div>
+      <div class="pdf-meta-item"><b>Менеджер:</b> <span id="pdfManager"></span></div>
+      <div class="pdf-meta-item"><b>Объём груза:</b> <span id="pdfVolume">—</span></div>
+      <div class="pdf-meta-item"><b>Дата:</b> <span id="pdfDate"></span></div>
+    </div>
+    <table class="pdf-table">
+      <thead><tr><th>Услуга</th><th style="width: 110px;">Часы</th><th class="num" style="width: 140px;">Стоимость</th></tr></thead>
+      <tbody id="pdfServiceRows"></tbody>
+      <tfoot>
+        <tr class="total"><td colspan="2">Итого к оплате</td><td class="num" id="pdfTotal">— ₽</td></tr>
+        <tr class="prepay" id="pdfPrepayRow"><td colspan="2">Предоплата для назначения грузчиков</td><td class="num" id="pdfPrepay">— ₽</td></tr>
+      </tfoot>
+    </table>
+    <div class="pdf-block" id="pdfRemainBlock">
+      <h3>После внесения предоплаты, остаток по адресам:</h3>
+      <div id="pdfRemainLines"></div>
+    </div>
+    <div class="pdf-block" id="pdfPaymentBlock">
+      <h3>Порядок оплаты</h3>
+      <p id="pdfPaymentText"></p>
+      <p id="pdfRequisites" style="margin-top: 10px;"></p>
+    </div>
+    <div class="pdf-signature">
+      <div>С уважением, команда Pack&amp;Go</div>
+      <div>Подпись: ____________________</div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <div class="header">
+    <div class="logo">P&amp;G</div>
+    <div>
+      <h1>Pack&amp;Go — калькулятор</h1>
+      <p>Себестоимость, цена для клиента и генерация сообщения</p>
+    </div>
+    <div class="header-right">
+      <div class="manager-select">
+        <label for="manager">Менеджер:</label>
+        <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
+      <div class="version">Версия 11.1</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="calc">Калькулятор и сообщение</button>
+    <button class="tab" data-tab="brigadier">Заявки бригадирам</button>
+    <button class="tab" data-tab="dashboard">Дашборд</button>
+    <button class="tab" data-tab="feedback">Обратная связь</button>
+    <button class="tab" data-tab="changelog">Журнал изменений</button>
+    <button class="tab" data-tab="settings">Справка</button>
+  </div>
+
+  <div class="panel active" id="panel-calc">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-title">Клиент и груз</div>
+          <label>Имя клиента</label>
+          <input type="text" id="clientName" placeholder="Иванов Иван">
+          <div class="row-2">
+            <div><label>Объём груза, м³</label><input type="number" id="volume" placeholder="5" step="0.1"></div>
+            <div><label>Количество грузчиков (общее)</label><input type="number" id="loaders" placeholder="2" min="0"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Погрузка <span class="badge" id="badgeLoad">не заполнено</span></div>
+          <label>Город погрузки</label>
+          <input type="text" id="cityLoad" list="cityList" placeholder="Начните вводить город…" autocomplete="off">
+          <div class="row-2">
+            <div>
+              <label>Часов на погрузку</label>
+              <input type="text" id="hoursLoad" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off">
+            </div>
+            <div>
+              <label>Ставка бригадира, ₽/ч</label>
+              <input type="text" id="rateBrigadierLoad" readonly>
+            </div>
+          </div>
+          <label>Ручная ставка бригадира, ₽/ч</label>
+          <input type="number" id="rateBrigadierManualLoad" placeholder="Не задано">
+          <div class="row-2">
+            <div><label>Себестоимость, ₽</label><input type="text" id="selfCostLoad" readonly></div>
+            <div></div>
+          </div>
+          <div class="row-2" style="margin-top:12px;">
+            <div>
+              <label>Стоимость для клиента, ₽ <span class="hint-inline">(если пусто — себестоимость)</span></label>
+              <input type="number" id="clientCostLoad" class="client-price" placeholder="Например, 8800" oninput="syncClientCost('Load','total')">
+            </div>
+            <div>
+              <label>Ставка для клиента, ₽/ч/чел <span class="hint-inline">(авто или вручную)</span></label>
+              <input type="number" id="clientHourlyLoad" class="client-price" placeholder="Авто" oninput="syncClientCost('Load','hourly')">
+            </div>
+          </div>
+          <div class="checkbox-row" style="margin-top:12px;">
+            <input type="checkbox" id="loadersLoadOverride">
+            <label for="loadersLoadOverride">Своё количество грузчиков на погрузке</label>
+          </div>
+          <div class="subblock" id="loadersLoadBlock" style="display:none;">
+            <label>Грузчиков на погрузке</label>
+            <input type="number" id="loadersLoad" min="0" placeholder="Оставьте пустым для общего">
+          </div>
+          <div class="checkbox-row" style="margin-top:12px;">
+            <input type="checkbox" id="evacLoad">
+            <label for="evacLoad">Нужен эвакуатор на погрузке</label>
+          </div>
+          <div class="subblock" id="evacLoadBlock" style="display:none;">
+            <div class="row-2">
+              <div><label>Эвакуатор себестоимость, ₽</label><input type="number" id="evacLoadCostUs" placeholder="3000"></div>
+              <div><label>Эвакуатор для клиента, ₽</label><input type="number" id="evacLoadCostClient" class="client-price" placeholder="5000"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Выгрузка <span class="badge" id="badgeUnload">не заполнено</span></div>
+          <label>Город выгрузки</label>
+          <input type="text" id="cityUnload" list="cityList" placeholder="Начните вводить город…" autocomplete="off">
+          <div class="row-2">
+            <div>
+              <label>Часов на выгрузку</label>
+              <input type="text" id="hoursUnload" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off">
+            </div>
+            <div>
+              <label>Ставка бригадира, ₽/ч</label>
+              <input type="text" id="rateBrigadierUnload" readonly>
+            </div>
+          </div>
+          <label>Ручная ставка бригадира, ₽/ч</label>
+          <input type="number" id="rateBrigadierManualUnload" placeholder="Не задано">
+          <div class="row-2">
+            <div><label>Себестоимость, ₽</label><input type="text" id="selfCostUnload" readonly></div>
+            <div></div>
+          </div>
+          <div class="row-2" style="margin-top:12px;">
+            <div>
+              <label>Стоимость для клиента, ₽ <span class="hint-inline">(если пусто — себестоимость)</span></label>
+              <input type="number" id="clientCostUnload" class="client-price" placeholder="Например, 8000" oninput="syncClientCost('Unload','total')">
+            </div>
+            <div>
+              <label>Ставка для клиента, ₽/ч/чел <span class="hint-inline">(авто или вручную)</span></label>
+              <input type="number" id="clientHourlyUnload" class="client-price" placeholder="Авто" oninput="syncClientCost('Unload','hourly')">
+            </div>
+          </div>
+          <div class="checkbox-row" style="margin-top:12px;">
+            <input type="checkbox" id="loadersUnloadOverride">
+            <label for="loadersUnloadOverride">Своё количество грузчиков на выгрузке</label>
+          </div>
+          <div class="subblock" id="loadersUnloadBlock" style="display:none;">
+            <label>Грузчиков на выгрузке</label>
+            <input type="number" id="loadersUnload" min="0" placeholder="Оставьте пустым для общего">
+          </div>
+          <div class="checkbox-row" style="margin-top:12px;">
+            <input type="checkbox" id="evacUnload">
+            <label for="evacUnload">Нужен эвакуатор на выгрузке</label>
+          </div>
+          <div class="subblock" id="evacUnloadBlock" style="display:none;">
+            <div class="row-2">
+              <div><label>Эвакуатор себестоимость, ₽</label><input type="number" id="evacUnloadCostUs" placeholder="3000"></div>
+              <div><label>Эвакуатор для клиента, ₽</label><input type="number" id="evacUnloadCostClient" class="client-price" placeholder="5000"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Оплата</div>
+          <label>Способ оплаты</label>
+          <select id="paymentMethod">
+            <option value="">— Не выбран —</option>
+            <option value="Предрасчет">Предрасчет</option>
+            <option value="Оплата по счёту">Оплата по счёту</option>
+            <option value="Оплата по самозанятости">Оплата по самозанятости</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-title">Сводка для менеджера</div>
+          <div class="info-line section"><span class="label">Себестоимость</span><span></span></div>
+          <div class="info-line"><span class="label">Погрузка</span><span class="value" id="outSelfLoad">—</span></div>
+          <div class="info-line"><span class="label">Выгрузка</span><span class="value" id="outSelfUnload">—</span></div>
+          <div class="info-line"><span class="label">Итого себестоимость</span><span class="value" id="outSelfTotal">—</span></div>
+          <div class="info-line section" style="margin-top:10px;"><span class="label">Стоимость для клиента</span><span></span></div>
+          <div class="info-line"><span class="label">Погрузка</span><span class="value" id="outClientLoad">—</span></div>
+          <div class="info-line"><span class="label">Выгрузка</span><span class="value" id="outClientUnload">—</span></div>
+          <div class="info-line"><span class="label">Эвакуаторы</span><span class="value" id="outClientEvac">—</span></div>
+          <div class="info-line total"><span class="label">Итого для клиента</span><span class="value" id="outClientTotal">—</span></div>
+          <div class="info-line highlight"><span class="label">Предоплата</span><span class="value" id="outPrepay">—</span></div>
+          <div class="info-line"><span class="label">Остаток на погрузке</span><span class="value" id="outRemainLoad">—</span></div>
+          <div class="info-line"><span class="label">Остаток на выгрузке</span><span class="value" id="outRemainUnload">—</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Сообщение для клиента</div>
+          <div class="btn-row" style="margin-bottom:14px;">
+            <button class="btn btn-primary" onclick="manualGenerate()">Сформировать</button>
+            <button class="btn btn-copy" onclick="copyMessage()">Скопировать</button>
+            <button class="btn btn-pdf" onclick="downloadPdf()">Скачать PDF</button>
+            <button class="btn btn-secondary" onclick="clearAll()">Очистить всё</button>
+          </div>
+          <div class="result-box" id="messageOutput">Заполните данные слева — сообщение сформируется автоматически.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-brigadier">
+    <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Заявки для бригадиров</h2>
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-title">Общие данные</div>
+          <div class="row-2">
+            <div><label>Оплата</label>
+              <select id="brPayment"><option value="">— Не выбрано —</option><option value="счёт">Счёт</option><option value="нал(перевод)">Нал(перевод)</option></select>
+            </div>
+            <div><label>Груз</label><input type="text" id="brCargo" placeholder="мебель"></div>
+          </div>
+          <label>Объём, м³</label>
+          <input type="text" id="brVolume" placeholder="12">
+        </div>
+        <div class="card">
+          <div class="card-title">Погрузка</div>
+          <label>Адрес погрузки</label>
+          <input type="text" id="brAddressLoad" placeholder="Казань, Пушкина 10">
+          <label>Работы</label>
+          <div class="row-2" style="margin-bottom:14px;">
+            <label class="checkbox-row" style="padding:8px 10px;"><input type="checkbox" id="brWorkLoad2"> упаковка</label>
+            <label class="checkbox-row" style="padding:8px 10px;"><input type="checkbox" id="brWorkLoad3"> разборка</label>
+          </div>
+          <label>Комментарий</label>
+          <input type="text" id="brCommentLoad" placeholder="нужен грузчик">
+        </div>
+        <div class="card">
+          <div class="card-title">Выгрузка</div>
+          <label>Адрес выгрузки</label>
+          <input type="text" id="brAddressUnload" placeholder="Сочи, Морская 1">
+          <label>Работы</label>
+          <label class="checkbox-row" style="padding:8px 10px; margin-bottom:14px; max-width:200px;"><input type="checkbox" id="brWorkUnload4"> сборка</label>
+          <label>Комментарий</label>
+          <input type="text" id="brCommentUnload" placeholder="подъезд узкий">
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title">Заявка на погрузку</div>
+          <div class="result-box small" id="brOutputLoad">Заполните данные слева…</div>
+          <div class="btn-row" style="margin-top:14px;"><button class="btn btn-copy" onclick="copyBrLoad()">Скопировать</button></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Заявка на выгрузку</div>
+          <div class="result-box small" id="brOutputUnload">Заполните данные слева…</div>
+          <div class="btn-row" style="margin-top:14px;"><button class="btn btn-copy" onclick="copyBrUnload()">Скопировать</button></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Обе заявки сразу</div>
+          <div class="result-box small" id="brOutputBoth">Заполните данные слева…</div>
+          <div class="btn-row" style="margin-top:14px;">
+            <button class="btn btn-primary" onclick="generateBrigadierRequests()">Сформировать</button>
+            <button class="btn btn-copy" onclick="copyBrBoth()">Скопировать обе</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-dashboard">
+    <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Дашборд</h2>
+    <div class="dash-status-bar">
+      <div class="dash-status-dot" id="dashStatusDot"></div>
+      <span id="dashStatusText">Статистика загружается…</span>
+      <button class="btn btn-secondary" style="margin-left:auto; padding:5px 12px; font-size:12px;" onclick="refreshStats()">Обновить</button>
+    </div>
+    <div class="dash-filters">
+      <span class="filter-label">Менеджер:</span>
+      <button class="dash-filter active" data-filter="all" onclick="setDashboardFilter('all')">Все</button>
+      <button class="dash-filter" data-filter="Юлия" onclick="setDashboardFilter('Юлия')">Юлия</button>
+      <button class="dash-filter" data-filter="Александр" onclick="setDashboardFilter('Александр')">Александр</button>
+    </div>
+    <div class="dash-filters">
+      <span class="filter-label">Тип:</span>
+      <button class="dash-filter active" data-type="final" onclick="setDashboardTypeFilter('final')">Итоговые</button>
+      <button class="dash-filter" data-type="precalc" onclick="setDashboardTypeFilter('precalc')">Предрасчёты</button>
+      <button class="dash-filter" data-type="all" onclick="setDashboardTypeFilter('all')">Все</button>
+    </div>
+    <div class="dash-filters">
+      <span class="filter-label">Период:</span>
+      <button class="dash-filter" data-range="today" onclick="setDashboardRange('today')">Сегодня</button>
+      <button class="dash-filter" data-range="week" onclick="setDashboardRange('week')">7 дней</button>
+      <button class="dash-filter active" data-range="month" onclick="setDashboardRange('month')">30 дней</button>
+      <button class="dash-filter" data-range="all" onclick="setDashboardRange('all')">Всё время</button>
+      <button class="dash-filter" onclick="runDiagnostics()" style="background:#fef3c7;color:#92400e;border-color:#fde68a;">🛠 Диагностика</button>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Расчётов</div><div class="kpi-value" id="kpiCount">0</div></div>
+      <div class="kpi-card"><div class="kpi-label">Сумма для клиентов</div><div class="kpi-value" id="kpiSum">0 ₽</div></div>
+      <div class="kpi-card"><div class="kpi-label">Средний чек</div><div class="kpi-value" id="kpiAvg">0 ₽</div></div>
+      <div class="kpi-card"><div class="kpi-label">Маржа</div><div class="kpi-value" id="kpiMargin">0 ₽</div></div>
+    </div>
+    <div class="card"><div class="card-title">Расчётов за последние 7 дней</div><div id="dayChart"></div></div>
+    <div class="card"><div class="card-title">Сравнение менеджеров</div><div id="managerCompare"></div></div>
+    <div class="card"><div class="card-title">Последние расчёты</div><div id="recentTableWrap"></div></div>
+  </div>
+
+  <div class="panel" id="panel-feedback">
+    <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Обратная связь и предложения</h2>
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 16px;">
+      Опишите, что вы хотели бы изменить или добавить в калькуляторе.
+    </p>
+    <div class="card">
+      <div class="card-title">Новый запрос</div>
+      <label>Запрос</label>
+      <textarea id="fbRequest" rows="3" placeholder="Опишите ваше предложение…"></textarea>
+      <label>Пример <span class="hint-inline">(необязательно)</span></label>
+      <textarea id="fbExample" rows="2" placeholder="Как это должно выглядеть…"></textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitFeedback()">Отправить</button>
+        <button class="btn btn-secondary" onclick="refreshFeedback()">Обновить список</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Список запросов <span class="badge" id="fbCount">0</span></div>
+      <div id="fbListWrap"><div class="empty-state">Загрузка…</div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-changelog">
+    <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
+    <div class="legend-note">Текущая версия — <b>11.1</b>.</div>
+    <div class="changelog">
+
+      <div class="version-card current">
+        <div class="version-header">
+          <div class="version-number">Версия 11.1</div>
+          <div class="version-title">Datalist часов и авто-retry при 404</div>
+          <div class="version-tag">Текущая</div>
+        </div>
+        <ul class="version-list">
+          <li>Поля «Часов на погрузку / выгрузку» теперь работают как <b>поле ввода с автодополнением</b> — по аналогии с городами. Убран отдельный выпадающий список: щёлкаете по полю — появляется список частых значений (1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10, 12), при этом можно ввести любое своё значение вручную.</li>
+          <li>Добавлен <b>авто-retry</b> для всех запросов к Apps Script. Если Google на секунду «прячет» развёртывание (именно это вызывает периодическую <b>ошибку 404</b>), клиент автоматически повторит запрос 2 раза с паузой 0.8–1.2 сек. Пользователь не увидит ошибку.</li>
+          <li>При ошибке в статусе соединения теперь показывается, <b>сколько попыток</b> было сделано.</li>
+        </ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-number">Версия 11</div>
+          <div class="version-title">Обратная связь, часовая ставка, фильтр типов</div>
+          <div class="version-tag archive">Архив</div>
+        </div>
+        <ul class="version-list">
+          <li>Вкладка «Обратная связь» с 4 кнопками статуса.</li>
+          <li>Часовая ставка в шаблоне и в полях ввода (двусторонняя синхронизация).</li>
+          <li>Фильтр по типу расчёта: Итоговые / Предрасчёты / Все.</li>
+          <li>Выпадающий список часов (отдельный select).</li>
+        </ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-number">Версия 10.6</div>
+          <div class="version-title">Исправление дат</div>
+          <div class="version-tag archive">Архив</div>
+        </div>
+        <ul class="version-list"><li>Формат ts:<code>…</code> в Google Sheets.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-number">Версия 10.5</div>
+          <div class="version-title">Диагностика дашборда</div>
+          <div class="version-tag archive">Архив</div>
+        </div>
+        <ul class="version-list"><li>Кнопка «🛠 Диагностика».</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-number">Версия 10.4</div>
+          <div class="version-title">Предрасчет, грузчики в сообщении, логотип</div>
+          <div class="version-tag archive">Архив</div>
+        </div>
+        <ul class="version-list"><li>Способ оплаты «Предрасчет». Логотип в PDF.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 10.3</div><div class="version-title">Поиск городов, грузчики по адресам</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам, детали.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 10.2</div><div class="version-title">PDF-КП</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Экспорт КП в PDF.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 10.1</div><div class="version-title">Общая статистика</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Статистика через Google Sheets.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 10</div><div class="version-title">Дашборд, тёмная тема</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Дашборд, KPI, график, тёмная тема.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 9.2</div><div class="version-title">Выбор менеджера</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Селектор менеджера.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 9.1</div><div class="version-title">Упрощение работ</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Упаковка, разборка, сборка.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 9</div><div class="version-title">Заявки бригадирам</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Вкладка «Заявки бригадирам».</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 8</div><div class="version-title">Себестоимость и клиентские цены</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Разделение себестоимости и цены клиента.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 7</div><div class="version-title">Карточки</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Карточки-блоки.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 6</div><div class="version-title">Google Sheets</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Apps Script.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 5</div><div class="version-title">Перевод в HTML</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Перенос из Google Таблиц.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 4</div><div class="version-title">Эвакуатор</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Две галочки эвакуатора.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 3</div><div class="version-title">Ставка бригадира</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Ставка бригадира.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 2</div><div class="version-title">Способы оплаты</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Счёт и самозанятость.</li></ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 1</div><div class="version-title">Базовый калькулятор</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Google Таблицы.</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-settings">
+    <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Справка</h2>
+    <div class="card">
+      <div class="card-title">Статус загрузки данных</div>
+      <div class="status info" id="gsStatus">Проверка соединения…</div>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn btn-primary" onclick="loadFromGoogleSheets()">Загрузить данные заново</button>
+        <button class="btn btn-secondary" onclick="testConnection()">Проверить соединение</button>
+        <button class="btn btn-secondary" onclick="resetToDefaults()">Вернуть встроенные данные</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ошибка 404 при обновлении</div>
+      <ol>
+        <li>Иногда Google на несколько секунд «прячет» развёртывание Apps Script — это нормально, особенно при одновременных запросах от нескольких менеджеров.</li>
+        <li>Начиная с версии 11.1 клиент <b>автоматически повторит запрос</b> 2 раза с паузой около секунды. Если с первого раза 404 — через мгновение всё загрузится.</li>
+        <li>Если ошибка затянулась — нажмите «Загрузить данные заново».</li>
+        <li>Если и это не помогает в течение нескольких минут — проверьте Apps Script: возможно, развёртывание удалено или создана новая версия с другим URL.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-title">Логика часовой ставки</div>
+      <ol>
+        <li>Заполнена <b>общая стоимость</b> → часовая = стоимость ÷ часы ÷ человек.</li>
+        <li>Заполнена <b>часовая</b> → общая = ставка × часы × человек.</li>
+        <li>Оба пусты → используется себестоимость.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="detailModal">
+  <div class="modal-content">
+    <h3>Детали расчёта</h3>
+    <div id="detailModalBody"></div>
+    <div class="btn-row" style="margin-top:20px; justify-content:flex-end;">
+      <button class="btn btn-secondary" onclick="closeDetailModal()">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<datalist id="cityList"></datalist>
+<datalist id="hoursList">
+  <option value="1"></option>
+  <option value="1.5"></option>
+  <option value="2"></option>
+  <option value="2.5"></option>
+  <option value="3"></option>
+  <option value="3.5"></option>
+  <option value="4"></option>
+  <option value="5"></option>
+  <option value="6"></option>
+  <option value="8"></option>
+  <option value="10"></option>
+  <option value="12"></option>
+</datalist>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzYYjN31fmPXHDgdH2fEFBptDD9mXdf71yCjwortsJOKi_NuoneqMEiPiZepMkQ0b_8w/exec';
+
+const DEFAULT_CITY_DATA = {
+  'Москва':       { minHours: 3, rateBrigadier: 800 },
+  'Казань':       { minHours: 2, rateBrigadier: 700 },
+  'Самара':       { minHours: 2, rateBrigadier: 650 },
+  'Екатеринбург': { minHours: 3, rateBrigadier: 750 }
+};
+const DEFAULT_REQUISITES = {
+  'Оплата по счёту':         'Реквизиты для оплаты по счёту:\nООО «Pack&Go»\nИНН 0000000000\nКПП 000000000\nР/с 00000000000000000000\nБанк: ...',
+  'Оплата по самозанятости': 'Реквизиты для оплаты самозанятому:\nФИО: Иванов И.И.\nИНН: 000000000000\nТелефон: +7 (900) 000-00-00'
+};
+let CITY_DATA = JSON.parse(JSON.stringify(DEFAULT_CITY_DATA));
+let REQUISITES = JSON.parse(JSON.stringify(DEFAULT_REQUISITES));
+let STATS_CACHE = [];
+let FEEDBACK_CACHE = [];
+let STATS_SOURCE = 'local';
+
+function $(id) { return document.getElementById(id); }
+function num(id) { const v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
+function fmt(n) { return (n && n > 0) ? Math.round(n).toLocaleString('ru-RU') : ''; }
+
+function humanPlural(n) {
+  const a = Math.abs(n) % 100, l = a % 10;
+  if (a >= 11 && a <= 19) return 'человек';
+  if (l === 1) return 'человек';
+  if (l >= 2 && l <= 4) return 'человека';
+  return 'человек';
+}
+function hourPlural(n) {
+  const a = Math.abs(n) % 100, l = a % 10;
+  if (a >= 11 && a <= 19) return 'часов';
+  if (l === 1) return 'час';
+  if (l >= 2 && l <= 4) return 'часа';
+  return 'часов';
+}
+function pluralRuble(n) {
+  const a = Math.abs(n) % 100, l = a % 10;
+  if (a >= 11 && a <= 19) return 'рублей';
+  if (l === 1) return 'рубль';
+  if (l >= 2 && l <= 4) return 'рубля';
+  return 'рублей';
+}
+
+// ★★ Универсальный fetch с retry для устойчивости к 404
+async function fetchWithRetry(url, options, maxAttempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const r = await fetch(url, options);
+      if (r.ok) return r;
+      // 404, 429, 5xx — временные, пробуем ещё
+      if (r.status === 404 || r.status === 429 || r.status >= 500) {
+        lastError = new Error('HTTP ' + r.status);
+        if (attempt < maxAttempts) {
+          await new Promise(res => setTimeout(res, 800 * attempt + Math.random() * 400));
+          continue;
+        }
+      }
+      return r; // другие 4xx — отдаём как есть
+    } catch (e) {
+      lastError = e;
+      if (attempt < maxAttempts) {
+        await new Promise(res => setTimeout(res, 800 * attempt + Math.random() * 400));
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw lastError || new Error('Failed after retries');
+}
+
+function toggleTheme() {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('packgo_theme', isDark ? 'dark' : 'light');
+  $('themeIcon').textContent = isDark ? '☀' : '☾';
+}
+function loadTheme() {
+  const saved = localStorage.getItem('packgo_theme');
+  if (saved === 'dark') { document.body.classList.add('dark'); $('themeIcon').textContent = '☀'; }
+  else $('themeIcon').textContent = '☾';
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    $('panel-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'dashboard') { renderDashboard(); refreshStats(true); }
+    if (tab.dataset.tab === 'feedback') { refreshFeedback(); }
+  });
+});
+
+function fillCityDatalist() {
+  const cities = Object.keys(CITY_DATA).sort();
+  $('cityList').innerHTML = cities.map(c => '<option value="' + c + '"></option>').join('');
+}
+function normalizeCity(val) {
+  if (!val) return '';
+  const trimmed = String(val).trim();
+  if (CITY_DATA[trimmed]) return trimmed;
+  const lower = trimmed.toLowerCase();
+  for (const key of Object.keys(CITY_DATA)) if (key.toLowerCase() === lower) return key;
+  return '';
+}
+function validateCity(input) {
+  const val = input.value.trim();
+  if (!val) { input.classList.remove('invalid'); return true; }
+  const ok = !!normalizeCity(val);
+  input.classList.toggle('invalid', !ok);
+  return ok;
+}
+// ★ Валидация часов (принимает числа, точку и запятую)
+function validateHours(input) {
+  const v = String(input.value || '').trim();
+  if (!v) { input.classList.remove('invalid'); return true; }
+  const ok = /^\d+([.,]\d+)?$/.test(v);
+  input.classList.toggle('invalid', !ok);
+  if (ok && v.indexOf(',') >= 0) input.value = v.replace(',', '.');
+  return ok;
+}
+
+function getEffectiveLoaders(direction) {
+  const global = num('loaders');
+  if (direction === 'Load') {
+    if ($('loadersLoadOverride').checked) {
+      const own = num('loadersLoad');
+      if (own > 0) return own;
+    }
+    return global;
+  } else {
+    if ($('loadersUnloadOverride').checked) {
+      const own = num('loadersUnload');
+      if (own > 0) return own;
+    }
+    return global;
+  }
+}
+
+function syncClientCost(direction, source) {
+  const totalField = $('clientCost' + direction);
+  const hourlyField = $('clientHourly' + direction);
+  const hours = direction === 'Load' ? num('hoursLoad') : num('hoursUnload');
+  const city = direction === 'Load' ? normalizeCity($('cityLoad').value) : normalizeCity($('cityUnload').value);
+  const data = CITY_DATA[city];
+  const calcHours = Math.max(hours, data ? data.minHours : 0);
+  const people = getEffectiveLoaders(direction);
+
+  if (calcHours <= 0 || people <= 0) {
+    if (source === 'hourly') totalField.value = '';
+    else if (source === 'total') hourlyField.value = '';
+    calculate(); generateMessage();
+    return;
+  }
+  if (source === 'total') {
+    const t = parseFloat(totalField.value);
+    if (!isNaN(t) && t > 0) hourlyField.value = Math.round(t / calcHours / people);
+    else hourlyField.value = '';
+  } else {
+    const h = parseFloat(hourlyField.value);
+    if (!isNaN(h) && h > 0) totalField.value = Math.round(h * calcHours * people);
+    else totalField.value = '';
+  }
+  calculate(); generateMessage();
+}
+
+function computeValues() {
+  const cityLoad = normalizeCity($('cityLoad').value);
+  const cityUnload = normalizeCity($('cityUnload').value);
+  const globalLoaders = num('loaders');
+  const loadersLoad = getEffectiveLoaders('Load');
+  const loadersUnload = getEffectiveLoaders('Unload');
+
+  const hoursLoad = num('hoursLoad');
+  const hoursUnload = num('hoursUnload');
+  const dataLoad = CITY_DATA[cityLoad] || null;
+  const dataUnload = CITY_DATA[cityUnload] || null;
+
+  const rateLoadDict = dataLoad ? dataLoad.rateBrigadier : 0;
+  const rateUnloadDict = dataUnload ? dataUnload.rateBrigadier : 0;
+  const rateLoadManual = num('rateBrigadierManualLoad');
+  const rateUnloadManual = num('rateBrigadierManualUnload');
+  const rateLoad = rateLoadManual > 0 ? rateLoadManual : rateLoadDict;
+  const rateUnload = rateUnloadManual > 0 ? rateUnloadManual : rateUnloadDict;
+
+  const calcHoursLoad = Math.max(hoursLoad, dataLoad ? dataLoad.minHours : 0);
+  const calcHoursUnload = Math.max(hoursUnload, dataUnload ? dataUnload.minHours : 0);
+
+  const selfLoadGruz = (cityLoad && loadersLoad > 0 && calcHoursLoad > 0) ? rateLoad * loadersLoad * calcHoursLoad : 0;
+  const selfUnloadGruz = (cityUnload && loadersUnload > 0 && calcHoursUnload > 0) ? rateUnload * loadersUnload * calcHoursUnload : 0;
+
+  const evacSelfLoad = $('evacLoad').checked ? num('evacLoadCostUs') : 0;
+  const evacSelfUnload = $('evacUnload').checked ? num('evacUnloadCostUs') : 0;
+  const evacClientLoad = $('evacLoad').checked ? num('evacLoadCostClient') : 0;
+  const evacClientUnload = $('evacUnload').checked ? num('evacUnloadCostClient') : 0;
+
+  const selfLoad = selfLoadGruz + evacSelfLoad;
+  const selfUnload = selfUnloadGruz + evacSelfUnload;
+
+  const clientLoadInput = num('clientCostLoad');
+  const clientUnloadInput = num('clientCostUnload');
+  const clientLoad = clientLoadInput > 0 ? clientLoadInput : selfLoad;
+  const clientUnload = clientUnloadInput > 0 ? clientUnloadInput : selfUnload;
+
+  const selfTotal = selfLoad + selfUnload;
+  const clientTotal = clientLoad + clientUnload + evacClientLoad + evacClientUnload;
+  const prepayment = clientTotal - selfTotal;
+
+  return {
+    cityLoad, cityUnload, globalLoaders, loadersLoad, loadersUnload,
+    hoursLoad, hoursUnload, calcHoursLoad, calcHoursUnload,
+    rateLoad, rateUnload, selfLoadGruz, selfUnloadGruz,
+    evacSelfLoad, evacSelfUnload, evacClientLoad, evacClientUnload,
+    selfLoad, selfUnload, selfTotal, clientLoad, clientUnload, clientTotal, prepayment
+  };
+}
+
+function calculate() {
+  const v = computeValues();
+  $('rateBrigadierLoad').value = (CITY_DATA[v.cityLoad] && CITY_DATA[v.cityLoad].rateBrigadier) ? CITY_DATA[v.cityLoad].rateBrigadier + ' ₽/ч' : '';
+  $('rateBrigadierUnload').value = (CITY_DATA[v.cityUnload] && CITY_DATA[v.cityUnload].rateBrigadier) ? CITY_DATA[v.cityUnload].rateBrigadier + ' ₽/ч' : '';
+  $('selfCostLoad').value = v.selfLoad ? fmt(v.selfLoad) + ' ₽' : '';
+  $('selfCostUnload').value = v.selfUnload ? fmt(v.selfUnload) + ' ₽' : '';
+  $('outSelfLoad').textContent = v.selfLoad ? fmt(v.selfLoad) + ' ₽' : '—';
+  $('outSelfUnload').textContent = v.selfUnload ? fmt(v.selfUnload) + ' ₽' : '—';
+  $('outSelfTotal').textContent = v.selfTotal ? fmt(v.selfTotal) + ' ₽' : '—';
+  $('outClientLoad').textContent = v.clientLoad ? fmt(v.clientLoad) + ' ₽' : '—';
+  $('outClientUnload').textContent = v.clientUnload ? fmt(v.clientUnload) + ' ₽' : '—';
+  $('outClientEvac').textContent = (v.evacClientLoad + v.evacClientUnload) ? fmt(v.evacClientLoad + v.evacClientUnload) + ' ₽' : '—';
+  $('outClientTotal').textContent = v.clientTotal ? fmt(v.clientTotal) + ' ₽' : '—';
+  $('outPrepay').textContent = v.prepayment > 0 ? fmt(v.prepayment) + ' ₽' : '—';
+  $('outRemainLoad').textContent = v.selfLoad ? fmt(v.selfLoad) + ' ₽' : '—';
+  $('outRemainUnload').textContent = v.selfUnload ? fmt(v.selfUnload) + ' ₽' : '—';
+  $('badgeLoad').textContent = v.cityLoad ? 'заполнено' : 'не заполнено';
+  $('badgeLoad').style.background = v.cityLoad ? '#dcfce7' : 'var(--accent-bg)';
+  $('badgeLoad').style.color = v.cityLoad ? '#166534' : 'var(--text-dim)';
+  $('badgeUnload').textContent = v.cityUnload ? 'заполнено' : 'не заполнено';
+  $('badgeUnload').style.background = v.cityUnload ? '#dcfce7' : 'var(--accent-bg)';
+  $('badgeUnload').style.color = v.cityUnload ? '#166534' : 'var(--text-dim)';
+  saveState();
+}
+
+function buildCalcMessage() {
+  const v = computeValues();
+  const name = $('clientName').value || 'Клиент';
+  const manager = $('manager').value || 'Юлия';
+  const volume = $('volume').value;
+  const paymentMethod = $('paymentMethod').value;
+  const isPrecalc = paymentMethod === 'Предрасчет';
+
+  let msg = name + ', здравствуйте!\n';
+  msg += 'Меня зовут ' + manager + ', компания Pack&Go, мы являемся партнёрами ТК Магистраль.\n\n';
+
+  const hasLoaders = v.loadersLoad > 0 || v.loadersUnload > 0;
+  if (volume || hasLoaders) {
+    msg += 'Дублирую расчёт стоимости грузчиков:\n';
+    msg += 'Детали:\n';
+    if (volume) msg += '• Груз: ' + volume + ' м/3\n';
+    msg += '\n';
+    if (hasLoaders) {
+      if (v.loadersLoad === v.loadersUnload) {
+        msg += 'Расчет на ' + v.loadersLoad + ' ' + humanPlural(v.loadersLoad) + '.\n';
+      } else {
+        msg += 'Расчет на погрузку: ' + v.loadersLoad + ' ' + humanPlural(v.loadersLoad) + '.\n';
+        msg += 'Расчет на выгрузку: ' + v.loadersUnload + ' ' + humanPlural(v.loadersUnload) + '.\n';
+      }
+    }
+  }
+
+  const buildLine = (label, city, clientCost, hours, people) => {
+    const hourly = (clientCost > 0 && hours > 0 && people > 0) ? Math.round(clientCost / hours / people) : 0;
+    if (isPrecalc || people === 0) {
+      return '• ' + label + ' в г. ' + city + ' (' + hours + ' ' + hourPlural(hours) + '): ' + fmt(clientCost) + ' руб.';
+    }
+    return '• ' + label + ' в г. ' + city + ' (' + hours + ' ' + hourPlural(hours) + ' ' + people + ' ' + humanPlural(people) + ') ' + fmt(clientCost) + ' руб'
+      + (hourly ? ' (' + fmt(hourly) + ' ' + pluralRuble(hourly) + ' 1 человек 1 час)' : '');
+  };
+
+  const lines = [];
+  if (v.cityLoad && v.clientLoad > 0) lines.push(buildLine('Погрузка', v.cityLoad, v.clientLoad, v.calcHoursLoad, v.loadersLoad));
+  if ($('evacLoad').checked) lines.push('• Эвакуатор ' + (v.cityLoad || 'погрузка') + ': ' + fmt(v.evacClientLoad) + ' руб.');
+  if (v.cityUnload && v.clientUnload > 0) lines.push(buildLine('Выгрузка', v.cityUnload, v.clientUnload, v.calcHoursUnload, v.loadersUnload));
+  if ($('evacUnload').checked) lines.push('• Эвакуатор ' + (v.cityUnload || 'выгрузка') + ': ' + fmt(v.evacClientUnload) + ' руб.');
+  if (lines.length) msg += lines.join('\n') + '\n\n';
+
+  msg += 'Итоговая стоимость работ: ' + fmt(v.clientTotal) + ' руб.\n';
+  msg += '• Предоплата для назначения грузчиков: ' + fmt(v.prepayment) + ' руб. от итоговой стоимости\n';
+
+  if (isPrecalc) {
+    msg += '\nПо времени погрузки и выгрузки мы самостоятельно информируем грузчиков.\n';
+    msg += 'У нас будет связь и с вашим менеджером по сопровождению, и с водителем.\n';
+    msg += 'Вам об этом беспокоиться не нужно\n\n';
+    msg += 'Как вам наше предложение?';
+    return msg;
+  }
+
+  const remainLines = [];
+  if (v.selfLoadGruz > 0) remainLines.push('Погрузка: ' + fmt(v.selfLoadGruz) + ' руб');
+  if (v.evacSelfLoad > 0) remainLines.push('Погрузка эвакуатор: ' + fmt(v.evacSelfLoad) + ' руб');
+  if (v.selfUnloadGruz > 0) remainLines.push('Выгрузка: ' + fmt(v.selfUnloadGruz) + ' руб');
+  if (v.evacSelfUnload > 0) remainLines.push('Выгрузка эвакуатор: ' + fmt(v.evacSelfUnload) + ' руб');
+
+  msg += '\nПосле внесения предоплаты, остаток по адресам:\n\n';
+  if (remainLines.length) msg += remainLines.join('\n') + '\n';
+
+  if (paymentMethod === 'Оплата по счёту') msg += '\nПредоплату необходимо внести по ссылке\n\n';
+  else msg += '\nПредоплату необходимо внести по следующим реквизитам\n\n';
+
+  if (paymentMethod && REQUISITES[paymentMethod]) msg += REQUISITES[paymentMethod] + '\n\n';
+  else msg += 'Не выбран способ оплаты\n\n';
+
+  msg += 'После внесения, отправьте чек ответным сообщением, пожалуйста\n';
+  msg += '\nРеквизиты для перевода остатка суммы предоставляет менеджер Pack&Go. Грузчикам наличными, либо переводом оплачивать не нужно\n';
+  msg += '\nПо времени погрузки и выгрузки мы самостоятельно информируем грузчиков.\n';
+  msg += 'У нас будет связь и с вашим менеджером по сопровождению, и с водителем.\n';
+  msg += 'Вам об этом беспокоиться не нужно';
+  return msg;
+}
+
+function generateBrigadierRequests() {
+  const payment = $('brPayment').value;
+  let paymentText = 'не указана';
+  if (payment === 'счёт') paymentText = 'по счету';
+  else if (payment === 'нал(перевод)') paymentText = 'нал(перевод)';
+  const cargo = $('brCargo').value;
+  const volume = $('brVolume').value;
+
+  const addrL = $('brAddressLoad').value;
+  const worksL = ['погрузка'];
+  if ($('brWorkLoad2').checked) worksL.push('упаковка');
+  if ($('brWorkLoad3').checked) worksL.push('разборка');
+  const commentL = $('brCommentLoad').value;
+  const partsL = ['Сориентируйте почасовую оплату, пожалуйста.', 'Оплата: ' + paymentText, 'Работы: ' + worksL.join('/')];
+  if (addrL) partsL.push('Адрес: ' + addrL);
+  if (cargo) partsL.push('Груз: ' + cargo);
+  if (volume) partsL.push('Объём: ' + volume + ' м³');
+  if (commentL) partsL.push('Комментарий: ' + commentL);
+  const msgL = partsL.join('\n\n');
+
+  const addrU = $('brAddressUnload').value;
+  const worksU = ['выгрузка'];
+  if ($('brWorkUnload4').checked) worksU.push('сборка');
+  const commentU = $('brCommentUnload').value;
+  const partsU = ['Сориентируйте почасовую оплату, пожалуйста.', 'Оплата: ' + paymentText, 'Работы: ' + worksU.join('/')];
+  if (addrU) partsU.push('Адрес: ' + addrU);
+  if (cargo) partsU.push('Груз: ' + cargo);
+  if (volume) partsU.push('Объём: ' + volume + ' м³');
+  if (commentU) partsU.push('Комментарий: ' + commentU);
+  const msgU = partsU.join('\n\n');
+
+  $('brOutputLoad').textContent = msgL;
+  $('brOutputUnload').textContent = msgU;
+  $('brOutputBoth').textContent = msgL + '\n\n———\n\n' + msgU;
+  saveState();
+}
+
+function fillPdfTemplate() {
+  const v = computeValues();
+  const name = $('clientName').value || 'Клиент';
+  const manager = $('manager').value || 'Юлия';
+  const volume = $('volume').value;
+  const paymentMethod = $('paymentMethod').value;
+  const isPrecalc = paymentMethod === 'Предрасчет';
+
+  $('pdfTitle').textContent = isPrecalc ? 'Предварительный расчёт' : 'Коммерческое предложение';
+  $('pdfDate').textContent = new Date().toLocaleDateString('ru-RU');
+  $('pdfManager').textContent = manager;
+  $('pdfClientName').textContent = name;
+  $('pdfVolume').textContent = volume ? volume + ' м³' : '—';
+
+  const rows = [];
+  const mkRow = (label, city, cost, hours, people) => {
+    const hourly = (cost > 0 && hours > 0 && people > 0) ? Math.round(cost / hours / people) : 0;
+    let hoursStr = hours + ' ч';
+    if (people > 0) hoursStr += ' × ' + people + ' чел';
+    let priceStr = fmt(cost) + ' ₽';
+    if (!isPrecalc && hourly > 0) priceStr += '<br><span class="pdf-small">' + fmt(hourly) + ' ₽/чел/ч</span>';
+    return { name: label + ', г. ' + city, hours: hoursStr, price: priceStr };
+  };
+
+  if (v.cityLoad && v.clientLoad > 0) rows.push(mkRow('Погрузка', v.cityLoad, v.clientLoad, v.calcHoursLoad, v.loadersLoad));
+  if ($('evacLoad').checked && v.evacClientLoad > 0) rows.push({ name: 'Эвакуатор, ' + (v.cityLoad || 'погрузка'), hours: '—', price: fmt(v.evacClientLoad) + ' ₽' });
+  if (v.cityUnload && v.clientUnload > 0) rows.push(mkRow('Выгрузка', v.cityUnload, v.clientUnload, v.calcHoursUnload, v.loadersUnload));
+  if ($('evacUnload').checked && v.evacClientUnload > 0) rows.push({ name: 'Эвакуатор, ' + (v.cityUnload || 'выгрузка'), hours: '—', price: fmt(v.evacClientUnload) + ' ₽' });
+
+  $('pdfServiceRows').innerHTML = rows.length ? rows.map(r => `<tr><td>${r.name}</td><td>${r.hours}</td><td class="num">${r.price}</td></tr>`).join('') : '<tr><td colspan="3" style="text-align:center;color:#9ca3af;padding:20px;">Услуги не выбраны</td></tr>';
+  $('pdfTotal').textContent = fmt(v.clientTotal) + ' ₽';
+  $('pdfPrepay').textContent = fmt(v.prepayment) + ' ₽';
+  $('pdfRemainBlock').style.display = isPrecalc ? 'none' : 'block';
+  $('pdfPaymentBlock').style.display = isPrecalc ? 'none' : 'block';
+
+  const rem = [];
+  if (v.selfLoadGruz > 0) rem.push('Погрузка: ' + fmt(v.selfLoadGruz) + ' ₽');
+  if (v.evacSelfLoad > 0) rem.push('Погрузка эвакуатор: ' + fmt(v.evacSelfLoad) + ' ₽');
+  if (v.selfUnloadGruz > 0) rem.push('Выгрузка: ' + fmt(v.selfUnloadGruz) + ' ₽');
+  if (v.evacSelfUnload > 0) rem.push('Выгрузка эвакуатор: ' + fmt(v.evacSelfUnload) + ' ₽');
+  $('pdfRemainLines').innerHTML = rem.length ? rem.map(l => `<p>${l}</p>`).join('') : '<p style="color:#9ca3af;">—</p>';
+
+  if (paymentMethod === 'Оплата по счёту') $('pdfPaymentText').textContent = 'Предоплату необходимо внести по ссылке.';
+  else if (paymentMethod === 'Оплата по самозанятости') $('pdfPaymentText').textContent = 'Предоплату необходимо внести по следующим реквизитам.';
+  else if (isPrecalc) $('pdfPaymentText').textContent = '';
+  else $('pdfPaymentText').textContent = 'Способ оплаты не выбран.';
+  $('pdfRequisites').textContent = (paymentMethod && REQUISITES[paymentMethod]) ? REQUISITES[paymentMethod] : '';
+}
+
+function downloadPdf() {
+  const text = $('messageOutput').textContent;
+  if (!text || text.length < 20) { alert('Сначала заполните данные и сформируйте сообщение'); return; }
+  fillPdfTemplate();
+  setTimeout(() => window.print(), 100);
+}
+
+function generateMessage() {
+  try { calculate(); $('messageOutput').textContent = buildCalcMessage(); }
+  catch (e) { console.error(e); $('messageOutput').textContent = 'Ошибка: ' + e.message; }
+}
+function manualGenerate() { generateMessage(); }
+
+function copyText(text, emptyMsg) {
+  if (!text || text.length < 20) { alert(emptyMsg || 'Сначала заполните данные'); return; }
+  navigator.clipboard.writeText(text).then(() => alert('Текст скопирован'))
+    .catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      alert('Текст скопирован');
+    });
+}
+function copyMessage() {
+  const text = $('messageOutput').textContent;
+  if (!text || text.length < 20) { alert('Сообщение ещё не сформировано'); return; }
+  logCalculation();
+  copyText(text, 'Сообщение ещё не сформировано');
+}
+function copyBrLoad() { copyText($('brOutputLoad').textContent, 'Заявка ещё не сформирована'); }
+function copyBrUnload() { copyText($('brOutputUnload').textContent, 'Заявка ещё не сформирована'); }
+function copyBrBoth() { copyText($('brOutputBoth').textContent, 'Заявки ещё не сформированы'); }
+
+function updateConditionalBlocks() {
+  $('evacLoadBlock').style.display = $('evacLoad').checked ? 'block' : 'none';
+  $('evacUnloadBlock').style.display = $('evacUnload').checked ? 'block' : 'none';
+  $('loadersLoadBlock').style.display = $('loadersLoadOverride').checked ? 'block' : 'none';
+  $('loadersUnloadBlock').style.display = $('loadersUnloadOverride').checked ? 'block' : 'none';
+}
+
+function collectDetails(v) {
+  return {
+    volume: $('volume').value,
+    loadersGlobal: v.globalLoaders,
+    loadersLoad: v.loadersLoad,
+    loadersUnload: v.loadersUnload,
+    hoursLoad: $('hoursLoad').value,
+    hoursUnload: $('hoursUnload').value,
+    calcHoursLoad: v.calcHoursLoad,
+    calcHoursUnload: v.calcHoursUnload,
+    rateLoad: v.rateLoad,
+    rateUnload: v.rateUnload,
+    clientHourlyLoad: num('clientHourlyLoad'),
+    clientHourlyUnload: num('clientHourlyUnload'),
+    evacLoad: $('evacLoad').checked,
+    evacUnload: $('evacUnload').checked,
+    evacLoadCostUs: num('evacLoadCostUs'),
+    evacLoadCostClient: num('evacLoadCostClient'),
+    evacUnloadCostUs: num('evacUnloadCostUs'),
+    evacUnloadCostClient: num('evacUnloadCostClient'),
+    clientCostLoad: num('clientCostLoad'),
+    clientCostUnload: num('clientCostUnload'),
+    selfLoadGruz: v.selfLoadGruz,
+    selfUnloadGruz: v.selfUnloadGruz,
+    paymentMethod: $('paymentMethod').value
+  };
+}
+
+const STATS_KEY = 'packgo_stats_v3';
+
+function getTs(entry) {
+  const t = entry.ts;
+  if (t === null || t === undefined || t === '') return 0;
+  if (typeof t === 'number') {
+    if (t > 1e12) return t;
+    if (t > 1e9) return t * 1000;
+    if (t > 25569) return Math.round((t - 25569) * 86400 * 1000);
+    return 0;
+  }
+  if (typeof t === 'string') {
+    if (t.startsWith('ts:')) return parseInt(t.slice(3), 10) || 0;
+    const m = t.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
+    if (m) return new Date(parseInt(m[3],10), parseInt(m[2],10)-1, parseInt(m[1],10), parseInt(m[4]||0,10), parseInt(m[5]||0,10), parseInt(m[6]||0,10)).getTime();
+    const parsed = Date.parse(t);
+    if (!isNaN(parsed)) return parsed;
+    const n = parseInt(t, 10);
+    if (!isNaN(n) && n > 1e9) return n > 1e12 ? n : n * 1000;
+  }
+  return 0;
+}
+
+function logCalculation() {
+  try {
+    const v = computeValues();
+    const manager = $('manager').value || 'Юлия';
+    const clientName = $('clientName').value || 'Без имени';
+    if (!v.clientTotal) return;
+    const paymentMethod = $('paymentMethod').value;
+    const entry = {
+      ts: Date.now(), manager, clientName,
+      clientTotal: v.clientTotal, selfTotal: v.selfTotal,
+      margin: v.clientTotal - v.selfTotal,
+      cityLoad: v.cityLoad || '', cityUnload: v.cityUnload || '',
+      loaders: v.globalLoaders || 0,
+      isPrecalc: paymentMethod === 'Предрасчет',
+      details: collectDetails(v)
+    };
+    const arr = JSON.parse(localStorage.getItem(STATS_KEY) || '[]');
+    arr.unshift(entry); if (arr.length > 500) arr.length = 500;
+    localStorage.setItem(STATS_KEY, JSON.stringify(arr));
+    STATS_CACHE.unshift(entry);
+    sendToGoogle(entry);
+  } catch (e) { console.error('Ошибка логирования', e); }
+}
+async function sendToGoogle(entry) {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) return;
+  try {
+    await fetchWithRetry(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(entry),
+      redirect: 'follow'
+    });
+  } catch (e) { console.warn('Не удалось отправить статистику:', e.message); }
+}
+async function loadStatsFromServer() {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) return false;
+  try {
+    const url = APPS_SCRIPT_URL + (APPS_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now();
+    const r = await fetchWithRetry(url, { redirect: 'follow' });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    if (Array.isArray(data.stats)) { STATS_CACHE = data.stats; STATS_SOURCE = 'cloud'; }
+    if (Array.isArray(data.feedback)) { FEEDBACK_CACHE = data.feedback; }
+    return true;
+  } catch (e) { console.warn('Не удалось загрузить статистику:', e.message); }
+  STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]');
+  STATS_SOURCE = 'local';
+  return false;
+}
+async function refreshStats(silent) {
+  if (!silent) { $('dashStatusDot').className = 'dash-status-dot'; $('dashStatusText').textContent = 'Обновление…'; }
+  await loadStatsFromServer();
+  updateDashStatus(); renderDashboard();
+}
+function updateDashStatus() {
+  const dot = $('dashStatusDot'), txt = $('dashStatusText');
+  if (STATS_SOURCE === 'cloud') { dot.className = 'dash-status-dot'; txt.textContent = 'Данные из Google Таблицы · ' + STATS_CACHE.length + ' записей'; }
+  else { dot.className = 'dash-status-dot offline'; txt.textContent = 'Google недоступен — локальные данные (' + STATS_CACHE.length + ' записей)'; }
+}
+let dashboardFilter = 'all';
+let dashboardRange = 'month';
+let dashboardTypeFilter = 'final';
+function setDashboardFilter(f) {
+  dashboardFilter = f;
+  document.querySelectorAll('.dash-filter[data-filter]').forEach(el => el.classList.toggle('active', el.dataset.filter === f));
+  renderDashboard();
+}
+function setDashboardRange(r) {
+  dashboardRange = r;
+  document.querySelectorAll('.dash-filter[data-range]').forEach(el => el.classList.toggle('active', el.dataset.range === r));
+  renderDashboard();
+}
+function setDashboardTypeFilter(t) {
+  dashboardTypeFilter = t;
+  document.querySelectorAll('.dash-filter[data-type]').forEach(el => el.classList.toggle('active', el.dataset.type === t));
+  renderDashboard();
+}
+function isPrecalcEntry(e) {
+  if (e.isPrecalc === true) return true;
+  if (e.details && e.details.paymentMethod === 'Предрасчет') return true;
+  return false;
+}
+function filterByType(data, type) {
+  if (type === 'all') return data;
+  return data.filter(e => {
+    const p = isPrecalcEntry(e);
+    return type === 'precalc' ? p : !p;
+  });
+}
+function filterByRange(data, range) {
+  if (range === 'all') return data;
+  const now = new Date(); now.setHours(0, 0, 0, 0);
+  const startOfToday = now.getTime();
+  let threshold = 0;
+  if (range === 'today') threshold = startOfToday;
+  else if (range === 'week') threshold = startOfToday - 6 * 24 * 3600 * 1000;
+  else if (range === 'month') threshold = startOfToday - 29 * 24 * 3600 * 1000;
+  return data.filter(e => { const t = getTs(e); return t > 0 && t >= threshold; });
+}
+function renderDashboard() {
+  const all = STATS_CACHE;
+  const byManager = dashboardFilter === 'all' ? all : all.filter(e => e.manager === dashboardFilter);
+  const byType = filterByType(byManager, dashboardTypeFilter);
+  const filtered = filterByRange(byType, dashboardRange);
+  const count = filtered.length;
+  const sumClient = filtered.reduce((s, e) => s + e.clientTotal, 0);
+  const sumMargin = filtered.reduce((s, e) => s + e.margin, 0);
+  const avg = count ? Math.round(sumClient / count) : 0;
+  $('kpiCount').textContent = count;
+  $('kpiSum').textContent = sumClient ? fmt(sumClient) + ' ₽' : '0 ₽';
+  $('kpiAvg').textContent = avg ? fmt(avg) + ' ₽' : '0 ₽';
+  $('kpiMargin').textContent = sumMargin ? fmt(sumMargin) + ' ₽' : '0 ₽';
+  renderDayChart(filtered);
+  renderManagerCompare(filterByRange(filterByType(all, dashboardTypeFilter), dashboardRange));
+  renderRecentTable(filtered);
+  updateDashStatus();
+}
+function renderDayChart(data) {
+  const days = [];
+  const now = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now); d.setDate(d.getDate() - i); d.setHours(0, 0, 0, 0);
+    const next = new Date(d); next.setDate(next.getDate() + 1);
+    const items = data.filter(e => { const t = getTs(e); return t >= d.getTime() && t < next.getTime(); });
+    days.push({ label: d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }), count: items.length });
+  }
+  const maxCount = Math.max(...days.map(d => d.count), 1);
+  if (data.length === 0) { $('dayChart').innerHTML = '<div class="chart-empty">Пока нет данных за выбранный период</div>'; return; }
+  $('dayChart').innerHTML = '<div class="chart-wrap">' + days.map(d => {
+    const h = d.count === 0 ? 4 : Math.max(8, (d.count / maxCount) * 100);
+    return `<div class="chart-bar-col"><div class="chart-bar" style="height:${h}%;">${d.count > 0 ? `<span class="chart-count">${d.count}</span>` : ''}</div><div class="chart-label">${d.label}</div></div>`;
+  }).join('') + '</div>';
+}
+function renderManagerCompare(all) {
+  const managers = ['Юлия', 'Александр'];
+  const stats = managers.map(m => {
+    const items = all.filter(e => e.manager === m);
+    return { name: m, count: items.length, total: items.reduce((s, e) => s + e.clientTotal, 0), margin: items.reduce((s, e) => s + e.margin, 0) };
+  });
+  const maxTotal = Math.max(...stats.map(s => s.total), 1);
+  if (all.length === 0) { $('managerCompare').innerHTML = '<div class="chart-empty">Пока нет данных</div>'; return; }
+  $('managerCompare').innerHTML = stats.map(s => {
+    const widthPct = s.total ? Math.max(8, (s.total / maxTotal) * 100) : 0;
+    const cls = s.name === 'Юлия' ? 'julia' : 'alexander';
+    return `<div class="manager-bar-row"><div class="manager-bar-header"><span class="manager-bar-name">${s.name}</span><span class="manager-bar-stats">${s.count} расчётов · ${fmt(s.total) || '0'} ₽ · маржа ${fmt(s.margin) || '0'} ₽</span></div><div class="manager-bar-track"><div class="manager-bar-fill ${cls}" style="width:${widthPct}%;">${s.total ? fmt(s.total) + ' ₽' : ''}</div></div></div>`;
+  }).join('');
+}
+function renderRecentTable(data) {
+  if (data.length === 0) { $('recentTableWrap').innerHTML = '<div class="empty-state">Пока нет расчётов за выбранный период.</div>'; return; }
+  const rows = data.slice(0, 30).map((e, idx) => {
+    const t = getTs(e);
+    const date = t ? new Date(t) : new Date();
+    const dateStr = t
+      ? date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }) + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+      : '— (дата не сохранена)';
+    const cls = e.manager === 'Юлия' ? 'julia' : 'alexander';
+    const route = [e.cityLoad, e.cityUnload].filter(Boolean).join(' → ') || '—';
+    const hasDetails = !!e.details;
+    const eyeBtn = hasDetails ? `<button class="btn-icon" onclick="showDetails(${idx})" title="Показать детали">👁</button>` : '<span style="color: var(--text-faint);">—</span>';
+    const isP = isPrecalcEntry(e);
+    const typeBadge = isP ? '<span class="type-pill precalc">Предрасчёт</span>' : '<span class="type-pill final">Итоговый</span>';
+    return `<tr><td>${dateStr}</td><td><span class="manager-pill ${cls}">${e.manager}</span></td><td>${e.clientName} ${typeBadge}</td><td>${route}</td><td style="font-weight:600;">${fmt(e.clientTotal)} ₽</td><td style="color:#2f855a;font-weight:600;">${fmt(e.margin)} ₽</td><td style="text-align:center;">${eyeBtn}</td></tr>`;
+  }).join('');
+  $('recentTableWrap').innerHTML = `<table class="stats-table"><thead><tr><th>Дата</th><th>Менеджер</th><th>Клиент</th><th>Маршрут</th><th>Сумма</th><th>Маржа</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  window.__currentTableData = data.slice(0, 30);
+}
+function showDetails(idx) {
+  const e = window.__currentTableData[idx];
+  if (!e || !e.details) { alert('Детали этого расчёта недоступны'); return; }
+  const d = e.details;
+  const t = getTs(e);
+  const dateStr = t ? new Date(t).toLocaleString('ru-RU') : '—';
+  const item = (label, val) => (val !== '' && val !== null && val !== undefined && val !== 0 && val !== false) ? `<div class="modal-detail-item"><b>${label}</b>${val}</div>` : '';
+  let html = '<div class="modal-detail-grid">';
+  html += item('Менеджер', e.manager);
+  html += item('Дата', dateStr);
+  html += item('Клиент', e.clientName);
+  html += item('Тип', isPrecalcEntry(e) ? 'Предрасчёт' : 'Итоговый');
+  html += item('Объём', d.volume ? d.volume + ' м³' : '');
+  html += '</div>';
+  html += '<div class="modal-section-title">Грузчики</div><div class="modal-detail-grid">';
+  html += item('Общее количество', d.loadersGlobal);
+  html += item('На погрузке', d.loadersLoad);
+  html += item('На выгрузке', d.loadersUnload);
+  html += '</div>';
+  html += '<div class="modal-section-title">Погрузка</div><div class="modal-detail-grid">';
+  html += item('Город', e.cityLoad);
+  html += item('Часов', d.calcHoursLoad);
+  html += item('Ставка бригадира', d.rateLoad ? d.rateLoad + ' ₽/ч' : '');
+  html += item('Себестоимость грузчиков', d.selfLoadGruz ? fmt(d.selfLoadGruz) + ' ₽' : '');
+  html += item('Стоимость для клиента', d.clientCostLoad ? fmt(d.clientCostLoad) + ' ₽' : '');
+  html += item('Часовая для клиента', d.clientHourlyLoad ? fmt(d.clientHourlyLoad) + ' ₽/ч/чел' : '');
+  html += '</div>';
+  if (d.evacLoad) {
+    html += '<div class="modal-section-title">Эвакуатор на погрузке</div><div class="modal-detail-grid">';
+    html += item('Себестоимость', d.evacLoadCostUs ? fmt(d.evacLoadCostUs) + ' ₽' : '');
+    html += item('Для клиента', d.evacLoadCostClient ? fmt(d.evacLoadCostClient) + ' ₽' : '');
+    html += '</div>';
+  }
+  html += '<div class="modal-section-title">Выгрузка</div><div class="modal-detail-grid">';
+  html += item('Город', e.cityUnload);
+  html += item('Часов', d.calcHoursUnload);
+  html += item('Ставка бригадира', d.rateUnload ? d.rateUnload + ' ₽/ч' : '');
+  html += item('Себестоимость грузчиков', d.selfUnloadGruz ? fmt(d.selfUnloadGruz) + ' ₽' : '');
+  html += item('Стоимость для клиента', d.clientCostUnload ? fmt(d.clientCostUnload) + ' ₽' : '');
+  html += item('Часовая для клиента', d.clientHourlyUnload ? fmt(d.clientHourlyUnload) + ' ₽/ч/чел' : '');
+  html += '</div>';
+  if (d.evacUnload) {
+    html += '<div class="modal-section-title">Эвакуатор на выгрузке</div><div class="modal-detail-grid">';
+    html += item('Себестоимость', d.evacUnloadCostUs ? fmt(d.evacUnloadCostUs) + ' ₽' : '');
+    html += item('Для клиента', d.evacUnloadCostClient ? fmt(d.evacUnloadCostClient) + ' ₽' : '');
+    html += '</div>';
+  }
+  html += '<div class="modal-section-title">Итого</div><div class="modal-detail-grid">';
+  html += item('Себестоимость', fmt(e.selfTotal) + ' ₽');
+  html += item('Стоимость для клиента', fmt(e.clientTotal) + ' ₽');
+  html += item('Маржа', fmt(e.margin) + ' ₽');
+  html += item('Способ оплаты', d.paymentMethod);
+  html += '</div>';
+  $('detailModalBody').innerHTML = html;
+  $('detailModal').classList.add('open');
+}
+function closeDetailModal() { $('detailModal').classList.remove('open'); }
+document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target.id === 'detailModal') closeDetailModal(); });
+
+// ★ Обратная связь (с retry)
+async function submitFeedback() {
+  const request = $('fbRequest').value.trim();
+  const example = $('fbExample').value.trim();
+  if (!request) { alert('Введите запрос'); return; }
+  const manager = $('manager').value || 'Неизвестно';
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) { alert('URL не задан'); return; }
+  try {
+    const r = await fetchWithRetry(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify({ type: 'feedback', ts: Date.now(), manager, request, example }),
+      redirect: 'follow'
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    $('fbRequest').value = '';
+    $('fbExample').value = '';
+    alert('Запрос отправлен!');
+    await refreshFeedback();
+  } catch (e) { alert('Ошибка: ' + e.message); }
+}
+async function refreshFeedback() {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) {
+    $('fbListWrap').innerHTML = '<div class="empty-state">URL Apps Script не задан</div>'; return;
+  }
+  try {
+    const url = APPS_SCRIPT_URL + (APPS_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now();
+    const r = await fetchWithRetry(url, { redirect: 'follow' });
+    const data = await r.json();
+    if (Array.isArray(data.feedback)) { FEEDBACK_CACHE = data.feedback; renderFeedback(); }
+  } catch (e) { console.warn('Ошибка загрузки обратной связи:', e); }
+}
+function renderFeedback() {
+  $('fbCount').textContent = FEEDBACK_CACHE.length;
+  if (FEEDBACK_CACHE.length === 0) {
+    $('fbListWrap').innerHTML = '<div class="empty-state">Пока нет запросов. Станьте первым!</div>';
+    return;
+  }
+  const sorted = FEEDBACK_CACHE.map((fb, i) => ({...fb, _idx: i})).sort((a, b) => b.ts - a.ts);
+  const html = sorted.map(fb => {
+    const dateStr = fb.ts ? new Date(fb.ts).toLocaleString('ru-RU') : '—';
+    const statusClass = fb.status === '✓' ? 'fb-done'
+      : fb.status === '🕐' ? 'fb-progress'
+      : fb.status === '❓' ? 'fb-unclear'
+      : fb.status === '✗' ? 'fb-cancel' : '';
+    return `<div class="fb-item ${statusClass}">
+      <div class="fb-header"><span>${dateStr}</span><span>${fb.manager || ''}</span></div>
+      <div class="fb-request">${escapeHtml(fb.request)}</div>
+      ${fb.example ? `<div class="fb-example"><b>Пример:</b> ${escapeHtml(fb.example)}</div>` : ''}
+      <div class="fb-status-row">
+        <button class="fb-status-btn ${fb.status === '✓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✓')" title="Сделано">✓</button>
+        <button class="fb-status-btn ${fb.status === '🕐' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '🕐')" title="В работе">🕐</button>
+        <button class="fb-status-btn ${fb.status === '❓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '❓')" title="Непонятно">❓</button>
+        <button class="fb-status-btn ${fb.status === '✗' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✗')" title="Не будет">✗</button>
+        <button class="fb-status-btn" onclick="setFbStatus(${fb._idx}, '')" title="Сбросить">—</button>
+      </div>
+    </div>`;
+  }).join('');
+  $('fbListWrap').innerHTML = html;
+}
+async function setFbStatus(idx, status) {
+  const fb = FEEDBACK_CACHE[idx];
+  if (!fb) return;
+  try {
+    const r = await fetchWithRetry(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify({ type: 'feedback_status', ts: 'ts:' + fb.ts, status }),
+      redirect: 'follow'
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    fb.status = status;
+    renderFeedback();
+  } catch (e) { alert('Ошибка: ' + e.message); }
+}
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function runDiagnostics() {
+  console.clear();
+  console.log('=== ДИАГНОСТИКА ===');
+  console.log('STATS_CACHE:', STATS_CACHE.length);
+  console.log('FEEDBACK_CACHE:', FEEDBACK_CACHE.length);
+  console.log('Источник:', STATS_SOURCE);
+  if (STATS_CACHE.length) {
+    STATS_CACHE.slice(0, 3).forEach((e, i) => {
+      console.log(`#${i+1} ts=${e.ts} → ${getTs(e)} (${getTs(e) ? new Date(getTs(e)) : '❌'}) precalc=${isPrecalcEntry(e)}`);
+    });
+    ['today','week','month','all'].forEach(r => {
+      console.log(`Период "${r}" (итоговые):`, filterByRange(filterByType(STATS_CACHE, 'final'), r).length);
+    });
+  }
+}
+
+async function loadFromGoogleSheets() {
+  const status = $('gsStatus');
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) {
+    status.className = 'status err'; status.textContent = '⚠ URL не задан.'; return;
+  }
+  status.className = 'status info'; status.textContent = 'Загрузка данных из Google…';
+  try {
+    const url = APPS_SCRIPT_URL + (APPS_SCRIPT_URL.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now();
+    const response = await fetchWithRetry(url, { redirect: 'follow' });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+    if (!data.cities || !data.requisites) throw new Error('Неверный формат ответа');
+    CITY_DATA = data.cities; REQUISITES = data.requisites;
+    if (Array.isArray(data.stats)) { STATS_CACHE = data.stats; STATS_SOURCE = 'cloud'; }
+    else { STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]'); STATS_SOURCE = 'local'; }
+    if (Array.isArray(data.feedback)) { FEEDBACK_CACHE = data.feedback; }
+    fillCityDatalist(); calculate(); generateMessage(); renderFeedback();
+    status.className = 'status ok';
+    status.textContent = '✓ Данные загружены: ' + Object.keys(CITY_DATA).length + ' городов, статистика — ' + STATS_CACHE.length + ', обратная связь — ' + FEEDBACK_CACHE.length + '.'
+      + (data.version ? ' (Apps Script: ' + data.version + ')' : '');
+    updateDashStatus(); renderDashboard();
+  } catch (e) {
+    status.className = 'status err';
+    status.textContent = 'Ошибка загрузки: ' + e.message + '. Нажмите «Загрузить данные заново» — обычно помогает со второго раза.';
+    STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]'); STATS_SOURCE = 'local';
+    updateDashStatus(); renderDashboard();
+    console.error(e);
+  }
+}
+async function testConnection() {
+  const out = $('gsStatus');
+  out.className = 'status info'; out.textContent = 'Проверка соединения…';
+  const info = [];
+  info.push('URL: ' + APPS_SCRIPT_URL);
+  const t0 = Date.now();
+  try {
+    const r = await fetchWithRetry(APPS_SCRIPT_URL + '?t=' + Date.now(), { redirect: 'follow' });
+    info.push('HTTP: ' + r.status + ' (за ' + (Date.now() - t0) + ' мс, с учётом retry)');
+    if (r.ok) {
+      const data = await r.json();
+      if (data.error) info.push('❌ ' + data.error);
+      else {
+        info.push('✓ Городов: ' + Object.keys(data.cities || {}).length);
+        info.push('✓ Реквизитов: ' + Object.keys(data.requisites || {}).length);
+        info.push('✓ Статистики: ' + (data.stats || []).length);
+        info.push('✓ Обратной связи: ' + (data.feedback || []).length);
+        if (data.version) info.push('Apps Script: ' + data.version);
+      }
+    }
+  } catch (e) { info.push('❌ ' + e.message + ' (после всех попыток)'); }
+  out.innerHTML = info.join('<br>');
+}
+function resetToDefaults() {
+  CITY_DATA = JSON.parse(JSON.stringify(DEFAULT_CITY_DATA));
+  REQUISITES = JSON.parse(JSON.stringify(DEFAULT_REQUISITES));
+  fillCityDatalist(); calculate(); generateMessage();
+  $('gsStatus').className = 'status info'; $('gsStatus').textContent = 'Используются встроенные данные.';
+}
+
+const STORAGE_KEY = 'packgo_calc_state_v111';
+const FIELD_IDS = [
+  'manager','clientName','volume','loaders',
+  'cityLoad','hoursLoad','rateBrigadierManualLoad','selfCostLoad','clientCostLoad','clientHourlyLoad',
+  'loadersLoadOverride','loadersLoad','evacLoad','evacLoadCostUs','evacLoadCostClient',
+  'cityUnload','hoursUnload','rateBrigadierManualUnload','selfCostUnload','clientCostUnload','clientHourlyUnload',
+  'loadersUnloadOverride','loadersUnload','evacUnload','evacUnloadCostUs','evacUnloadCostClient',
+  'paymentMethod',
+  'brPayment','brCargo','brVolume',
+  'brAddressLoad','brWorkLoad2','brWorkLoad3','brCommentLoad',
+  'brAddressUnload','brWorkUnload4','brCommentUnload'
+];
+function saveState() {
+  const state = {};
+  FIELD_IDS.forEach(id => { const el = $(id); if (!el) return; state[id] = el.type === 'checkbox' ? el.checked : el.value; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY); if (!raw) return;
+    const state = JSON.parse(raw);
+    Object.keys(state).forEach(id => {
+      const el = $(id); if (!el) return;
+      if (el.type === 'checkbox') el.checked = state[id]; else el.value = state[id];
+    });
+  } catch(e) {}
+}
+function clearAll() {
+  if (!confirm('Очистить все поля?')) return;
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    if (el.id === 'manager') return;
+    if (el.id === 'fbRequest' || el.id === 'fbExample') return;
+    if (el.type === 'checkbox') el.checked = false; else el.value = '';
+  });
+  $('hoursLoad').value = '2'; $('hoursUnload').value = '2';
+  $('messageOutput').textContent = 'Заполните данные слева — сообщение сформируется автоматически.';
+  $('brOutputLoad').textContent = 'Заполните данные слева…';
+  $('brOutputUnload').textContent = 'Заполните данные слева…';
+  $('brOutputBoth').textContent = 'Заполните данные слева…';
+  localStorage.removeItem(STORAGE_KEY);
+  updateConditionalBlocks(); calculate(); generateMessage();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  loadTheme(); fillCityDatalist(); loadState(); updateConditionalBlocks();
+
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => {
+      if (el.id.startsWith('clientCost') || el.id.startsWith('clientHourly')) return;
+      if (el.id.startsWith('fb')) return;
+      calculate();
+      if (el.closest('#panel-calc')) generateMessage();
+      if (el.closest('#panel-brigadier')) generateBrigadierRequests();
+    });
+    el.addEventListener('change', () => {
+      if (el.id.startsWith('fb')) return;
+      updateConditionalBlocks(); calculate();
+      if (el.closest('#panel-calc')) generateMessage();
+      if (el.closest('#panel-brigadier')) generateBrigadierRequests();
+    });
+    if (el.id === 'cityLoad' || el.id === 'cityUnload') el.addEventListener('blur', () => validateCity(el));
+    if (el.id === 'hoursLoad' || el.id === 'hoursUnload') el.addEventListener('blur', () => validateHours(el));
+  });
+
+  calculate(); generateMessage(); generateBrigadierRequests(); updateDashStatus();
+  await loadFromGoogleSheets();
+});
+</script>
+</body>
+</html>
