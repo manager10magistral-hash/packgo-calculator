@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v11.2.1</title>
+<title>Pack&Go — Калькулятор v12.0</title>
 <style>
 :root {
   --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
@@ -60,10 +60,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial
 .header .version { background: rgba(255,255,255,0.2); color: #fff;
   padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
 .manager-select { display: flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 6px 4px 14px;
-  border: 0; }
+  background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 6px 4px 14px; border: 0; }
 .manager-select label { color: rgba(255,255,255,0.85); font-size: 12px; font-weight: 500; margin: 0; }
-/* ★ Патч 1: агрессивный сброс обводки у селектора менеджера */
 .header .manager-select select {
   background: #fff; border: 0 !important; border-radius: 16px;
   padding: 6px 12px; font-size: 13px; font-weight: 600; color: #1e3a5f;
@@ -72,8 +70,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial
   outline: 0 !important; outline-offset: 0 !important;
   box-shadow: none !important;
   appearance: none; -webkit-appearance: none; -moz-appearance: none;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-focus-ring-color: transparent;
+  -webkit-tap-highlight-color: transparent; -webkit-focus-ring-color: transparent;
 }
 .header .manager-select select:focus,
 .header .manager-select select:focus-visible,
@@ -109,11 +106,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial
   background: var(--accent-bg); color: var(--accent); padding: 3px 8px; border-radius: 20px; }
 .card-title .clear-btn { margin-left: auto; font-size: 11px; font-weight: 500;
   background: transparent; color: var(--text-dim); padding: 3px 10px; border-radius: 20px;
-  border: 1px solid var(--subtle-border); cursor: pointer; font-family: inherit;
-  transition: all 0.2s; }
+  border: 1px solid var(--subtle-border); cursor: pointer; font-family: inherit; transition: all 0.2s; }
 .card-title .clear-btn:hover { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
 body.dark .card-title .clear-btn:hover { background: #7f1d1d; color: #fca5a5; border-color: #7f1d1d; }
-.card-title .clear-btn + .badge { margin-left: 8px; }
 label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
 label .hint-inline { color: var(--text-faint); font-weight: 400; font-size: 12px; }
 input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--input-border);
@@ -125,12 +120,9 @@ input.client-price, textarea.client-price { border-color: var(--client-price-bor
 input.invalid { border-color: #ef4444; background: #fef2f2; }
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .row-2 > div { margin-bottom: 0; }
-.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-.row-3 > div { margin-bottom: 0; }
 .checkbox-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px;
   background: var(--checkbox-bg); border-radius: 8px; border: 1px solid var(--subtle-border); cursor: pointer; }
-.checkbox-row input[type="checkbox"] { width: 18px; height: 18px; margin: 0;
-  accent-color: var(--accent); cursor: pointer; }
+.checkbox-row input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
 .checkbox-row label { margin: 0; font-size: 14px; cursor: pointer; color: var(--text-main); font-weight: 500; }
 .subblock { margin-top: 12px; padding: 14px; background: var(--subblock-bg);
   border-left: 3px solid var(--accent); border-radius: 6px; }
@@ -144,8 +136,7 @@ input.invalid { border-color: #ef4444; background: #fef2f2; }
 .info-line.total .value { color: var(--accent); font-size: 16px; }
 .info-line.highlight .value { color: #2f855a; }
 .info-line.section { background: var(--section-bg); margin: 8px -8px 4px; padding: 6px 8px;
-  border-radius: 4px; border: none; font-weight: 700; font-size: 12px;
-  text-transform: uppercase; color: var(--accent); }
+  border-radius: 4px; border: none; font-weight: 700; font-size: 12px; text-transform: uppercase; color: var(--accent); }
 .info-line.section .label { color: var(--accent); font-weight: 700; }
 .result-box { background: var(--result-bg); border: 1px solid var(--subtle-border); border-radius: 10px;
   padding: 16px; min-height: 240px; white-space: pre-wrap; font-size: 13px;
@@ -180,14 +171,12 @@ ol li { margin-bottom: 8px; }
   background: #dcfce7; color: #166534; text-transform: uppercase; margin-left: auto; }
 .version-tag.archive { background: var(--accent-bg); color: var(--text-dim); }
 .version-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-.version-list li { position: relative; padding-left: 24px; color: var(--text-muted);
-  font-size: 14px; line-height: 1.6; }
+.version-list li { position: relative; padding-left: 24px; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
 .version-list li::before { content: ''; position: absolute; left: 6px; top: 8px;
   width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .version-list li b { color: var(--accent-dark); font-weight: 600; }
 .version-note { margin-top: 14px; padding: 10px 14px; background: var(--client-price-bg);
-  border-left: 3px solid var(--client-price-border); border-radius: 6px;
-  font-size: 13px; color: var(--text-muted); }
+  border-left: 3px solid var(--client-price-border); border-radius: 6px; font-size: 13px; color: var(--text-muted); }
 .legend-note { background: var(--accent-bg); border-left: 4px solid var(--accent);
   padding: 14px 18px; border-radius: 8px; font-size: 13px; color: var(--accent-dark); margin-bottom: 20px; }
 .dash-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
@@ -206,14 +195,11 @@ ol li { margin-bottom: 8px; }
 .dash-status-dot.offline { background: #f59e0b; }
 .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
 @media (max-width: 720px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
-.kpi-card { background: var(--card-bg); border: 1px solid var(--card-border);
-  border-radius: 12px; padding: 18px; }
-.kpi-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase;
-  font-weight: 600; margin-bottom: 8px; }
+.kpi-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 18px; }
+.kpi-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
 .kpi-value { font-size: 24px; font-weight: 700; color: var(--kpi-value); }
 .chart-wrap { display: flex; align-items: flex-end; gap: 10px; height: 220px; padding: 24px 8px 8px; }
-.chart-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center;
-  justify-content: flex-end; height: 100%; }
+.chart-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
 .chart-bar { width: 100%; max-width: 60px; min-height: 4px;
   background: linear-gradient(180deg, var(--chart-bar-2) 0%, var(--chart-bar-1) 100%);
   border-radius: 6px 6px 0 0; position: relative; }
@@ -254,8 +240,7 @@ ol li { margin-bottom: 8px; }
 .modal-content h3 { font-size: 18px; color: var(--accent-dark); margin-bottom: 18px; }
 .modal-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; margin-bottom: 18px; }
 .modal-detail-item { padding: 6px 0; border-bottom: 1px dashed var(--dashed-line); font-size: 13px; }
-.modal-detail-item b { color: var(--accent-dark); display: block; font-size: 11px;
-  text-transform: uppercase; margin-bottom: 2px; }
+.modal-detail-item b { color: var(--accent-dark); display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
 .modal-section-title { font-size: 12px; color: var(--accent); font-weight: 700;
   text-transform: uppercase; margin: 16px 0 10px; padding-bottom: 6px;
   border-bottom: 1px solid var(--subtle-border); }
@@ -280,6 +265,45 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
   font-size: 16px; font-family: inherit; transition: all 0.2s; }
 .fb-status-btn:hover { border-color: var(--accent); }
 .fb-status-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.brig-toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+.brig-toolbar input, .brig-toolbar select { margin-bottom: 0; }
+.brig-toolbar .brig-search { flex: 1; min-width: 200px; }
+.brig-toolbar .brig-select { min-width: 160px; width: auto; }
+.brig-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.brig-table th { text-align: left; padding: 10px 10px; background: var(--table-header-bg);
+  color: var(--text-dim); font-weight: 600; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.04em; border-bottom: 1px solid var(--table-row-border); }
+.brig-table td { padding: 10px 10px; border-bottom: 1px solid var(--table-row-border);
+  color: var(--text-main); vertical-align: top; }
+.brig-table tr:hover td { background: var(--section-bg); }
+.brig-table .brig-city { font-weight: 600; }
+.brig-table .brig-region { font-size: 11px; color: var(--text-dim); }
+.brig-table .brig-stars { color: #f59e0b; letter-spacing: 1px; font-size: 14px; white-space: nowrap; }
+.brig-table .brig-stars .empty { color: var(--text-faint); }
+.brig-table .brig-invoice-yes { color: #2f855a; font-weight: 600; }
+.brig-table .brig-invoice-no { color: var(--text-faint); }
+.brig-table .brig-price { font-family: 'SF Mono', Monaco, monospace; white-space: nowrap; }
+.brig-table .brig-actions { display: flex; gap: 4px; }
+.brig-table .brig-actions button { padding: 4px 8px; border-radius: 6px; border: none;
+  cursor: pointer; font-family: inherit; font-size: 13px; transition: all 0.2s; }
+.brig-table .brig-actions .edit { background: var(--accent-bg); color: var(--accent); }
+.brig-table .brig-actions .edit:hover { background: var(--checkbox-hover); }
+.brig-table .brig-actions .del { background: #fef2f2; color: #991b1b; }
+.brig-table .brig-actions .del:hover { background: #fee2e2; }
+body.dark .brig-table .brig-actions .del { background: #7f1d1d; color: #fca5a5; }
+body.dark .brig-table .brig-actions .del:hover { background: #991b1b; }
+.brig-empty { text-align: center; padding: 30px; color: var(--text-faint); font-size: 13px; }
+.brig-rating-input { display: flex; gap: 4px; align-items: center; }
+.brig-rating-input button { width: 32px; height: 32px; border-radius: 6px;
+  border: 1px solid var(--subtle-border); background: var(--card-bg);
+  color: var(--text-faint); cursor: pointer; font-size: 16px;
+  transition: all 0.15s; font-family: inherit; padding: 0; }
+.brig-rating-input button.active { color: #f59e0b; border-color: #f59e0b; background: #fffbeb; }
+body.dark .brig-rating-input button.active { background: #78350f; }
+.brig-rating-input button:hover { transform: scale(1.05); }
+.brig-card-title { display: flex; align-items: center; gap: 10px; }
+.brig-stat-badge { background: var(--accent-bg); color: var(--accent); font-size: 11px;
+  font-weight: 600; padding: 3px 10px; border-radius: 20px; }
 #pdfTemplate { display: none; }
 .pdf-doc { font-family: 'Segoe UI', Arial, sans-serif; color: #1f2937; font-size: 12px;
   line-height: 1.5; background: #fff; }
@@ -289,8 +313,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
 .pdf-logo-text { font-size: 26px; font-weight: 900; letter-spacing: 0.02em; }
 .pdf-company { text-align: right; font-size: 11px; color: #6b7280; line-height: 1.6; }
 .pdf-title { font-size: 22px; font-weight: 700; color: #1e3a5f; margin-bottom: 20px; }
-.pdf-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px;
-  margin-bottom: 24px; font-size: 12px; }
+.pdf-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; margin-bottom: 24px; font-size: 12px; }
 .pdf-meta-item { padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
 .pdf-meta-item b { color: #1e3a5f; display: inline-block; min-width: 90px; }
 .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 12px; }
@@ -384,13 +407,14 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 11.2.1</div>
+      <div class="version">Версия 12.0</div>
     </div>
   </div>
 
   <div class="tabs">
     <button class="tab active" data-tab="calc">Калькулятор и сообщение</button>
     <button class="tab" data-tab="brigadier">Заявки бригадирам</button>
+    <button class="tab" data-tab="brigadiers">Бригадиры</button>
     <button class="tab" data-tab="dashboard">Дашборд</button>
     <button class="tab" data-tab="feedback">Обратная связь</button>
     <button class="tab" data-tab="changelog">Журнал изменений</button>
@@ -411,7 +435,6 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
             <div><label>Количество грузчиков (общее)</label><input type="number" id="loaders" placeholder="2" min="0"></div>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title">Погрузка <span class="badge" id="badgeLoad">не заполнено</span>
             <button class="clear-btn" onclick="clearLoadBlock()" title="Очистить блок">Очистить</button>
@@ -423,10 +446,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
               <label>Часов на погрузку</label>
               <input type="text" id="hoursLoad" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off">
             </div>
-            <div>
-              <label>Ставка бригадира, ₽/ч</label>
-              <input type="text" id="rateBrigadierLoad" readonly>
-            </div>
+            <div><label>Ставка бригадира, ₽/ч</label><input type="text" id="rateBrigadierLoad" readonly></div>
           </div>
           <label>Ручная ставка бригадира, ₽/ч</label>
           <input type="number" id="rateBrigadierManualLoad" placeholder="Не задано">
@@ -463,7 +483,6 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
             </div>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title">Выгрузка <span class="badge" id="badgeUnload">не заполнено</span>
             <button class="clear-btn" onclick="clearUnloadBlock()" title="Очистить блок">Очистить</button>
@@ -475,10 +494,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
               <label>Часов на выгрузку</label>
               <input type="text" id="hoursUnload" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off">
             </div>
-            <div>
-              <label>Ставка бригадира, ₽/ч</label>
-              <input type="text" id="rateBrigadierUnload" readonly>
-            </div>
+            <div><label>Ставка бригадира, ₽/ч</label><input type="text" id="rateBrigadierUnload" readonly></div>
           </div>
           <label>Ручная ставка бригадира, ₽/ч</label>
           <input type="number" id="rateBrigadierManualUnload" placeholder="Не задано">
@@ -515,7 +531,6 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
             </div>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title">Оплата</div>
           <label>Способ оплаты</label>
@@ -527,7 +542,6 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           </select>
         </div>
       </div>
-
       <div>
         <div class="card">
           <div class="card-title">Сводка для менеджера</div>
@@ -544,7 +558,6 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="info-line"><span class="label">Остаток на погрузке</span><span class="value" id="outRemainLoad">—</span></div>
           <div class="info-line"><span class="label">Остаток на выгрузке</span><span class="value" id="outRemainUnload">—</span></div>
         </div>
-
         <div class="card">
           <div class="card-title">Сообщение для клиента</div>
           <div class="btn-row" style="margin-bottom:14px;">
@@ -558,8 +571,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
       </div>
     </div>
   </div>
-
-  <div class="panel" id="panel-brigadier">
+    <div class="panel" id="panel-brigadier">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Заявки для бригадиров</h2>
     <div class="grid">
       <div>
@@ -579,8 +591,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <label>Адрес погрузки</label>
           <input type="text" id="brAddressLoad" placeholder="Казань, Пушкина 10">
           <div class="row-2">
-            <div>
-              <label>Лифт</label>
+            <div><label>Лифт</label>
               <select id="brElevatorLoad">
                 <option value="">— Не указан —</option>
                 <option value="грузовой">Грузовой</option>
@@ -588,10 +599,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
                 <option value="без лифта">Без лифта</option>
               </select>
             </div>
-            <div>
-              <label>Этаж</label>
-              <input type="text" id="brFloorLoad" list="floorsList" placeholder="Начните вводить номер…" autocomplete="off">
-            </div>
+            <div><label>Этаж</label><input type="text" id="brFloorLoad" list="floorsList" placeholder="Начните вводить номер…" autocomplete="off"></div>
           </div>
           <label>Работы</label>
           <div class="row-2" style="margin-bottom:14px;">
@@ -606,8 +614,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <label>Адрес выгрузки</label>
           <input type="text" id="brAddressUnload" placeholder="Сочи, Морская 1">
           <div class="row-2">
-            <div>
-              <label>Лифт</label>
+            <div><label>Лифт</label>
               <select id="brElevatorUnload">
                 <option value="">— Не указан —</option>
                 <option value="грузовой">Грузовой</option>
@@ -615,10 +622,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
                 <option value="без лифта">Без лифта</option>
               </select>
             </div>
-            <div>
-              <label>Этаж</label>
-              <input type="text" id="brFloorUnload" list="floorsList" placeholder="Начните вводить номер…" autocomplete="off">
-            </div>
+            <div><label>Этаж</label><input type="text" id="brFloorUnload" list="floorsList" placeholder="Начните вводить номер…" autocomplete="off"></div>
           </div>
           <label>Работы</label>
           <label class="checkbox-row" style="padding:8px 10px; margin-bottom:14px; max-width:200px;"><input type="checkbox" id="brWorkUnload4"> сборка</label>
@@ -646,6 +650,42 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-brigadiers">
+    <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Бригадиры и подрядчики</h2>
+    <div class="card">
+      <div class="card-title brig-card-title">
+        <span>Список подрядчиков</span>
+        <span class="brig-stat-badge" id="brigStatsBadge">0 записей</span>
+        <button class="btn btn-primary" style="margin-left:auto; padding:7px 14px; font-size:13px;" onclick="openBrigadierModal()">+ Добавить</button>
+        <button class="btn btn-secondary" style="padding:7px 14px; font-size:13px;" onclick="refreshBrigadiers()">Обновить</button>
+      </div>
+      <div class="brig-toolbar">
+        <input type="text" class="brig-search" id="brigSearch" placeholder="🔍 Поиск по имени, телефону, городу…" oninput="renderBrigadiers()">
+        <select class="brig-select" id="brigFilterRegion" onchange="renderBrigadiers()">
+          <option value="">Все регионы</option>
+        </select>
+        <select class="brig-select" id="brigFilterCity" onchange="renderBrigadiers()">
+          <option value="">Все города</option>
+        </select>
+        <select class="brig-select" id="brigFilterInvoice" onchange="renderBrigadiers()">
+          <option value="">Все / по счёту</option>
+          <option value="yes">Работает по счёту</option>
+          <option value="no">Не работает по счёту</option>
+        </select>
+        <select class="brig-select" id="brigFilterRating" onchange="renderBrigadiers()">
+          <option value="">Любая оценка</option>
+          <option value="5">5 звёзд</option>
+          <option value="4">4+ звёзд</option>
+          <option value="3">3+ звёзд</option>
+          <option value="2">2+ звёзд</option>
+          <option value="1">1+ звезда</option>
+        </select>
+        <button class="btn btn-secondary" style="padding:7px 14px; font-size:13px;" onclick="resetBrigFilters()">Сбросить</button>
+      </div>
+      <div id="brigListWrap"><div class="brig-empty">Загрузка…</div></div>
     </div>
   </div>
 
@@ -717,20 +757,31 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
 
   <div class="panel" id="panel-changelog">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
-    <div class="legend-note">Текущая версия — <b>11.2.1</b>.</div>
+    <div class="legend-note">Текущая версия — <b>12.0</b>.</div>
     <div class="changelog">
-
       <div class="version-card current">
         <div class="version-header">
-          <div class="version-number">Версия 11.2.1</div>
-          <div class="version-title">Багфикс: обводка, этажи, лимит дашборда</div>
+          <div class="version-number">Версия 12.0</div>
+          <div class="version-title">Раздел «Бригадиры» с фильтрами и редактированием</div>
           <div class="version-tag">Текущая</div>
         </div>
         <ul class="version-list">
-          <li>Полностью убрана кривая обводка вокруг селектора менеджера — добавлен агрессивный сброс <code>:focus-visible</code> и <code>-webkit-focus-ring-color</code>.</li>
-          <li>Поля «Этаж» в заявках бригадирам теперь с автодополнением от 1 до 100 — как у городов. Начните печатать номер, и список отфильтруется.</li>
-          <li>Дашборд хранит и показывает только <b>20 последних</b> расчётов. В Google Таблице при этом сохраняется вся история.</li>
+          <li>Новая вкладка <b>«Бригадиры»</b> — учёт подрядчиков и бригадиров по городам и регионам.</li>
+          <li>Фильтры: поиск по имени/телефону/городу, регион, город, «Работает по счёту», рейтинг.</li>
+          <li>Столбцы «Город» и «Регион» разделены — фильтрация работает и по городу, и по региону.</li>
+          <li>Полное редактирование: добавить, изменить, удалить подрядчика прямо на сайте через модальное окно.</li>
+          <li>Оценка — интерактивные звёзды (1–5).</li>
+          <li>Данные хранятся в листе <b>«Бригадиры»</b> вашей Google Таблицы.</li>
         </ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-number">Версия 11.2.1</div>
+          <div class="version-title">Багфикс: обводка, этажи, лимит дашборда</div>
+          <div class="version-tag archive">Архив</div>
+        </div>
+        <ul class="version-list"><li>Исправление обводки менеджера, этажи 1–100, лимит 20 записей в дашборде.</li></ul>
       </div>
 
       <div class="version-card">
@@ -739,31 +790,17 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="version-title">Очистка блоков, лифт/этаж, архив обратной связи</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list">
-          <li>Кнопки «Очистить» для блоков «Клиент и груз», «Погрузка», «Выгрузка».</li>
-          <li>В заявках бригадирам — поля «Лифт» и «Этаж».</li>
-          <li>Кнопка ✓ в обратной связи убирает запрос в архив.</li>
-          <li>Фильтры обратной связи: Активные / Архив / Все.</li>
-          <li>Все цены в сообщении — единый формат «руб.».</li>
-        </ul>
+        <ul class="version-list"><li>Кнопки «Очистить» для блоков, поля «Лифт» и «Этаж», архив обратной связи.</li></ul>
       </div>
 
       <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 11.1</div>
-          <div class="version-title">Datalist часов и авто-retry</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
+        <div class="version-header"><div class="version-number">Версия 11.1</div><div class="version-title">Datalist часов и авто-retry</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Часы с автодополнением, авто-retry при 404.</li></ul>
       </div>
 
       <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 11</div>
-          <div class="version-title">Обратная связь, часовая ставка, фильтр типов</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
-        <ul class="version-list"><li>Вкладка «Обратная связь», часовая ставка, фильтр по типу.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 11</div><div class="version-title">Обратная связь, часовая ставка, фильтр типов</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Вкладка «Обратная связь», часовая ставка, фильтр по типу расчёта.</li></ul>
       </div>
 
       <div class="version-card">
@@ -783,7 +820,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
 
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.3</div><div class="version-title">Поиск городов, грузчики по адресам</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам.</li></ul>
+        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам, детали расчётов.</li></ul>
       </div>
 
       <div class="version-card">
@@ -870,31 +907,32 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
       </div>
     </div>
     <div class="card">
-      <div class="card-title">Обратная связь: как работают кнопки</div>
+      <div class="card-title">Бригадиры</div>
       <ol>
-        <li><b>✓ (галочка) — «Сделано».</b> Запрос уходит в архив, в Google Таблице остаётся с пометкой ✓.</li>
-        <li><b>🕐 (часы) — «В работе».</b> Остаётся в активных, жёлтая подсветка.</li>
-        <li><b>❓ (вопрос) — «Непонятно».</b> Остаётся в активных, фиолетовая подсветка.</li>
-        <li><b>✗ (крестик) — «Не будет».</b> Остаётся в активных, красная подсветка.</li>
-        <li><b>— (сброс) — очищает статус.</b> Запрос возвращается как новый, строка в Google Таблице не удаляется.</li>
+        <li>Данные хранятся на листе <b>«Бригадиры»</b> Google Таблицы.</li>
+        <li>Обязательные столбцы: ID, Город, Регион, Данные подрядчика, Контактный номер, Работает по счёту, Личная оценка, Причина оценки, РС, Нал.</li>
+        <li>Столбец <b>ID</b> уникален — например, <code>bg_001</code>, <code>bg_002</code>. Заполните заранее.</li>
+        <li>Город и Регион пишите без скобок: «Москва» и «Московская область» — отдельно.</li>
+        <li>При редактировании через сайт изменения сохраняются в Google Таблицу.</li>
       </ol>
     </div>
     <div class="card">
-      <div class="card-title">Кнопки очистки блоков</div>
+      <div class="card-title">Обратная связь: как работают кнопки</div>
       <ol>
-        <li><b>Клиент и груз:</b> имя, объём, количество грузчиков.</li>
-        <li><b>Погрузка:</b> город, часы, ставки, клиентские цены, свои грузчики, эвакуатор. Часы — 2.</li>
-        <li><b>Выгрузка:</b> аналогично.</li>
-        <li>Перед очисткой спрашивает подтверждение.</li>
+        <li><b>✓ — Сделано.</b> Уходит в архив.</li>
+        <li><b>🕐 — В работе.</b> Остаётся активным, жёлтая подсветка.</li>
+        <li><b>❓ — Непонятно.</b> Остаётся активным, фиолетовая подсветка.</li>
+        <li><b>✗ — Не будет.</b> Остаётся активным, красная подсветка.</li>
+        <li><b>— — Сброс.</b> Очищает статус, запрос возвращается как новый. Строка не удаляется.</li>
       </ol>
     </div>
     <div class="card">
       <div class="card-title">Обновление сайта на GitHub</div>
       <ol>
-        <li>Откройте репозиторий → файл <code>index.html</code> → карандаш ✏️.</li>
-        <li>Ctrl+A, удалить старое, вставить новое.</li>
+        <li>Репозиторий → файл <code>index.html</code> → карандаш ✏️.</li>
+        <li>Ctrl+A → удалить → вставить новый код.</li>
         <li>Commit changes.</li>
-        <li>Через 1–2 минуты обновите страницу с <b>Ctrl+Shift+R</b>.</li>
+        <li>Через 1–2 минуты обновить страницу с <b>Ctrl+Shift+R</b>.</li>
       </ol>
     </div>
   </div>
@@ -906,6 +944,50 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
     <div id="detailModalBody"></div>
     <div class="btn-row" style="margin-top:20px; justify-content:flex-end;">
       <button class="btn btn-secondary" onclick="closeDetailModal()">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="brigModal">
+  <div class="modal-content" style="max-width:640px;">
+    <h3 id="brigModalTitle">Новый подрядчик</h3>
+    <div class="row-2">
+      <div><label>Город</label><input type="text" id="brigCity" placeholder="Москва"></div>
+      <div><label>Регион / область</label><input type="text" id="brigRegion" placeholder="Московская область"></div>
+    </div>
+    <label>Данные подрядчика</label>
+    <input type="text" id="brigName" placeholder="Грузчики Иван, Москва">
+    <label>Контактный номер</label>
+    <input type="text" id="brigPhone" placeholder="+7 999 123-45-67">
+    <div class="row-2">
+      <div>
+        <label>Работает по счёту?</label>
+        <label class="checkbox-row" style="padding:10px 12px;">
+          <input type="checkbox" id="brigByInvoice">
+          <span>Да, работает по счёту</span>
+        </label>
+      </div>
+      <div>
+        <label>Личная оценка</label>
+        <div class="brig-rating-input" id="brigRatingInput">
+          <button type="button" data-star="1" onclick="setBrigRating(1)">★</button>
+          <button type="button" data-star="2" onclick="setBrigRating(2)">★</button>
+          <button type="button" data-star="3" onclick="setBrigRating(3)">★</button>
+          <button type="button" data-star="4" onclick="setBrigRating(4)">★</button>
+          <button type="button" data-star="5" onclick="setBrigRating(5)">★</button>
+          <button type="button" onclick="setBrigRating(0)" style="margin-left:8px;" title="Сбросить">✕</button>
+        </div>
+      </div>
+    </div>
+    <label>Причина оценки</label>
+    <textarea id="brigRatingReason" rows="3" placeholder="Например: дорогой внутри Москвы, но дешёвый за МКАД"></textarea>
+    <div class="row-2">
+      <div><label>Стоимость РС</label><input type="text" id="brigPriceRS" placeholder="6,00% или р.100,00"></div>
+      <div><label>Стоимость Нал</label><input type="text" id="brigPriceNal" placeholder="р.900,00"></div>
+    </div>
+    <div class="btn-row" style="margin-top:20px; justify-content:flex-end;">
+      <button class="btn btn-secondary" onclick="closeBrigModal()">Отмена</button>
+      <button class="btn btn-primary" onclick="saveBrigadier()">Сохранить</button>
     </div>
   </div>
 </div>
@@ -936,6 +1018,9 @@ let CITY_DATA = JSON.parse(JSON.stringify(DEFAULT_CITY_DATA));
 let REQUISITES = JSON.parse(JSON.stringify(DEFAULT_REQUISITES));
 let STATS_CACHE = [];
 let FEEDBACK_CACHE = [];
+let BRIGADIERS_CACHE = [];
+let brigEditingId = null;
+let brigRating = 0;
 let STATS_SOURCE = 'local';
 
 function $(id) { return document.getElementById(id); }
@@ -955,6 +1040,9 @@ function hourPlural(n) {
   if (l === 1) return 'час';
   if (l >= 2 && l <= 4) return 'часа';
   return 'часов';
+}
+function escapeHtml(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 async function fetchWithRetry(url, options, maxAttempts = 3) {
@@ -1002,6 +1090,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     $('panel-' + tab.dataset.tab).classList.add('active');
     if (tab.dataset.tab === 'dashboard') { renderDashboard(); refreshStats(true); }
     if (tab.dataset.tab === 'feedback') { refreshFeedback(); }
+    if (tab.dataset.tab === 'brigadiers') { renderBrigadiers(); }
   });
 });
 
@@ -1009,14 +1098,11 @@ function fillCityDatalist() {
   const cities = Object.keys(CITY_DATA).sort();
   $('cityList').innerHTML = cities.map(c => '<option value="' + c + '"></option>').join('');
 }
-
-// ★ Патч 2: заполняем список этажей от 1 до 100
 function fillFloorsDatalist() {
   let html = '';
   for (let i = 1; i <= 100; i++) html += '<option value="' + i + '"></option>';
   $('floorsList').innerHTML = html;
 }
-
 function normalizeCity(val) {
   if (!val) return '';
   const trimmed = String(val).trim();
@@ -1040,22 +1126,16 @@ function validateHours(input) {
   if (ok && v.indexOf(',') >= 0) input.value = v.replace(',', '.');
   return ok;
 }
-
 function getEffectiveLoaders(direction) {
   const global = num('loaders');
   if (direction === 'Load') {
-    if ($('loadersLoadOverride').checked) {
-      const own = num('loadersLoad'); if (own > 0) return own;
-    }
+    if ($('loadersLoadOverride').checked) { const own = num('loadersLoad'); if (own > 0) return own; }
     return global;
   } else {
-    if ($('loadersUnloadOverride').checked) {
-      const own = num('loadersUnload'); if (own > 0) return own;
-    }
+    if ($('loadersUnloadOverride').checked) { const own = num('loadersUnload'); if (own > 0) return own; }
     return global;
   }
 }
-
 function syncClientCost(direction, source) {
   const totalField = $('clientCost' + direction);
   const hourlyField = $('clientHourly' + direction);
@@ -1067,8 +1147,7 @@ function syncClientCost(direction, source) {
   if (calcHours <= 0 || people <= 0) {
     if (source === 'hourly') totalField.value = '';
     else if (source === 'total') hourlyField.value = '';
-    calculate(); generateMessage();
-    return;
+    calculate(); generateMessage(); return;
   }
   if (source === 'total') {
     const t = parseFloat(totalField.value);
@@ -1081,7 +1160,6 @@ function syncClientCost(direction, source) {
   }
   calculate(); generateMessage();
 }
-
 function computeValues() {
   const cityLoad = normalizeCity($('cityLoad').value);
   const cityUnload = normalizeCity($('cityUnload').value);
@@ -1092,17 +1170,14 @@ function computeValues() {
   const hoursUnload = num('hoursUnload');
   const dataLoad = CITY_DATA[cityLoad] || null;
   const dataUnload = CITY_DATA[cityUnload] || null;
-
   const rateLoadDict = dataLoad ? dataLoad.rateBrigadier : 0;
   const rateUnloadDict = dataUnload ? dataUnload.rateBrigadier : 0;
   const rateLoadManual = num('rateBrigadierManualLoad');
   const rateUnloadManual = num('rateBrigadierManualUnload');
   const rateLoad = rateLoadManual > 0 ? rateLoadManual : rateLoadDict;
   const rateUnload = rateUnloadManual > 0 ? rateUnloadManual : rateUnloadDict;
-
   const calcHoursLoad = Math.max(hoursLoad, dataLoad ? dataLoad.minHours : 0);
   const calcHoursUnload = Math.max(hoursUnload, dataUnload ? dataUnload.minHours : 0);
-
   const selfLoadGruz = (cityLoad && loadersLoad > 0 && calcHoursLoad > 0) ? rateLoad * loadersLoad * calcHoursLoad : 0;
   const selfUnloadGruz = (cityUnload && loadersUnload > 0 && calcHoursUnload > 0) ? rateUnload * loadersUnload * calcHoursUnload : 0;
   const evacSelfLoad = $('evacLoad').checked ? num('evacLoadCostUs') : 0;
@@ -1111,16 +1186,13 @@ function computeValues() {
   const evacClientUnload = $('evacUnload').checked ? num('evacUnloadCostClient') : 0;
   const selfLoad = selfLoadGruz + evacSelfLoad;
   const selfUnload = selfUnloadGruz + evacSelfUnload;
-
   const clientLoadInput = num('clientCostLoad');
   const clientUnloadInput = num('clientCostUnload');
   const clientLoad = clientLoadInput > 0 ? clientLoadInput : selfLoad;
   const clientUnload = clientUnloadInput > 0 ? clientUnloadInput : selfUnload;
-
   const selfTotal = selfLoad + selfUnload;
   const clientTotal = clientLoad + clientUnload + evacClientLoad + evacClientUnload;
   const prepayment = clientTotal - selfTotal;
-
   return {
     cityLoad, cityUnload, globalLoaders, loadersLoad, loadersUnload,
     hoursLoad, hoursUnload, calcHoursLoad, calcHoursUnload,
@@ -1129,7 +1201,6 @@ function computeValues() {
     selfLoad, selfUnload, selfTotal, clientLoad, clientUnload, clientTotal, prepayment
   };
 }
-
 function calculate() {
   const v = computeValues();
   $('rateBrigadierLoad').value = (CITY_DATA[v.cityLoad] && CITY_DATA[v.cityLoad].rateBrigadier) ? CITY_DATA[v.cityLoad].rateBrigadier + ' ₽/ч' : '';
@@ -1162,10 +1233,8 @@ function buildCalcMessage() {
   const volume = $('volume').value;
   const paymentMethod = $('paymentMethod').value;
   const isPrecalc = paymentMethod === 'Предрасчет';
-
   let msg = name + ', здравствуйте!\n';
   msg += 'Меня зовут ' + manager + ', компания Pack&Go, мы являемся партнёрами ТК Магистраль.\n\n';
-
   const hasLoaders = v.loadersLoad > 0 || v.loadersUnload > 0;
   if (volume || hasLoaders) {
     msg += 'Дублирую расчёт стоимости грузчиков:\n';
@@ -1181,7 +1250,6 @@ function buildCalcMessage() {
       }
     }
   }
-
   const buildLine = (label, city, clientCost, hours, people) => {
     const hourly = (clientCost > 0 && hours > 0 && people > 0) ? Math.round(clientCost / hours / people) : 0;
     if (isPrecalc || people === 0) {
@@ -1190,17 +1258,14 @@ function buildCalcMessage() {
     return '• ' + label + ' в г. ' + city + ' (' + hours + ' ' + hourPlural(hours) + ' ' + people + ' ' + humanPlural(people) + ') ' + fmt(clientCost) + ' руб.'
       + (hourly ? ' (' + fmt(hourly) + ' руб. 1 человек 1 час)' : '');
   };
-
   const lines = [];
   if (v.cityLoad && v.clientLoad > 0) lines.push(buildLine('Погрузка', v.cityLoad, v.clientLoad, v.calcHoursLoad, v.loadersLoad));
   if ($('evacLoad').checked) lines.push('• Эвакуатор ' + (v.cityLoad || 'погрузка') + ': ' + fmt(v.evacClientLoad) + ' руб.');
   if (v.cityUnload && v.clientUnload > 0) lines.push(buildLine('Выгрузка', v.cityUnload, v.clientUnload, v.calcHoursUnload, v.loadersUnload));
   if ($('evacUnload').checked) lines.push('• Эвакуатор ' + (v.cityUnload || 'выгрузка') + ': ' + fmt(v.evacClientUnload) + ' руб.');
   if (lines.length) msg += lines.join('\n') + '\n\n';
-
   msg += 'Итоговая стоимость работ: ' + fmt(v.clientTotal) + ' руб.\n';
   msg += '• Предоплата для назначения грузчиков: ' + fmt(v.prepayment) + ' руб. от итоговой стоимости\n';
-
   if (isPrecalc) {
     msg += '\nПо времени погрузки и выгрузки мы самостоятельно информируем грузчиков.\n';
     msg += 'У нас будет связь и с вашим менеджером по сопровождению, и с водителем.\n';
@@ -1208,22 +1273,17 @@ function buildCalcMessage() {
     msg += 'Как вам наше предложение?';
     return msg;
   }
-
   const remainLines = [];
   if (v.selfLoadGruz > 0) remainLines.push('Погрузка: ' + fmt(v.selfLoadGruz) + ' руб.');
   if (v.evacSelfLoad > 0) remainLines.push('Погрузка эвакуатор: ' + fmt(v.evacSelfLoad) + ' руб.');
   if (v.selfUnloadGruz > 0) remainLines.push('Выгрузка: ' + fmt(v.selfUnloadGruz) + ' руб.');
   if (v.evacSelfUnload > 0) remainLines.push('Выгрузка эвакуатор: ' + fmt(v.evacSelfUnload) + ' руб.');
-
   msg += '\nПосле внесения предоплаты, остаток по адресам:\n\n';
   if (remainLines.length) msg += remainLines.join('\n') + '\n';
-
   if (paymentMethod === 'Оплата по счёту') msg += '\nПредоплату необходимо внести по ссылке\n\n';
   else msg += '\nПредоплату необходимо внести по следующим реквизитам\n\n';
-
   if (paymentMethod && REQUISITES[paymentMethod]) msg += REQUISITES[paymentMethod] + '\n\n';
   else msg += 'Не выбран способ оплаты\n\n';
-
   msg += 'После внесения, отправьте чек ответным сообщением, пожалуйста\n';
   msg += '\nРеквизиты для перевода остатка суммы предоставляет менеджер Pack&Go. Грузчикам наличными, либо переводом оплачивать не нужно\n';
   msg += '\nПо времени погрузки и выгрузки мы самостоятельно информируем грузчиков.\n';
@@ -1239,7 +1299,6 @@ function generateBrigadierRequests() {
   else if (payment === 'нал(перевод)') paymentText = 'нал(перевод)';
   const cargo = $('brCargo').value;
   const volume = $('brVolume').value;
-
   const addrL = $('brAddressLoad').value;
   const liftL = $('brElevatorLoad').value;
   const floorL = $('brFloorLoad').value;
@@ -1255,7 +1314,6 @@ function generateBrigadierRequests() {
   if (volume) partsL.push('Объём: ' + volume + ' м³');
   if (commentL) partsL.push('Комментарий: ' + commentL);
   const msgL = partsL.join('\n\n');
-
   const addrU = $('brAddressUnload').value;
   const liftU = $('brElevatorUnload').value;
   const floorU = $('brFloorUnload').value;
@@ -1270,7 +1328,6 @@ function generateBrigadierRequests() {
   if (volume) partsU.push('Объём: ' + volume + ' м³');
   if (commentU) partsU.push('Комментарий: ' + commentU);
   const msgU = partsU.join('\n\n');
-
   $('brOutputLoad').textContent = msgL;
   $('brOutputUnload').textContent = msgU;
   $('brOutputBoth').textContent = msgL + '\n\n———\n\n' + msgU;
@@ -1284,13 +1341,11 @@ function fillPdfTemplate() {
   const volume = $('volume').value;
   const paymentMethod = $('paymentMethod').value;
   const isPrecalc = paymentMethod === 'Предрасчет';
-
   $('pdfTitle').textContent = isPrecalc ? 'Предварительный расчёт' : 'Коммерческое предложение';
   $('pdfDate').textContent = new Date().toLocaleDateString('ru-RU');
   $('pdfManager').textContent = manager;
   $('pdfClientName').textContent = name;
   $('pdfVolume').textContent = volume ? volume + ' м³' : '—';
-
   const rows = [];
   const mkRow = (label, city, cost, hours, people) => {
     const hourly = (cost > 0 && hours > 0 && people > 0) ? Math.round(cost / hours / people) : 0;
@@ -1300,39 +1355,33 @@ function fillPdfTemplate() {
     if (!isPrecalc && hourly > 0) priceStr += '<br><span class="pdf-small">' + fmt(hourly) + ' ₽/чел/ч</span>';
     return { name: label + ', г. ' + city, hours: hoursStr, price: priceStr };
   };
-
   if (v.cityLoad && v.clientLoad > 0) rows.push(mkRow('Погрузка', v.cityLoad, v.clientLoad, v.calcHoursLoad, v.loadersLoad));
   if ($('evacLoad').checked && v.evacClientLoad > 0) rows.push({ name: 'Эвакуатор, ' + (v.cityLoad || 'погрузка'), hours: '—', price: fmt(v.evacClientLoad) + ' ₽' });
   if (v.cityUnload && v.clientUnload > 0) rows.push(mkRow('Выгрузка', v.cityUnload, v.clientUnload, v.calcHoursUnload, v.loadersUnload));
   if ($('evacUnload').checked && v.evacClientUnload > 0) rows.push({ name: 'Эвакуатор, ' + (v.cityUnload || 'выгрузка'), hours: '—', price: fmt(v.evacClientUnload) + ' ₽' });
-
   $('pdfServiceRows').innerHTML = rows.length ? rows.map(r => `<tr><td>${r.name}</td><td>${r.hours}</td><td class="num">${r.price}</td></tr>`).join('') : '<tr><td colspan="3" style="text-align:center;color:#9ca3af;padding:20px;">Услуги не выбраны</td></tr>';
   $('pdfTotal').textContent = fmt(v.clientTotal) + ' ₽';
   $('pdfPrepay').textContent = fmt(v.prepayment) + ' ₽';
   $('pdfRemainBlock').style.display = isPrecalc ? 'none' : 'block';
   $('pdfPaymentBlock').style.display = isPrecalc ? 'none' : 'block';
-
   const rem = [];
   if (v.selfLoadGruz > 0) rem.push('Погрузка: ' + fmt(v.selfLoadGruz) + ' ₽');
   if (v.evacSelfLoad > 0) rem.push('Погрузка эвакуатор: ' + fmt(v.evacSelfLoad) + ' ₽');
   if (v.selfUnloadGruz > 0) rem.push('Выгрузка: ' + fmt(v.selfUnloadGruz) + ' ₽');
   if (v.evacSelfUnload > 0) rem.push('Выгрузка эвакуатор: ' + fmt(v.evacSelfUnload) + ' ₽');
   $('pdfRemainLines').innerHTML = rem.length ? rem.map(l => `<p>${l}</p>`).join('') : '<p style="color:#9ca3af;">—</p>';
-
   if (paymentMethod === 'Оплата по счёту') $('pdfPaymentText').textContent = 'Предоплату необходимо внести по ссылке.';
   else if (paymentMethod === 'Оплата по самозанятости') $('pdfPaymentText').textContent = 'Предоплату необходимо внести по следующим реквизитам.';
   else if (isPrecalc) $('pdfPaymentText').textContent = '';
   else $('pdfPaymentText').textContent = 'Способ оплаты не выбран.';
   $('pdfRequisites').textContent = (paymentMethod && REQUISITES[paymentMethod]) ? REQUISITES[paymentMethod] : '';
 }
-
 function downloadPdf() {
   const text = $('messageOutput').textContent;
   if (!text || text.length < 20) { alert('Сначала заполните данные и сформируйте сообщение'); return; }
   fillPdfTemplate();
   setTimeout(() => window.print(), 100);
 }
-
 function generateMessage() {
   try { calculate(); $('messageOutput').textContent = buildCalcMessage(); }
   catch (e) { console.error(e); $('messageOutput').textContent = 'Ошибка: ' + e.message; }
@@ -1361,9 +1410,7 @@ function copyBrBoth() { copyText($('brOutputBoth').textContent, 'Заявки е
 
 function clearClientBlock() {
   if (!confirm('Очистить блок «Клиент и груз»?')) return;
-  $('clientName').value = '';
-  $('volume').value = '';
-  $('loaders').value = '';
+  $('clientName').value = ''; $('volume').value = ''; $('loaders').value = '';
   calculate(); generateMessage();
 }
 function clearLoadBlock() {
@@ -1390,44 +1437,31 @@ function clearUnloadBlock() {
   $('hoursUnload').value = '2';
   updateConditionalBlocks(); calculate(); generateMessage();
 }
-
 function updateConditionalBlocks() {
   $('evacLoadBlock').style.display = $('evacLoad').checked ? 'block' : 'none';
   $('evacUnloadBlock').style.display = $('evacUnload').checked ? 'block' : 'none';
   $('loadersLoadBlock').style.display = $('loadersLoadOverride').checked ? 'block' : 'none';
   $('loadersUnloadBlock').style.display = $('loadersUnloadOverride').checked ? 'block' : 'none';
 }
-
 function collectDetails(v) {
   return {
-    volume: $('volume').value,
-    loadersGlobal: v.globalLoaders,
-    loadersLoad: v.loadersLoad,
-    loadersUnload: v.loadersUnload,
-    hoursLoad: $('hoursLoad').value,
-    hoursUnload: $('hoursUnload').value,
-    calcHoursLoad: v.calcHoursLoad,
-    calcHoursUnload: v.calcHoursUnload,
-    rateLoad: v.rateLoad,
-    rateUnload: v.rateUnload,
-    clientHourlyLoad: num('clientHourlyLoad'),
-    clientHourlyUnload: num('clientHourlyUnload'),
-    evacLoad: $('evacLoad').checked,
-    evacUnload: $('evacUnload').checked,
-    evacLoadCostUs: num('evacLoadCostUs'),
-    evacLoadCostClient: num('evacLoadCostClient'),
-    evacUnloadCostUs: num('evacUnloadCostUs'),
-    evacUnloadCostClient: num('evacUnloadCostClient'),
-    clientCostLoad: num('clientCostLoad'),
-    clientCostUnload: num('clientCostUnload'),
-    selfLoadGruz: v.selfLoadGruz,
-    selfUnloadGruz: v.selfUnloadGruz,
+    volume: $('volume').value, loadersGlobal: v.globalLoaders,
+    loadersLoad: v.loadersLoad, loadersUnload: v.loadersUnload,
+    hoursLoad: $('hoursLoad').value, hoursUnload: $('hoursUnload').value,
+    calcHoursLoad: v.calcHoursLoad, calcHoursUnload: v.calcHoursUnload,
+    rateLoad: v.rateLoad, rateUnload: v.rateUnload,
+    clientHourlyLoad: num('clientHourlyLoad'), clientHourlyUnload: num('clientHourlyUnload'),
+    evacLoad: $('evacLoad').checked, evacUnload: $('evacUnload').checked,
+    evacLoadCostUs: num('evacLoadCostUs'), evacLoadCostClient: num('evacLoadCostClient'),
+    evacUnloadCostUs: num('evacUnloadCostUs'), evacUnloadCostClient: num('evacUnloadCostClient'),
+    clientCostLoad: num('clientCostLoad'), clientCostUnload: num('clientCostUnload'),
+    selfLoadGruz: v.selfLoadGruz, selfUnloadGruz: v.selfUnloadGruz,
     paymentMethod: $('paymentMethod').value
   };
 }
 
 const STATS_KEY = 'packgo_stats_v3';
-const STATS_LIMIT = 20; // ★ Патч 3: только 20 последних
+const STATS_LIMIT = 20;
 
 function getTs(entry) {
   const t = entry.ts;
@@ -1449,7 +1483,6 @@ function getTs(entry) {
   }
   return 0;
 }
-
 function logCalculation() {
   try {
     const v = computeValues();
@@ -1467,8 +1500,7 @@ function logCalculation() {
       details: collectDetails(v)
     };
     const arr = JSON.parse(localStorage.getItem(STATS_KEY) || '[]');
-    arr.unshift(entry);
-    if (arr.length > STATS_LIMIT) arr.length = STATS_LIMIT; // ★ 20
+    arr.unshift(entry); if (arr.length > STATS_LIMIT) arr.length = STATS_LIMIT;
     localStorage.setItem(STATS_KEY, JSON.stringify(arr));
     STATS_CACHE.unshift(entry);
     if (STATS_CACHE.length > STATS_LIMIT) STATS_CACHE.length = STATS_LIMIT;
@@ -1479,10 +1511,8 @@ async function sendToGoogle(entry) {
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) return;
   try {
     await fetchWithRetry(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(entry),
-      redirect: 'follow'
+      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(entry), redirect: 'follow'
     });
   } catch (e) { console.warn('Не удалось отправить статистику:', e.message); }
 }
@@ -1493,14 +1523,11 @@ async function loadStatsFromServer() {
     const r = await fetchWithRetry(url, { redirect: 'follow' });
     const data = await r.json();
     if (data.error) throw new Error(data.error);
-    if (Array.isArray(data.stats)) {
-      STATS_CACHE = data.stats.slice(0, STATS_LIMIT); // ★ 20
-      STATS_SOURCE = 'cloud';
-    }
+    if (Array.isArray(data.stats)) { STATS_CACHE = data.stats.slice(0, STATS_LIMIT); STATS_SOURCE = 'cloud'; }
     if (Array.isArray(data.feedback)) { FEEDBACK_CACHE = data.feedback; }
     return true;
   } catch (e) { console.warn('Не удалось загрузить статистику:', e.message); }
-  STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]').slice(0, STATS_LIMIT); // ★ 20
+  STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]').slice(0, STATS_LIMIT);
   STATS_SOURCE = 'local';
   return false;
 }
@@ -1604,12 +1631,10 @@ function renderManagerCompare(all) {
 }
 function renderRecentTable(data) {
   if (data.length === 0) { $('recentTableWrap').innerHTML = '<div class="empty-state">Пока нет расчётов за выбранный период.</div>'; return; }
-  const rows = data.slice(0, STATS_LIMIT).map((e, idx) => { // ★ 20
+  const rows = data.slice(0, STATS_LIMIT).map((e, idx) => {
     const t = getTs(e);
     const date = t ? new Date(t) : new Date();
-    const dateStr = t
-      ? date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }) + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
-      : '— (дата не сохранена)';
+    const dateStr = t ? date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }) + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : '—';
     const cls = e.manager === 'Юлия' ? 'julia' : 'alexander';
     const route = [e.cityLoad, e.cityUnload].filter(Boolean).join(' → ') || '—';
     const hasDetails = !!e.details;
@@ -1619,7 +1644,7 @@ function renderRecentTable(data) {
     return `<tr><td>${dateStr}</td><td><span class="manager-pill ${cls}">${e.manager}</span></td><td>${e.clientName} ${typeBadge}</td><td>${route}</td><td style="font-weight:600;">${fmt(e.clientTotal)} ₽</td><td style="color:#2f855a;font-weight:600;">${fmt(e.margin)} ₽</td><td style="text-align:center;">${eyeBtn}</td></tr>`;
   }).join('');
   $('recentTableWrap').innerHTML = `<table class="stats-table"><thead><tr><th>Дата</th><th>Менеджер</th><th>Клиент</th><th>Маршрут</th><th>Сумма</th><th>Маржа</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
-  window.__currentTableData = data.slice(0, STATS_LIMIT); // ★ 20
+  window.__currentTableData = data.slice(0, STATS_LIMIT);
 }
 function showDetails(idx) {
   const e = window.__currentTableData[idx];
@@ -1686,7 +1711,6 @@ function setFeedbackFilter(f) {
   document.querySelectorAll('.fb-filter').forEach(el => el.classList.toggle('active', el.dataset.filter === f));
   renderFeedback();
 }
-
 async function submitFeedback() {
   const request = $('fbRequest').value.trim();
   const example = $('fbExample').value.trim();
@@ -1695,14 +1719,12 @@ async function submitFeedback() {
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) { alert('URL не задан'); return; }
   try {
     const r = await fetchWithRetry(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'},
       body: JSON.stringify({ type: 'feedback', ts: Date.now(), manager, request, example }),
       redirect: 'follow'
     });
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    $('fbRequest').value = '';
-    $('fbExample').value = '';
+    $('fbRequest').value = ''; $('fbExample').value = '';
     alert('Запрос отправлен!');
     await refreshFeedback();
   } catch (e) { alert('Ошибка: ' + e.message); }
@@ -1725,42 +1747,35 @@ function renderFeedback() {
   else if (feedbackFilter === 'archive') list = list.filter(fb => fb.status === '✓');
   list.sort((a, b) => b.ts - a.ts);
   if (list.length === 0) {
-    const text = feedbackFilter === 'archive'
-      ? 'Архив пуст — сюда попадают запросы со статусом ✓.'
-      : feedbackFilter === 'active'
-        ? 'Активных запросов нет. Отличная работа!'
-        : 'Пока нет запросов.';
+    const text = feedbackFilter === 'archive' ? 'Архив пуст — сюда попадают запросы со статусом ✓.'
+      : feedbackFilter === 'active' ? 'Активных запросов нет. Отличная работа!' : 'Пока нет запросов.';
     $('fbListWrap').innerHTML = '<div class="empty-state">' + text + '</div>';
     return;
   }
-  const html = list.map(fb => {
+  $('fbListWrap').innerHTML = list.map(fb => {
     const dateStr = fb.ts ? new Date(fb.ts).toLocaleString('ru-RU') : '—';
-    const statusClass = fb.status === '✓' ? 'fb-done'
-      : fb.status === '🕐' ? 'fb-progress'
-      : fb.status === '❓' ? 'fb-unclear'
-      : fb.status === '✗' ? 'fb-cancel' : '';
+    const statusClass = fb.status === '✓' ? 'fb-done' : fb.status === '🕐' ? 'fb-progress'
+      : fb.status === '❓' ? 'fb-unclear' : fb.status === '✗' ? 'fb-cancel' : '';
     return `<div class="fb-item ${statusClass}">
       <div class="fb-header"><span>${dateStr}</span><span>${fb.manager || ''}</span></div>
       <div class="fb-request">${escapeHtml(fb.request)}</div>
       ${fb.example ? `<div class="fb-example"><b>Пример:</b> ${escapeHtml(fb.example)}</div>` : ''}
       <div class="fb-status-row">
-        <button class="fb-status-btn ${fb.status === '✓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✓')" title="Сделано — уйдёт в архив">✓</button>
+        <button class="fb-status-btn ${fb.status === '✓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✓')" title="Сделано">✓</button>
         <button class="fb-status-btn ${fb.status === '🕐' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '🕐')" title="В работе">🕐</button>
         <button class="fb-status-btn ${fb.status === '❓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '❓')" title="Непонятно">❓</button>
         <button class="fb-status-btn ${fb.status === '✗' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✗')" title="Не будет">✗</button>
-        <button class="fb-status-btn" onclick="setFbStatus(${fb._idx}, '')" title="Сбросить статус">—</button>
+        <button class="fb-status-btn" onclick="setFbStatus(${fb._idx}, '')" title="Сбросить">—</button>
       </div>
     </div>`;
   }).join('');
-  $('fbListWrap').innerHTML = html;
 }
 async function setFbStatus(idx, status) {
   const fb = FEEDBACK_CACHE[idx];
   if (!fb) return;
   try {
     const r = await fetchWithRetry(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'},
       body: JSON.stringify({ type: 'feedback_status', ts: 'ts:' + fb.ts, status }),
       redirect: 'follow'
     });
@@ -1769,26 +1784,186 @@ async function setFbStatus(idx, status) {
     renderFeedback();
   } catch (e) { alert('Ошибка: ' + e.message); }
 }
-function escapeHtml(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+// ======================== БРИГАДИРЫ ========================
+function fillBrigFilterOptions() {
+  const regions = [...new Set(BRIGADIERS_CACHE.map(b => b.region).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru'));
+  const cities = [...new Set(BRIGADIERS_CACHE.map(b => b.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru'));
+  const rSel = $('brigFilterRegion'), cSel = $('brigFilterCity');
+  const rCur = rSel.value, cCur = cSel.value;
+  rSel.innerHTML = '<option value="">Все регионы</option>' + regions.map(r => `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join('');
+  cSel.innerHTML = '<option value="">Все города</option>' + cities.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  if (regions.includes(rCur)) rSel.value = rCur;
+  if (cities.includes(cCur)) cSel.value = cCur;
+}
+function renderBrigadiers() {
+  const list = getFilteredBrigadiers();
+  $('brigStatsBadge').textContent = list.length + ' из ' + BRIGADIERS_CACHE.length;
+  if (list.length === 0) {
+    $('brigListWrap').innerHTML = '<div class="brig-empty">Ничего не найдено. Измените фильтры или добавьте нового подрядчика.</div>';
+    return;
+  }
+  const rows = list.map(b => {
+    const stars = renderStars(b.rating);
+    const invoice = b.byInvoice ? '<span class="brig-invoice-yes">✓ Да</span>' : '<span class="brig-invoice-no">— Нет</span>';
+    const region = b.region ? `<div class="brig-region">${escapeHtml(b.region)}</div>` : '';
+    return `<tr>
+      <td><div class="brig-city">${escapeHtml(b.city || '—')}</div>${region}</td>
+      <td>${escapeHtml(b.name || '—')}</td>
+      <td>${escapeHtml(b.phone || '—')}</td>
+      <td>${invoice}</td>
+      <td><span class="brig-stars">${stars}</span></td>
+      <td>${escapeHtml(b.ratingReason || '—')}</td>
+      <td class="brig-price">${escapeHtml(b.priceRS || '—')}</td>
+      <td class="brig-price">${escapeHtml(b.priceNal || '—')}</td>
+      <td><div class="brig-actions">
+        <button class="edit" onclick="openBrigadierModal('${escapeHtml(b.id)}')" title="Редактировать">✎</button>
+        <button class="del" onclick="deleteBrigadier('${escapeHtml(b.id)}')" title="Удалить">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  $('brigListWrap').innerHTML = `<table class="brig-table"><thead><tr>
+    <th>Город</th><th>Подрядчик</th><th>Телефон</th><th>По счёту</th>
+    <th>Оценка</th><th>Причина</th><th>РС</th><th>Нал</th><th></th>
+  </tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderStars(n) {
+  let s = '';
+  for (let i = 1; i <= 5; i++) s += (i <= n ? '★' : '<span class="empty">☆</span>');
+  return s;
+}
+function getFilteredBrigadiers() {
+  const q = ($('brigSearch').value || '').trim().toLowerCase();
+  const region = $('brigFilterRegion').value;
+  const city = $('brigFilterCity').value;
+  const inv = $('brigFilterInvoice').value;
+  const minRating = parseInt($('brigFilterRating').value, 10) || 0;
+  return BRIGADIERS_CACHE.filter(b => {
+    if (region && b.region !== region) return false;
+    if (city && b.city !== city) return false;
+    if (inv === 'yes' && !b.byInvoice) return false;
+    if (inv === 'no' && b.byInvoice) return false;
+    if (minRating > 0 && (b.rating || 0) < minRating) return false;
+    if (q) {
+      const hay = [b.city, b.region, b.name, b.phone, b.ratingReason, b.priceRS, b.priceNal]
+        .filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+function resetBrigFilters() {
+  $('brigSearch').value = ''; $('brigFilterRegion').value = ''; $('brigFilterCity').value = '';
+  $('brigFilterInvoice').value = ''; $('brigFilterRating').value = '';
+  renderBrigadiers();
+}
+function openBrigadierModal(id) {
+  brigEditingId = id || null;
+  if (id) {
+    const b = BRIGADIERS_CACHE.find(x => x.id === id);
+    if (!b) { alert('Подрядчик не найден'); return; }
+    $('brigModalTitle').textContent = 'Редактирование подрядчика';
+    $('brigCity').value = b.city || '';
+    $('brigRegion').value = b.region || '';
+    $('brigName').value = b.name || '';
+    $('brigPhone').value = b.phone || '';
+    $('brigByInvoice').checked = !!b.byInvoice;
+    setBrigRating(b.rating || 0);
+    $('brigRatingReason').value = b.ratingReason || '';
+    $('brigPriceRS').value = b.priceRS || '';
+    $('brigPriceNal').value = b.priceNal || '';
+  } else {
+    $('brigModalTitle').textContent = 'Новый подрядчик';
+    ['brigCity','brigRegion','brigName','brigPhone','brigRatingReason','brigPriceRS','brigPriceNal']
+      .forEach(k => { $(k).value = ''; });
+    $('brigByInvoice').checked = false;
+    setBrigRating(0);
+  }
+  $('brigModal').classList.add('open');
+  setTimeout(() => $('brigName').focus(), 50);
+}
+function closeBrigModal() {
+  $('brigModal').classList.remove('open');
+  brigEditingId = null;
+}
+function setBrigRating(n) {
+  brigRating = n;
+  document.querySelectorAll('#brigRatingInput button[data-star]').forEach(btn => {
+    const s = parseInt(btn.dataset.star, 10);
+    btn.classList.toggle('active', s <= n);
+  });
+}
+async function saveBrigadier() {
+  const payload = {
+    type: 'brigadier_save',
+    id: brigEditingId || '',
+    city: $('brigCity').value.trim(),
+    region: $('brigRegion').value.trim(),
+    name: $('brigName').value.trim(),
+    phone: $('brigPhone').value.trim(),
+    byInvoice: $('brigByInvoice').checked,
+    rating: brigRating,
+    ratingReason: $('brigRatingReason').value.trim(),
+    priceRS: $('brigPriceRS').value.trim(),
+    priceNal: $('brigPriceNal').value.trim()
+  };
+  if (!payload.name && !payload.city && !payload.phone) { alert('Заполните хотя бы имя, город или телефон'); return; }
+  try {
+    const r = await fetchWithRetry(APPS_SCRIPT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload), redirect: 'follow'
+    });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    if (data.action === 'created') payload.id = data.id;
+    if (brigEditingId) {
+      const idx = BRIGADIERS_CACHE.findIndex(b => b.id === brigEditingId);
+      if (idx >= 0) BRIGADIERS_CACHE[idx] = payload;
+    } else {
+      payload.id = data.id || ('bg_' + Date.now());
+      BRIGADIERS_CACHE.push(payload);
+    }
+    fillBrigFilterOptions();
+    renderBrigadiers();
+    closeBrigModal();
+  } catch (e) { alert('Ошибка сохранения: ' + e.message); }
+}
+async function deleteBrigadier(id) {
+  const b = BRIGADIERS_CACHE.find(x => x.id === id);
+  if (!b) return;
+  if (!confirm('Удалить подрядчика «' + (b.name || b.city || id) + '»?')) return;
+  try {
+    const r = await fetchWithRetry(APPS_SCRIPT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ type: 'brigadier_delete', id }), redirect: 'follow'
+    });
+    const data = await r.json();
+    if (data.error) throw new Error(data.error);
+    BRIGADIERS_CACHE = BRIGADIERS_CACHE.filter(x => x.id !== id);
+    fillBrigFilterOptions();
+    renderBrigadiers();
+  } catch (e) { alert('Ошибка удаления: ' + e.message); }
+}
+async function refreshBrigadiers() {
+  try {
+    const r = await fetchWithRetry(APPS_SCRIPT_URL + '?t=' + Date.now(), { redirect: 'follow' });
+    const data = await r.json();
+    if (Array.isArray(data.brigadiers)) {
+      BRIGADIERS_CACHE = data.brigadiers;
+      fillBrigFilterOptions();
+      renderBrigadiers();
+    }
+  } catch (e) { alert('Ошибка обновления: ' + e.message); }
 }
 
 function runDiagnostics() {
   console.clear();
   console.log('=== ДИАГНОСТИКА ===');
-  console.log('STATS_CACHE:', STATS_CACHE.length, '(лимит ' + STATS_LIMIT + ')');
+  console.log('STATS_CACHE:', STATS_CACHE.length);
   console.log('FEEDBACK_CACHE:', FEEDBACK_CACHE.length);
+  console.log('BRIGADIERS_CACHE:', BRIGADIERS_CACHE.length);
   console.log('Источник:', STATS_SOURCE);
-  if (STATS_CACHE.length) {
-    STATS_CACHE.slice(0, 3).forEach((e, i) => {
-      console.log(`#${i+1} ts=${e.ts} → ${getTs(e)} (${getTs(e) ? new Date(getTs(e)) : '❌'}) precalc=${isPrecalcEntry(e)}`);
-    });
-    ['today','week','month','all'].forEach(r => {
-      console.log(`Период "${r}" (итоговые):`, filterByRange(filterByType(STATS_CACHE, 'final'), r).length);
-    });
-  }
 }
-
 async function loadFromGoogleSheets() {
   const status = $('gsStatus');
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('ВСТАВЬТЕ') === 0) {
@@ -1803,15 +1978,15 @@ async function loadFromGoogleSheets() {
     if (data.error) throw new Error(data.error);
     if (!data.cities || !data.requisites) throw new Error('Неверный формат ответа');
     CITY_DATA = data.cities; REQUISITES = data.requisites;
-    if (Array.isArray(data.stats)) {
-      STATS_CACHE = data.stats.slice(0, STATS_LIMIT); // ★ 20
-      STATS_SOURCE = 'cloud';
-    }
+    if (Array.isArray(data.stats)) { STATS_CACHE = data.stats.slice(0, STATS_LIMIT); STATS_SOURCE = 'cloud'; }
     else { STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]').slice(0, STATS_LIMIT); STATS_SOURCE = 'local'; }
     if (Array.isArray(data.feedback)) { FEEDBACK_CACHE = data.feedback; }
-    fillCityDatalist(); calculate(); generateMessage(); renderFeedback();
+    if (Array.isArray(data.brigadiers)) { BRIGADIERS_CACHE = data.brigadiers; }
+    fillCityDatalist(); fillBrigFilterOptions(); calculate(); generateMessage();
+    renderFeedback(); renderBrigadiers();
     status.className = 'status ok';
-    status.textContent = '✓ Данные загружены: ' + Object.keys(CITY_DATA).length + ' городов, статистика — ' + STATS_CACHE.length + ', обратная связь — ' + FEEDBACK_CACHE.length + '.'
+    status.textContent = '✓ Данные: ' + Object.keys(CITY_DATA).length + ' городов, статистика — ' + STATS_CACHE.length
+      + ', обратная связь — ' + FEEDBACK_CACHE.length + ', бригадиров — ' + BRIGADIERS_CACHE.length + '.'
       + (data.version ? ' (Apps Script: ' + data.version + ')' : '');
     updateDashStatus(); renderDashboard();
   } catch (e) {
@@ -1828,10 +2003,9 @@ async function testConnection() {
   out.className = 'status info'; out.textContent = 'Проверка соединения…';
   const info = [];
   info.push('URL: ' + APPS_SCRIPT_URL);
-  const t0 = Date.now();
   try {
     const r = await fetchWithRetry(APPS_SCRIPT_URL + '?t=' + Date.now(), { redirect: 'follow' });
-    info.push('HTTP: ' + r.status + ' (за ' + (Date.now() - t0) + ' мс)');
+    info.push('HTTP: ' + r.status);
     if (r.ok) {
       const data = await r.json();
       if (data.error) info.push('❌ ' + data.error);
@@ -1840,6 +2014,7 @@ async function testConnection() {
         info.push('✓ Реквизитов: ' + Object.keys(data.requisites || {}).length);
         info.push('✓ Статистики: ' + (data.stats || []).length);
         info.push('✓ Обратной связи: ' + (data.feedback || []).length);
+        info.push('✓ Бригадиров: ' + (data.brigadiers || []).length);
         if (data.version) info.push('Apps Script: ' + data.version);
       }
     }
@@ -1853,7 +2028,7 @@ function resetToDefaults() {
   $('gsStatus').className = 'status info'; $('gsStatus').textContent = 'Используются встроенные данные.';
 }
 
-const STORAGE_KEY = 'packgo_calc_state_v1121';
+const STORAGE_KEY = 'packgo_calc_state_v120';
 const FIELD_IDS = [
   'manager','clientName','volume','loaders',
   'cityLoad','hoursLoad','rateBrigadierManualLoad','selfCostLoad','clientCostLoad','clientHourlyLoad',
@@ -1897,22 +2072,19 @@ function clearAll() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  loadTheme();
-  fillCityDatalist();
-  fillFloorsDatalist(); // ★ Патч 2
-  loadState();
-  updateConditionalBlocks();
-
+  loadTheme(); fillCityDatalist(); fillFloorsDatalist(); loadState(); updateConditionalBlocks();
   document.querySelectorAll('input, select, textarea').forEach(el => {
     el.addEventListener('input', () => {
       if (el.id.startsWith('clientCost') || el.id.startsWith('clientHourly')) return;
       if (el.id.startsWith('fb')) return;
+      if (el.id.startsWith('brig') && el.id !== 'brigSearch') return;
       calculate();
       if (el.closest('#panel-calc')) generateMessage();
       if (el.closest('#panel-brigadier')) generateBrigadierRequests();
     });
     el.addEventListener('change', () => {
       if (el.id.startsWith('fb')) return;
+      if (el.id.startsWith('brig') && el.id !== 'brigSearch') return;
       updateConditionalBlocks(); calculate();
       if (el.closest('#panel-calc')) generateMessage();
       if (el.closest('#panel-brigadier')) generateBrigadierRequests();
@@ -1920,7 +2092,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (el.id === 'cityLoad' || el.id === 'cityUnload') el.addEventListener('blur', () => validateCity(el));
     if (el.id === 'hoursLoad' || el.id === 'hoursUnload') el.addEventListener('blur', () => validateHours(el));
   });
-
   calculate(); generateMessage(); generateBrigadierRequests(); updateDashStatus();
   await loadFromGoogleSheets();
 });
