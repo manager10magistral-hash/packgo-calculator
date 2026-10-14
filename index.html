@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v11.2</title>
+<title>Pack&Go — Калькулятор v11.2.1</title>
 <style>
 :root {
   --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
@@ -60,14 +60,30 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial
 .header .version { background: rgba(255,255,255,0.2); color: #fff;
   padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
 .manager-select { display: flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 6px 4px 14px; }
+  background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 6px 4px 14px;
+  border: 0; }
 .manager-select label { color: rgba(255,255,255,0.85); font-size: 12px; font-weight: 500; margin: 0; }
-.manager-select select { background: #fff; border: 1px solid transparent; border-radius: 16px;
-  padding: 6px 12px; font-size: 13px; font-weight: 600; color: #1e3a5f; cursor: pointer;
-  font-family: inherit; width: auto; min-width: 120px; outline: none; appearance: none;
-  -webkit-appearance: none; box-shadow: none; }
-.manager-select select:focus, .manager-select select:active, .manager-select select:hover {
-  outline: none; box-shadow: none; border-color: transparent; }
+/* ★ Патч 1: агрессивный сброс обводки у селектора менеджера */
+.header .manager-select select {
+  background: #fff; border: 0 !important; border-radius: 16px;
+  padding: 6px 12px; font-size: 13px; font-weight: 600; color: #1e3a5f;
+  cursor: pointer; font-family: inherit; width: auto; min-width: 120px;
+  margin: 0; line-height: 1.2;
+  outline: 0 !important; outline-offset: 0 !important;
+  box-shadow: none !important;
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
+}
+.header .manager-select select:focus,
+.header .manager-select select:focus-visible,
+.header .manager-select select:focus-within,
+.header .manager-select select:active,
+.header .manager-select select:hover {
+  outline: 0 !important; outline-offset: 0 !important;
+  box-shadow: none !important; border: 0 !important;
+  -webkit-focus-ring-color: transparent;
+}
 .theme-toggle { width: 36px; height: 36px; border-radius: 50%; border: none;
   background: rgba(255,255,255,0.18); color: #fff; font-size: 18px; cursor: pointer;
   display: flex; align-items: center; justify-content: center; }
@@ -368,7 +384,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 11.2</div>
+      <div class="version">Версия 11.2.1</div>
     </div>
   </div>
 
@@ -574,7 +590,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
             </div>
             <div>
               <label>Этаж</label>
-              <input type="text" id="brFloorLoad" placeholder="Например, 5">
+              <input type="text" id="brFloorLoad" list="floorsList" placeholder="Начните вводить номер…" autocomplete="off">
             </div>
           </div>
           <label>Работы</label>
@@ -601,7 +617,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
             </div>
             <div>
               <label>Этаж</label>
-              <input type="text" id="brFloorUnload" placeholder="Например, 5">
+              <input type="text" id="brFloorUnload" list="floorsList" placeholder="Начните вводить номер…" autocomplete="off">
             </div>
           </div>
           <label>Работы</label>
@@ -668,7 +684,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
     </div>
     <div class="card"><div class="card-title">Расчётов за последние 7 дней</div><div id="dayChart"></div></div>
     <div class="card"><div class="card-title">Сравнение менеджеров</div><div id="managerCompare"></div></div>
-    <div class="card"><div class="card-title">Последние расчёты</div><div id="recentTableWrap"></div></div>
+    <div class="card"><div class="card-title">Последние расчёты (максимум 20)</div><div id="recentTableWrap"></div></div>
   </div>
 
   <div class="panel" id="panel-feedback">
@@ -701,35 +717,44 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
 
   <div class="panel" id="panel-changelog">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
-    <div class="legend-note">Текущая версия — <b>11.2</b>.</div>
+    <div class="legend-note">Текущая версия — <b>11.2.1</b>.</div>
     <div class="changelog">
 
       <div class="version-card current">
         <div class="version-header">
-          <div class="version-number">Версия 11.2</div>
-          <div class="version-title">Очистка блоков, лифт/этаж, архив обратной связи</div>
+          <div class="version-number">Версия 11.2.1</div>
+          <div class="version-title">Багфикс: обводка, этажи, лимит дашборда</div>
           <div class="version-tag">Текущая</div>
         </div>
         <ul class="version-list">
-          <li>Все цены в сообщении клиенту приведены к единому виду — <b>«руб.»</b>. Убраны варианты «рублей», «руб» без точки.</li>
-          <li>В заголовках блоков <b>«Клиент и груз»</b>, <b>«Погрузка»</b>, <b>«Выгрузка»</b> появилась кнопка <b>«Очистить»</b>. Она сбрасывает поля и снимает галочки только в своём блоке.</li>
-          <li>Исправлена <b>кривая обводка</b> вокруг селектора менеджера в шапке — убран лишний фокусный контур.</li>
-          <li>В заявках бригадирам добавлены поля <b>«Лифт»</b> (грузовой / пассажирский / без лифта) и <b>«Этаж»</b>. Если заполнены — попадают в текст заявки.</li>
-          <li>Кнопка <b>✓ «Сделано»</b> в обратной связи теперь убирает запрос из активного списка. Он остаётся в Google Таблице с пометкой ✓.</li>
-          <li>Добавлены фильтры <b>«Активные» / «Архив (сделано)» / «Все»</b> для обратной связи.</li>
+          <li>Полностью убрана кривая обводка вокруг селектора менеджера — добавлен агрессивный сброс <code>:focus-visible</code> и <code>-webkit-focus-ring-color</code>.</li>
+          <li>Поля «Этаж» в заявках бригадирам теперь с автодополнением от 1 до 100 — как у городов. Начните печатать номер, и список отфильтруется.</li>
+          <li>Дашборд хранит и показывает только <b>20 последних</b> расчётов. В Google Таблице при этом сохраняется вся история.</li>
+        </ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-number">Версия 11.2</div>
+          <div class="version-title">Очистка блоков, лифт/этаж, архив обратной связи</div>
+          <div class="version-tag archive">Архив</div>
+        </div>
+        <ul class="version-list">
+          <li>Кнопки «Очистить» для блоков «Клиент и груз», «Погрузка», «Выгрузка».</li>
+          <li>В заявках бригадирам — поля «Лифт» и «Этаж».</li>
+          <li>Кнопка ✓ в обратной связи убирает запрос в архив.</li>
+          <li>Фильтры обратной связи: Активные / Архив / Все.</li>
+          <li>Все цены в сообщении — единый формат «руб.».</li>
         </ul>
       </div>
 
       <div class="version-card">
         <div class="version-header">
           <div class="version-number">Версия 11.1</div>
-          <div class="version-title">Datalist часов и авто-retry при 404</div>
+          <div class="version-title">Datalist часов и авто-retry</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list">
-          <li>Поля часов — автодополнение.</li>
-          <li>Авто-retry при 404.</li>
-        </ul>
+        <ul class="version-list"><li>Часы с автодополнением, авто-retry при 404.</li></ul>
       </div>
 
       <div class="version-card">
@@ -738,35 +763,21 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="version-title">Обратная связь, часовая ставка, фильтр типов</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list">
-          <li>Вкладка «Обратная связь», часовая ставка, фильтр по типу.</li>
-        </ul>
+        <ul class="version-list"><li>Вкладка «Обратная связь», часовая ставка, фильтр по типу.</li></ul>
       </div>
 
       <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 10.6</div>
-          <div class="version-title">Исправление дат</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
+        <div class="version-header"><div class="version-number">Версия 10.6</div><div class="version-title">Исправление дат</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Формат ts в Google Sheets.</li></ul>
       </div>
 
       <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 10.5</div>
-          <div class="version-title">Диагностика дашборда</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
+        <div class="version-header"><div class="version-number">Версия 10.5</div><div class="version-title">Диагностика дашборда</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Кнопка «Диагностика».</li></ul>
       </div>
 
       <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 10.4</div>
-          <div class="version-title">Предрасчет, логотип</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
+        <div class="version-header"><div class="version-number">Версия 10.4</div><div class="version-title">Предрасчет, логотип</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Способ оплаты «Предрасчет», логотип в PDF.</li></ul>
       </div>
 
@@ -859,22 +870,22 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
       </div>
     </div>
     <div class="card">
-      <div class="card-title">Обратная связь: как работают кнопки статуса</div>
+      <div class="card-title">Обратная связь: как работают кнопки</div>
       <ol>
-        <li><b>✓ (галочка) — «Сделано».</b> Запрос уходит в <b>архив</b> и больше не виден в фильтре «Активные». В Google Таблице строка остаётся, в столбце «Статус» появляется ✓.</li>
-        <li><b>🕐 (часы) — «В работе».</b> Запрос остаётся в активных, но с жёлтой подсветкой — чтобы вы знали, что взяли его в работу.</li>
-        <li><b>❓ (вопрос) — «Непонятно».</b> Запрос остаётся в активных, с фиолетовой подсветкой — нужно уточнение.</li>
-        <li><b>✗ (крестик) — «Не будет».</b> Запрос остаётся в активных, но с красной подсветкой и уменьшенной прозрачностью — отклонён.</li>
-        <li><b>— (сброс) — сбрасывает статус в пустую строку.</b> Запрос становится «новым», как только что созданный. <b>Строка в Google Таблице не удаляется</b>, просто очищается поле «Статус». Это полезно, если по ошибке нажали не ту кнопку.</li>
+        <li><b>✓ (галочка) — «Сделано».</b> Запрос уходит в архив, в Google Таблице остаётся с пометкой ✓.</li>
+        <li><b>🕐 (часы) — «В работе».</b> Остаётся в активных, жёлтая подсветка.</li>
+        <li><b>❓ (вопрос) — «Непонятно».</b> Остаётся в активных, фиолетовая подсветка.</li>
+        <li><b>✗ (крестик) — «Не будет».</b> Остаётся в активных, красная подсветка.</li>
+        <li><b>— (сброс) — очищает статус.</b> Запрос возвращается как новый, строка в Google Таблице не удаляется.</li>
       </ol>
     </div>
     <div class="card">
       <div class="card-title">Кнопки очистки блоков</div>
       <ol>
-        <li><b>Клиент и груз:</b> очищает имя, объём, количество грузчиков.</li>
-        <li><b>Погрузка:</b> сбрасывает город, часы, ставки, клиентские цены, свои грузчики, эвакуатор. Часы возвращаются к значению 2.</li>
+        <li><b>Клиент и груз:</b> имя, объём, количество грузчиков.</li>
+        <li><b>Погрузка:</b> город, часы, ставки, клиентские цены, свои грузчики, эвакуатор. Часы — 2.</li>
         <li><b>Выгрузка:</b> аналогично.</li>
-        <li>Перед очисткой всегда спрашивает подтверждение — случайно не сбросите.</li>
+        <li>Перед очисткой спрашивает подтверждение.</li>
       </ol>
     </div>
     <div class="card">
@@ -883,7 +894,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
         <li>Откройте репозиторий → файл <code>index.html</code> → карандаш ✏️.</li>
         <li>Ctrl+A, удалить старое, вставить новое.</li>
         <li>Commit changes.</li>
-        <li>Через 1–2 минуты обновите страницу с <b>Ctrl+Shift+R</b> (жёсткое обновление).</li>
+        <li>Через 1–2 минуты обновите страницу с <b>Ctrl+Shift+R</b>.</li>
       </ol>
     </div>
   </div>
@@ -906,6 +917,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
   <option value="4"></option><option value="5"></option><option value="6"></option>
   <option value="8"></option><option value="10"></option><option value="12"></option>
 </datalist>
+<datalist id="floorsList"></datalist>
 
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzYYjN31fmPXHDgdH2fEFBptDD9mXdf71yCjwortsJOKi_NuoneqMEiPiZepMkQ0b_8w/exec';
@@ -997,6 +1009,14 @@ function fillCityDatalist() {
   const cities = Object.keys(CITY_DATA).sort();
   $('cityList').innerHTML = cities.map(c => '<option value="' + c + '"></option>').join('');
 }
+
+// ★ Патч 2: заполняем список этажей от 1 до 100
+function fillFloorsDatalist() {
+  let html = '';
+  for (let i = 1; i <= 100; i++) html += '<option value="' + i + '"></option>';
+  $('floorsList').innerHTML = html;
+}
+
 function normalizeCity(val) {
   if (!val) return '';
   const trimmed = String(val).trim();
@@ -1135,7 +1155,6 @@ function calculate() {
   saveState();
 }
 
-// ★ Единый формат "руб." — без склонений
 function buildCalcMessage() {
   const v = computeValues();
   const name = $('clientName').value || 'Клиент';
@@ -1221,7 +1240,6 @@ function generateBrigadierRequests() {
   const cargo = $('brCargo').value;
   const volume = $('brVolume').value;
 
-  // ★ Погрузка с лифтом и этажом
   const addrL = $('brAddressLoad').value;
   const liftL = $('brElevatorLoad').value;
   const floorL = $('brFloorLoad').value;
@@ -1238,7 +1256,6 @@ function generateBrigadierRequests() {
   if (commentL) partsL.push('Комментарий: ' + commentL);
   const msgL = partsL.join('\n\n');
 
-  // ★ Выгрузка с лифтом и этажом
   const addrU = $('brAddressUnload').value;
   const liftU = $('brElevatorUnload').value;
   const floorU = $('brFloorUnload').value;
@@ -1342,7 +1359,6 @@ function copyBrLoad() { copyText($('brOutputLoad').textContent, 'Заявка е
 function copyBrUnload() { copyText($('brOutputUnload').textContent, 'Заявка ещё не сформирована'); }
 function copyBrBoth() { copyText($('brOutputBoth').textContent, 'Заявки ещё не сформированы'); }
 
-// ★ Очистка отдельных блоков
 function clearClientBlock() {
   if (!confirm('Очистить блок «Клиент и груз»?')) return;
   $('clientName').value = '';
@@ -1411,6 +1427,7 @@ function collectDetails(v) {
 }
 
 const STATS_KEY = 'packgo_stats_v3';
+const STATS_LIMIT = 20; // ★ Патч 3: только 20 последних
 
 function getTs(entry) {
   const t = entry.ts;
@@ -1450,9 +1467,11 @@ function logCalculation() {
       details: collectDetails(v)
     };
     const arr = JSON.parse(localStorage.getItem(STATS_KEY) || '[]');
-    arr.unshift(entry); if (arr.length > 500) arr.length = 500;
+    arr.unshift(entry);
+    if (arr.length > STATS_LIMIT) arr.length = STATS_LIMIT; // ★ 20
     localStorage.setItem(STATS_KEY, JSON.stringify(arr));
     STATS_CACHE.unshift(entry);
+    if (STATS_CACHE.length > STATS_LIMIT) STATS_CACHE.length = STATS_LIMIT;
     sendToGoogle(entry);
   } catch (e) { console.error('Ошибка логирования', e); }
 }
@@ -1474,11 +1493,14 @@ async function loadStatsFromServer() {
     const r = await fetchWithRetry(url, { redirect: 'follow' });
     const data = await r.json();
     if (data.error) throw new Error(data.error);
-    if (Array.isArray(data.stats)) { STATS_CACHE = data.stats; STATS_SOURCE = 'cloud'; }
+    if (Array.isArray(data.stats)) {
+      STATS_CACHE = data.stats.slice(0, STATS_LIMIT); // ★ 20
+      STATS_SOURCE = 'cloud';
+    }
     if (Array.isArray(data.feedback)) { FEEDBACK_CACHE = data.feedback; }
     return true;
   } catch (e) { console.warn('Не удалось загрузить статистику:', e.message); }
-  STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]');
+  STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]').slice(0, STATS_LIMIT); // ★ 20
   STATS_SOURCE = 'local';
   return false;
 }
@@ -1582,7 +1604,7 @@ function renderManagerCompare(all) {
 }
 function renderRecentTable(data) {
   if (data.length === 0) { $('recentTableWrap').innerHTML = '<div class="empty-state">Пока нет расчётов за выбранный период.</div>'; return; }
-  const rows = data.slice(0, 30).map((e, idx) => {
+  const rows = data.slice(0, STATS_LIMIT).map((e, idx) => { // ★ 20
     const t = getTs(e);
     const date = t ? new Date(t) : new Date();
     const dateStr = t
@@ -1597,7 +1619,7 @@ function renderRecentTable(data) {
     return `<tr><td>${dateStr}</td><td><span class="manager-pill ${cls}">${e.manager}</span></td><td>${e.clientName} ${typeBadge}</td><td>${route}</td><td style="font-weight:600;">${fmt(e.clientTotal)} ₽</td><td style="color:#2f855a;font-weight:600;">${fmt(e.margin)} ₽</td><td style="text-align:center;">${eyeBtn}</td></tr>`;
   }).join('');
   $('recentTableWrap').innerHTML = `<table class="stats-table"><thead><tr><th>Дата</th><th>Менеджер</th><th>Клиент</th><th>Маршрут</th><th>Сумма</th><th>Маржа</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
-  window.__currentTableData = data.slice(0, 30);
+  window.__currentTableData = data.slice(0, STATS_LIMIT); // ★ 20
 }
 function showDetails(idx) {
   const e = window.__currentTableData[idx];
@@ -1658,9 +1680,7 @@ function showDetails(idx) {
 function closeDetailModal() { $('detailModal').classList.remove('open'); }
 document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target.id === 'detailModal') closeDetailModal(); });
 
-// ★ Обратная связь с фильтром по статусу
 let feedbackFilter = 'active';
-
 function setFeedbackFilter(f) {
   feedbackFilter = f;
   document.querySelectorAll('.fb-filter').forEach(el => el.classList.toggle('active', el.dataset.filter === f));
@@ -1756,7 +1776,7 @@ function escapeHtml(s) {
 function runDiagnostics() {
   console.clear();
   console.log('=== ДИАГНОСТИКА ===');
-  console.log('STATS_CACHE:', STATS_CACHE.length);
+  console.log('STATS_CACHE:', STATS_CACHE.length, '(лимит ' + STATS_LIMIT + ')');
   console.log('FEEDBACK_CACHE:', FEEDBACK_CACHE.length);
   console.log('Источник:', STATS_SOURCE);
   if (STATS_CACHE.length) {
@@ -1783,8 +1803,11 @@ async function loadFromGoogleSheets() {
     if (data.error) throw new Error(data.error);
     if (!data.cities || !data.requisites) throw new Error('Неверный формат ответа');
     CITY_DATA = data.cities; REQUISITES = data.requisites;
-    if (Array.isArray(data.stats)) { STATS_CACHE = data.stats; STATS_SOURCE = 'cloud'; }
-    else { STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]'); STATS_SOURCE = 'local'; }
+    if (Array.isArray(data.stats)) {
+      STATS_CACHE = data.stats.slice(0, STATS_LIMIT); // ★ 20
+      STATS_SOURCE = 'cloud';
+    }
+    else { STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]').slice(0, STATS_LIMIT); STATS_SOURCE = 'local'; }
     if (Array.isArray(data.feedback)) { FEEDBACK_CACHE = data.feedback; }
     fillCityDatalist(); calculate(); generateMessage(); renderFeedback();
     status.className = 'status ok';
@@ -1794,7 +1817,8 @@ async function loadFromGoogleSheets() {
   } catch (e) {
     status.className = 'status err';
     status.textContent = 'Ошибка загрузки: ' + e.message + '. Нажмите «Загрузить данные заново».';
-    STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]'); STATS_SOURCE = 'local';
+    STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]').slice(0, STATS_LIMIT);
+    STATS_SOURCE = 'local';
     updateDashStatus(); renderDashboard();
     console.error(e);
   }
@@ -1829,7 +1853,7 @@ function resetToDefaults() {
   $('gsStatus').className = 'status info'; $('gsStatus').textContent = 'Используются встроенные данные.';
 }
 
-const STORAGE_KEY = 'packgo_calc_state_v112';
+const STORAGE_KEY = 'packgo_calc_state_v1121';
 const FIELD_IDS = [
   'manager','clientName','volume','loaders',
   'cityLoad','hoursLoad','rateBrigadierManualLoad','selfCostLoad','clientCostLoad','clientHourlyLoad',
@@ -1873,7 +1897,11 @@ function clearAll() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  loadTheme(); fillCityDatalist(); loadState(); updateConditionalBlocks();
+  loadTheme();
+  fillCityDatalist();
+  fillFloorsDatalist(); // ★ Патч 2
+  loadState();
+  updateConditionalBlocks();
 
   document.querySelectorAll('input, select, textarea').forEach(el => {
     el.addEventListener('input', () => {
