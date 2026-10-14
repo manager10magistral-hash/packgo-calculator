@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v11.1</title>
+<title>Pack&Go — Калькулятор v11.2</title>
 <style>
 :root {
   --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
@@ -62,9 +62,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial
 .manager-select { display: flex; align-items: center; gap: 8px;
   background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 6px 4px 14px; }
 .manager-select label { color: rgba(255,255,255,0.85); font-size: 12px; font-weight: 500; margin: 0; }
-.manager-select select { background: #fff; border: none; border-radius: 16px; padding: 6px 12px;
-  font-size: 13px; font-weight: 600; color: #1e3a5f; cursor: pointer; font-family: inherit;
-  outline: none; width: auto; min-width: 120px; }
+.manager-select select { background: #fff; border: 1px solid transparent; border-radius: 16px;
+  padding: 6px 12px; font-size: 13px; font-weight: 600; color: #1e3a5f; cursor: pointer;
+  font-family: inherit; width: auto; min-width: 120px; outline: none; appearance: none;
+  -webkit-appearance: none; box-shadow: none; }
+.manager-select select:focus, .manager-select select:active, .manager-select select:hover {
+  outline: none; box-shadow: none; border-color: transparent; }
 .theme-toggle { width: 36px; height: 36px; border-radius: 50%; border: none;
   background: rgba(255,255,255,0.18); color: #fff; font-size: 18px; cursor: pointer;
   display: flex; align-items: center; justify-content: center; }
@@ -88,6 +91,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial
 .card-title::before { content: ''; width: 3px; height: 16px; background: var(--accent); border-radius: 2px; }
 .card-title .badge { margin-left: auto; font-size: 11px; font-weight: 500;
   background: var(--accent-bg); color: var(--accent); padding: 3px 8px; border-radius: 20px; }
+.card-title .clear-btn { margin-left: auto; font-size: 11px; font-weight: 500;
+  background: transparent; color: var(--text-dim); padding: 3px 10px; border-radius: 20px;
+  border: 1px solid var(--subtle-border); cursor: pointer; font-family: inherit;
+  transition: all 0.2s; }
+.card-title .clear-btn:hover { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+body.dark .card-title .clear-btn:hover { background: #7f1d1d; color: #fca5a5; border-color: #7f1d1d; }
+.card-title .clear-btn + .badge { margin-left: 8px; }
 label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
 label .hint-inline { color: var(--text-faint); font-weight: 400; font-size: 12px; }
 input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--input-border);
@@ -99,6 +109,8 @@ input.client-price, textarea.client-price { border-color: var(--client-price-bor
 input.invalid { border-color: #ef4444; background: #fef2f2; }
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .row-2 > div { margin-bottom: 0; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.row-3 > div { margin-bottom: 0; }
 .checkbox-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px;
   background: var(--checkbox-bg); border-radius: 8px; border: 1px solid var(--subtle-border); cursor: pointer; }
 .checkbox-row input[type="checkbox"] { width: 18px; height: 18px; margin: 0;
@@ -356,7 +368,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 11.1</div>
+      <div class="version">Версия 11.2</div>
     </div>
   </div>
 
@@ -373,7 +385,9 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
     <div class="grid">
       <div>
         <div class="card">
-          <div class="card-title">Клиент и груз</div>
+          <div class="card-title">Клиент и груз
+            <button class="clear-btn" onclick="clearClientBlock()" title="Очистить блок">Очистить</button>
+          </div>
           <label>Имя клиента</label>
           <input type="text" id="clientName" placeholder="Иванов Иван">
           <div class="row-2">
@@ -383,7 +397,9 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
         </div>
 
         <div class="card">
-          <div class="card-title">Погрузка <span class="badge" id="badgeLoad">не заполнено</span></div>
+          <div class="card-title">Погрузка <span class="badge" id="badgeLoad">не заполнено</span>
+            <button class="clear-btn" onclick="clearLoadBlock()" title="Очистить блок">Очистить</button>
+          </div>
           <label>Город погрузки</label>
           <input type="text" id="cityLoad" list="cityList" placeholder="Начните вводить город…" autocomplete="off">
           <div class="row-2">
@@ -433,7 +449,9 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
         </div>
 
         <div class="card">
-          <div class="card-title">Выгрузка <span class="badge" id="badgeUnload">не заполнено</span></div>
+          <div class="card-title">Выгрузка <span class="badge" id="badgeUnload">не заполнено</span>
+            <button class="clear-btn" onclick="clearUnloadBlock()" title="Очистить блок">Очистить</button>
+          </div>
           <label>Город выгрузки</label>
           <input type="text" id="cityUnload" list="cityList" placeholder="Начните вводить город…" autocomplete="off">
           <div class="row-2">
@@ -544,6 +562,21 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="card-title">Погрузка</div>
           <label>Адрес погрузки</label>
           <input type="text" id="brAddressLoad" placeholder="Казань, Пушкина 10">
+          <div class="row-2">
+            <div>
+              <label>Лифт</label>
+              <select id="brElevatorLoad">
+                <option value="">— Не указан —</option>
+                <option value="грузовой">Грузовой</option>
+                <option value="пассажирский">Пассажирский</option>
+                <option value="без лифта">Без лифта</option>
+              </select>
+            </div>
+            <div>
+              <label>Этаж</label>
+              <input type="text" id="brFloorLoad" placeholder="Например, 5">
+            </div>
+          </div>
           <label>Работы</label>
           <div class="row-2" style="margin-bottom:14px;">
             <label class="checkbox-row" style="padding:8px 10px;"><input type="checkbox" id="brWorkLoad2"> упаковка</label>
@@ -556,6 +589,21 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="card-title">Выгрузка</div>
           <label>Адрес выгрузки</label>
           <input type="text" id="brAddressUnload" placeholder="Сочи, Морская 1">
+          <div class="row-2">
+            <div>
+              <label>Лифт</label>
+              <select id="brElevatorUnload">
+                <option value="">— Не указан —</option>
+                <option value="грузовой">Грузовой</option>
+                <option value="пассажирский">Пассажирский</option>
+                <option value="без лифта">Без лифта</option>
+              </select>
+            </div>
+            <div>
+              <label>Этаж</label>
+              <input type="text" id="brFloorUnload" placeholder="Например, 5">
+            </div>
+          </div>
           <label>Работы</label>
           <label class="checkbox-row" style="padding:8px 10px; margin-bottom:14px; max-width:200px;"><input type="checkbox" id="brWorkUnload4"> сборка</label>
           <label>Комментарий</label>
@@ -626,7 +674,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
   <div class="panel" id="panel-feedback">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Обратная связь и предложения</h2>
     <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 16px;">
-      Опишите, что вы хотели бы изменить или добавить в калькуляторе.
+      Опишите, что вы хотели бы изменить или добавить в калькуляторе. Запросы со статусом <b>✓</b> уходят в архив и остаются в Google Таблице.
     </p>
     <div class="card">
       <div class="card-title">Новый запрос</div>
@@ -641,25 +689,46 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
     </div>
     <div class="card">
       <div class="card-title">Список запросов <span class="badge" id="fbCount">0</span></div>
+      <div class="dash-filters" style="margin-top:4px;">
+        <span class="filter-label">Показать:</span>
+        <button class="dash-filter fb-filter active" data-filter="active" onclick="setFeedbackFilter('active')">Активные</button>
+        <button class="dash-filter fb-filter" data-filter="archive" onclick="setFeedbackFilter('archive')">Архив (сделано)</button>
+        <button class="dash-filter fb-filter" data-filter="all" onclick="setFeedbackFilter('all')">Все</button>
+      </div>
       <div id="fbListWrap"><div class="empty-state">Загрузка…</div></div>
     </div>
   </div>
 
   <div class="panel" id="panel-changelog">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
-    <div class="legend-note">Текущая версия — <b>11.1</b>.</div>
+    <div class="legend-note">Текущая версия — <b>11.2</b>.</div>
     <div class="changelog">
 
       <div class="version-card current">
         <div class="version-header">
-          <div class="version-number">Версия 11.1</div>
-          <div class="version-title">Datalist часов и авто-retry при 404</div>
+          <div class="version-number">Версия 11.2</div>
+          <div class="version-title">Очистка блоков, лифт/этаж, архив обратной связи</div>
           <div class="version-tag">Текущая</div>
         </div>
         <ul class="version-list">
-          <li>Поля «Часов на погрузку / выгрузку» теперь работают как <b>поле ввода с автодополнением</b> — по аналогии с городами. Убран отдельный выпадающий список: щёлкаете по полю — появляется список частых значений (1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10, 12), при этом можно ввести любое своё значение вручную.</li>
-          <li>Добавлен <b>авто-retry</b> для всех запросов к Apps Script. Если Google на секунду «прячет» развёртывание (именно это вызывает периодическую <b>ошибку 404</b>), клиент автоматически повторит запрос 2 раза с паузой 0.8–1.2 сек. Пользователь не увидит ошибку.</li>
-          <li>При ошибке в статусе соединения теперь показывается, <b>сколько попыток</b> было сделано.</li>
+          <li>Все цены в сообщении клиенту приведены к единому виду — <b>«руб.»</b>. Убраны варианты «рублей», «руб» без точки.</li>
+          <li>В заголовках блоков <b>«Клиент и груз»</b>, <b>«Погрузка»</b>, <b>«Выгрузка»</b> появилась кнопка <b>«Очистить»</b>. Она сбрасывает поля и снимает галочки только в своём блоке.</li>
+          <li>Исправлена <b>кривая обводка</b> вокруг селектора менеджера в шапке — убран лишний фокусный контур.</li>
+          <li>В заявках бригадирам добавлены поля <b>«Лифт»</b> (грузовой / пассажирский / без лифта) и <b>«Этаж»</b>. Если заполнены — попадают в текст заявки.</li>
+          <li>Кнопка <b>✓ «Сделано»</b> в обратной связи теперь убирает запрос из активного списка. Он остаётся в Google Таблице с пометкой ✓.</li>
+          <li>Добавлены фильтры <b>«Активные» / «Архив (сделано)» / «Все»</b> для обратной связи.</li>
+        </ul>
+      </div>
+
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-number">Версия 11.1</div>
+          <div class="version-title">Datalist часов и авто-retry при 404</div>
+          <div class="version-tag archive">Архив</div>
+        </div>
+        <ul class="version-list">
+          <li>Поля часов — автодополнение.</li>
+          <li>Авто-retry при 404.</li>
         </ul>
       </div>
 
@@ -670,10 +739,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="version-tag archive">Архив</div>
         </div>
         <ul class="version-list">
-          <li>Вкладка «Обратная связь» с 4 кнопками статуса.</li>
-          <li>Часовая ставка в шаблоне и в полях ввода (двусторонняя синхронизация).</li>
-          <li>Фильтр по типу расчёта: Итоговые / Предрасчёты / Все.</li>
-          <li>Выпадающий список часов (отдельный select).</li>
+          <li>Вкладка «Обратная связь», часовая ставка, фильтр по типу.</li>
         </ul>
       </div>
 
@@ -683,7 +749,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="version-title">Исправление дат</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list"><li>Формат ts:<code>…</code> в Google Sheets.</li></ul>
+        <ul class="version-list"><li>Формат ts в Google Sheets.</li></ul>
       </div>
 
       <div class="version-card">
@@ -692,21 +758,21 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
           <div class="version-title">Диагностика дашборда</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list"><li>Кнопка «🛠 Диагностика».</li></ul>
+        <ul class="version-list"><li>Кнопка «Диагностика».</li></ul>
       </div>
 
       <div class="version-card">
         <div class="version-header">
           <div class="version-number">Версия 10.4</div>
-          <div class="version-title">Предрасчет, грузчики в сообщении, логотип</div>
+          <div class="version-title">Предрасчет, логотип</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list"><li>Способ оплаты «Предрасчет». Логотип в PDF.</li></ul>
+        <ul class="version-list"><li>Способ оплаты «Предрасчет», логотип в PDF.</li></ul>
       </div>
 
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.3</div><div class="version-title">Поиск городов, грузчики по адресам</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам, детали.</li></ul>
+        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам.</li></ul>
       </div>
 
       <div class="version-card">
@@ -793,20 +859,31 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
       </div>
     </div>
     <div class="card">
-      <div class="card-title">Ошибка 404 при обновлении</div>
+      <div class="card-title">Обратная связь: как работают кнопки статуса</div>
       <ol>
-        <li>Иногда Google на несколько секунд «прячет» развёртывание Apps Script — это нормально, особенно при одновременных запросах от нескольких менеджеров.</li>
-        <li>Начиная с версии 11.1 клиент <b>автоматически повторит запрос</b> 2 раза с паузой около секунды. Если с первого раза 404 — через мгновение всё загрузится.</li>
-        <li>Если ошибка затянулась — нажмите «Загрузить данные заново».</li>
-        <li>Если и это не помогает в течение нескольких минут — проверьте Apps Script: возможно, развёртывание удалено или создана новая версия с другим URL.</li>
+        <li><b>✓ (галочка) — «Сделано».</b> Запрос уходит в <b>архив</b> и больше не виден в фильтре «Активные». В Google Таблице строка остаётся, в столбце «Статус» появляется ✓.</li>
+        <li><b>🕐 (часы) — «В работе».</b> Запрос остаётся в активных, но с жёлтой подсветкой — чтобы вы знали, что взяли его в работу.</li>
+        <li><b>❓ (вопрос) — «Непонятно».</b> Запрос остаётся в активных, с фиолетовой подсветкой — нужно уточнение.</li>
+        <li><b>✗ (крестик) — «Не будет».</b> Запрос остаётся в активных, но с красной подсветкой и уменьшенной прозрачностью — отклонён.</li>
+        <li><b>— (сброс) — сбрасывает статус в пустую строку.</b> Запрос становится «новым», как только что созданный. <b>Строка в Google Таблице не удаляется</b>, просто очищается поле «Статус». Это полезно, если по ошибке нажали не ту кнопку.</li>
       </ol>
     </div>
     <div class="card">
-      <div class="card-title">Логика часовой ставки</div>
+      <div class="card-title">Кнопки очистки блоков</div>
       <ol>
-        <li>Заполнена <b>общая стоимость</b> → часовая = стоимость ÷ часы ÷ человек.</li>
-        <li>Заполнена <b>часовая</b> → общая = ставка × часы × человек.</li>
-        <li>Оба пусты → используется себестоимость.</li>
+        <li><b>Клиент и груз:</b> очищает имя, объём, количество грузчиков.</li>
+        <li><b>Погрузка:</b> сбрасывает город, часы, ставки, клиентские цены, свои грузчики, эвакуатор. Часы возвращаются к значению 2.</li>
+        <li><b>Выгрузка:</b> аналогично.</li>
+        <li>Перед очисткой всегда спрашивает подтверждение — случайно не сбросите.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-title">Обновление сайта на GitHub</div>
+      <ol>
+        <li>Откройте репозиторий → файл <code>index.html</code> → карандаш ✏️.</li>
+        <li>Ctrl+A, удалить старое, вставить новое.</li>
+        <li>Commit changes.</li>
+        <li>Через 1–2 минуты обновите страницу с <b>Ctrl+Shift+R</b> (жёсткое обновление).</li>
       </ol>
     </div>
   </div>
@@ -824,18 +901,10 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
 
 <datalist id="cityList"></datalist>
 <datalist id="hoursList">
-  <option value="1"></option>
-  <option value="1.5"></option>
-  <option value="2"></option>
-  <option value="2.5"></option>
-  <option value="3"></option>
-  <option value="3.5"></option>
-  <option value="4"></option>
-  <option value="5"></option>
-  <option value="6"></option>
-  <option value="8"></option>
-  <option value="10"></option>
-  <option value="12"></option>
+  <option value="1"></option><option value="1.5"></option><option value="2"></option>
+  <option value="2.5"></option><option value="3"></option><option value="3.5"></option>
+  <option value="4"></option><option value="5"></option><option value="6"></option>
+  <option value="8"></option><option value="10"></option><option value="12"></option>
 </datalist>
 
 <script>
@@ -875,22 +944,13 @@ function hourPlural(n) {
   if (l >= 2 && l <= 4) return 'часа';
   return 'часов';
 }
-function pluralRuble(n) {
-  const a = Math.abs(n) % 100, l = a % 10;
-  if (a >= 11 && a <= 19) return 'рублей';
-  if (l === 1) return 'рубль';
-  if (l >= 2 && l <= 4) return 'рубля';
-  return 'рублей';
-}
 
-// ★★ Универсальный fetch с retry для устойчивости к 404
 async function fetchWithRetry(url, options, maxAttempts = 3) {
   let lastError;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       const r = await fetch(url, options);
       if (r.ok) return r;
-      // 404, 429, 5xx — временные, пробуем ещё
       if (r.status === 404 || r.status === 429 || r.status >= 500) {
         lastError = new Error('HTTP ' + r.status);
         if (attempt < maxAttempts) {
@@ -898,7 +958,7 @@ async function fetchWithRetry(url, options, maxAttempts = 3) {
           continue;
         }
       }
-      return r; // другие 4xx — отдаём как есть
+      return r;
     } catch (e) {
       lastError = e;
       if (attempt < maxAttempts) {
@@ -952,7 +1012,6 @@ function validateCity(input) {
   input.classList.toggle('invalid', !ok);
   return ok;
 }
-// ★ Валидация часов (принимает числа, точку и запятую)
 function validateHours(input) {
   const v = String(input.value || '').trim();
   if (!v) { input.classList.remove('invalid'); return true; }
@@ -966,14 +1025,12 @@ function getEffectiveLoaders(direction) {
   const global = num('loaders');
   if (direction === 'Load') {
     if ($('loadersLoadOverride').checked) {
-      const own = num('loadersLoad');
-      if (own > 0) return own;
+      const own = num('loadersLoad'); if (own > 0) return own;
     }
     return global;
   } else {
     if ($('loadersUnloadOverride').checked) {
-      const own = num('loadersUnload');
-      if (own > 0) return own;
+      const own = num('loadersUnload'); if (own > 0) return own;
     }
     return global;
   }
@@ -987,7 +1044,6 @@ function syncClientCost(direction, source) {
   const data = CITY_DATA[city];
   const calcHours = Math.max(hours, data ? data.minHours : 0);
   const people = getEffectiveLoaders(direction);
-
   if (calcHours <= 0 || people <= 0) {
     if (source === 'hourly') totalField.value = '';
     else if (source === 'total') hourlyField.value = '';
@@ -1012,7 +1068,6 @@ function computeValues() {
   const globalLoaders = num('loaders');
   const loadersLoad = getEffectiveLoaders('Load');
   const loadersUnload = getEffectiveLoaders('Unload');
-
   const hoursLoad = num('hoursLoad');
   const hoursUnload = num('hoursUnload');
   const dataLoad = CITY_DATA[cityLoad] || null;
@@ -1030,12 +1085,10 @@ function computeValues() {
 
   const selfLoadGruz = (cityLoad && loadersLoad > 0 && calcHoursLoad > 0) ? rateLoad * loadersLoad * calcHoursLoad : 0;
   const selfUnloadGruz = (cityUnload && loadersUnload > 0 && calcHoursUnload > 0) ? rateUnload * loadersUnload * calcHoursUnload : 0;
-
   const evacSelfLoad = $('evacLoad').checked ? num('evacLoadCostUs') : 0;
   const evacSelfUnload = $('evacUnload').checked ? num('evacUnloadCostUs') : 0;
   const evacClientLoad = $('evacLoad').checked ? num('evacLoadCostClient') : 0;
   const evacClientUnload = $('evacUnload').checked ? num('evacUnloadCostClient') : 0;
-
   const selfLoad = selfLoadGruz + evacSelfLoad;
   const selfUnload = selfUnloadGruz + evacSelfUnload;
 
@@ -1082,6 +1135,7 @@ function calculate() {
   saveState();
 }
 
+// ★ Единый формат "руб." — без склонений
 function buildCalcMessage() {
   const v = computeValues();
   const name = $('clientName').value || 'Клиент';
@@ -1114,8 +1168,8 @@ function buildCalcMessage() {
     if (isPrecalc || people === 0) {
       return '• ' + label + ' в г. ' + city + ' (' + hours + ' ' + hourPlural(hours) + '): ' + fmt(clientCost) + ' руб.';
     }
-    return '• ' + label + ' в г. ' + city + ' (' + hours + ' ' + hourPlural(hours) + ' ' + people + ' ' + humanPlural(people) + ') ' + fmt(clientCost) + ' руб'
-      + (hourly ? ' (' + fmt(hourly) + ' ' + pluralRuble(hourly) + ' 1 человек 1 час)' : '');
+    return '• ' + label + ' в г. ' + city + ' (' + hours + ' ' + hourPlural(hours) + ' ' + people + ' ' + humanPlural(people) + ') ' + fmt(clientCost) + ' руб.'
+      + (hourly ? ' (' + fmt(hourly) + ' руб. 1 человек 1 час)' : '');
   };
 
   const lines = [];
@@ -1137,10 +1191,10 @@ function buildCalcMessage() {
   }
 
   const remainLines = [];
-  if (v.selfLoadGruz > 0) remainLines.push('Погрузка: ' + fmt(v.selfLoadGruz) + ' руб');
-  if (v.evacSelfLoad > 0) remainLines.push('Погрузка эвакуатор: ' + fmt(v.evacSelfLoad) + ' руб');
-  if (v.selfUnloadGruz > 0) remainLines.push('Выгрузка: ' + fmt(v.selfUnloadGruz) + ' руб');
-  if (v.evacSelfUnload > 0) remainLines.push('Выгрузка эвакуатор: ' + fmt(v.evacSelfUnload) + ' руб');
+  if (v.selfLoadGruz > 0) remainLines.push('Погрузка: ' + fmt(v.selfLoadGruz) + ' руб.');
+  if (v.evacSelfLoad > 0) remainLines.push('Погрузка эвакуатор: ' + fmt(v.evacSelfLoad) + ' руб.');
+  if (v.selfUnloadGruz > 0) remainLines.push('Выгрузка: ' + fmt(v.selfUnloadGruz) + ' руб.');
+  if (v.evacSelfUnload > 0) remainLines.push('Выгрузка эвакуатор: ' + fmt(v.evacSelfUnload) + ' руб.');
 
   msg += '\nПосле внесения предоплаты, остаток по адресам:\n\n';
   if (remainLines.length) msg += remainLines.join('\n') + '\n';
@@ -1167,24 +1221,34 @@ function generateBrigadierRequests() {
   const cargo = $('brCargo').value;
   const volume = $('brVolume').value;
 
+  // ★ Погрузка с лифтом и этажом
   const addrL = $('brAddressLoad').value;
+  const liftL = $('brElevatorLoad').value;
+  const floorL = $('brFloorLoad').value;
   const worksL = ['погрузка'];
   if ($('brWorkLoad2').checked) worksL.push('упаковка');
   if ($('brWorkLoad3').checked) worksL.push('разборка');
   const commentL = $('brCommentLoad').value;
   const partsL = ['Сориентируйте почасовую оплату, пожалуйста.', 'Оплата: ' + paymentText, 'Работы: ' + worksL.join('/')];
   if (addrL) partsL.push('Адрес: ' + addrL);
+  if (liftL) partsL.push('Лифт: ' + liftL);
+  if (floorL) partsL.push('Этаж: ' + floorL);
   if (cargo) partsL.push('Груз: ' + cargo);
   if (volume) partsL.push('Объём: ' + volume + ' м³');
   if (commentL) partsL.push('Комментарий: ' + commentL);
   const msgL = partsL.join('\n\n');
 
+  // ★ Выгрузка с лифтом и этажом
   const addrU = $('brAddressUnload').value;
+  const liftU = $('brElevatorUnload').value;
+  const floorU = $('brFloorUnload').value;
   const worksU = ['выгрузка'];
   if ($('brWorkUnload4').checked) worksU.push('сборка');
   const commentU = $('brCommentUnload').value;
   const partsU = ['Сориентируйте почасовую оплату, пожалуйста.', 'Оплата: ' + paymentText, 'Работы: ' + worksU.join('/')];
   if (addrU) partsU.push('Адрес: ' + addrU);
+  if (liftU) partsU.push('Лифт: ' + liftU);
+  if (floorU) partsU.push('Этаж: ' + floorU);
   if (cargo) partsU.push('Груз: ' + cargo);
   if (volume) partsU.push('Объём: ' + volume + ' м³');
   if (commentU) partsU.push('Комментарий: ' + commentU);
@@ -1277,6 +1341,39 @@ function copyMessage() {
 function copyBrLoad() { copyText($('brOutputLoad').textContent, 'Заявка ещё не сформирована'); }
 function copyBrUnload() { copyText($('brOutputUnload').textContent, 'Заявка ещё не сформирована'); }
 function copyBrBoth() { copyText($('brOutputBoth').textContent, 'Заявки ещё не сформированы'); }
+
+// ★ Очистка отдельных блоков
+function clearClientBlock() {
+  if (!confirm('Очистить блок «Клиент и груз»?')) return;
+  $('clientName').value = '';
+  $('volume').value = '';
+  $('loaders').value = '';
+  calculate(); generateMessage();
+}
+function clearLoadBlock() {
+  if (!confirm('Очистить блок «Погрузка»?')) return;
+  ['cityLoad','hoursLoad','rateBrigadierManualLoad','clientCostLoad','clientHourlyLoad',
+   'loadersLoad','evacLoadCostUs','evacLoadCostClient'].forEach(id => {
+    const el = $(id); if (el) el.value = '';
+  });
+  ['loadersLoadOverride','evacLoad'].forEach(id => {
+    const el = $(id); if (el) el.checked = false;
+  });
+  $('hoursLoad').value = '2';
+  updateConditionalBlocks(); calculate(); generateMessage();
+}
+function clearUnloadBlock() {
+  if (!confirm('Очистить блок «Выгрузка»?')) return;
+  ['cityUnload','hoursUnload','rateBrigadierManualUnload','clientCostUnload','clientHourlyUnload',
+   'loadersUnload','evacUnloadCostUs','evacUnloadCostClient'].forEach(id => {
+    const el = $(id); if (el) el.value = '';
+  });
+  ['loadersUnloadOverride','evacUnload'].forEach(id => {
+    const el = $(id); if (el) el.checked = false;
+  });
+  $('hoursUnload').value = '2';
+  updateConditionalBlocks(); calculate(); generateMessage();
+}
 
 function updateConditionalBlocks() {
   $('evacLoadBlock').style.display = $('evacLoad').checked ? 'block' : 'none';
@@ -1561,7 +1658,15 @@ function showDetails(idx) {
 function closeDetailModal() { $('detailModal').classList.remove('open'); }
 document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target.id === 'detailModal') closeDetailModal(); });
 
-// ★ Обратная связь (с retry)
+// ★ Обратная связь с фильтром по статусу
+let feedbackFilter = 'active';
+
+function setFeedbackFilter(f) {
+  feedbackFilter = f;
+  document.querySelectorAll('.fb-filter').forEach(el => el.classList.toggle('active', el.dataset.filter === f));
+  renderFeedback();
+}
+
 async function submitFeedback() {
   const request = $('fbRequest').value.trim();
   const example = $('fbExample').value.trim();
@@ -1595,12 +1700,20 @@ async function refreshFeedback() {
 }
 function renderFeedback() {
   $('fbCount').textContent = FEEDBACK_CACHE.length;
-  if (FEEDBACK_CACHE.length === 0) {
-    $('fbListWrap').innerHTML = '<div class="empty-state">Пока нет запросов. Станьте первым!</div>';
+  let list = FEEDBACK_CACHE.map((fb, i) => ({...fb, _idx: i}));
+  if (feedbackFilter === 'active') list = list.filter(fb => fb.status !== '✓');
+  else if (feedbackFilter === 'archive') list = list.filter(fb => fb.status === '✓');
+  list.sort((a, b) => b.ts - a.ts);
+  if (list.length === 0) {
+    const text = feedbackFilter === 'archive'
+      ? 'Архив пуст — сюда попадают запросы со статусом ✓.'
+      : feedbackFilter === 'active'
+        ? 'Активных запросов нет. Отличная работа!'
+        : 'Пока нет запросов.';
+    $('fbListWrap').innerHTML = '<div class="empty-state">' + text + '</div>';
     return;
   }
-  const sorted = FEEDBACK_CACHE.map((fb, i) => ({...fb, _idx: i})).sort((a, b) => b.ts - a.ts);
-  const html = sorted.map(fb => {
+  const html = list.map(fb => {
     const dateStr = fb.ts ? new Date(fb.ts).toLocaleString('ru-RU') : '—';
     const statusClass = fb.status === '✓' ? 'fb-done'
       : fb.status === '🕐' ? 'fb-progress'
@@ -1611,11 +1724,11 @@ function renderFeedback() {
       <div class="fb-request">${escapeHtml(fb.request)}</div>
       ${fb.example ? `<div class="fb-example"><b>Пример:</b> ${escapeHtml(fb.example)}</div>` : ''}
       <div class="fb-status-row">
-        <button class="fb-status-btn ${fb.status === '✓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✓')" title="Сделано">✓</button>
+        <button class="fb-status-btn ${fb.status === '✓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✓')" title="Сделано — уйдёт в архив">✓</button>
         <button class="fb-status-btn ${fb.status === '🕐' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '🕐')" title="В работе">🕐</button>
         <button class="fb-status-btn ${fb.status === '❓' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '❓')" title="Непонятно">❓</button>
         <button class="fb-status-btn ${fb.status === '✗' ? 'active' : ''}" onclick="setFbStatus(${fb._idx}, '✗')" title="Не будет">✗</button>
-        <button class="fb-status-btn" onclick="setFbStatus(${fb._idx}, '')" title="Сбросить">—</button>
+        <button class="fb-status-btn" onclick="setFbStatus(${fb._idx}, '')" title="Сбросить статус">—</button>
       </div>
     </div>`;
   }).join('');
@@ -1680,7 +1793,7 @@ async function loadFromGoogleSheets() {
     updateDashStatus(); renderDashboard();
   } catch (e) {
     status.className = 'status err';
-    status.textContent = 'Ошибка загрузки: ' + e.message + '. Нажмите «Загрузить данные заново» — обычно помогает со второго раза.';
+    status.textContent = 'Ошибка загрузки: ' + e.message + '. Нажмите «Загрузить данные заново».';
     STATS_CACHE = JSON.parse(localStorage.getItem(STATS_KEY) || '[]'); STATS_SOURCE = 'local';
     updateDashStatus(); renderDashboard();
     console.error(e);
@@ -1694,7 +1807,7 @@ async function testConnection() {
   const t0 = Date.now();
   try {
     const r = await fetchWithRetry(APPS_SCRIPT_URL + '?t=' + Date.now(), { redirect: 'follow' });
-    info.push('HTTP: ' + r.status + ' (за ' + (Date.now() - t0) + ' мс, с учётом retry)');
+    info.push('HTTP: ' + r.status + ' (за ' + (Date.now() - t0) + ' мс)');
     if (r.ok) {
       const data = await r.json();
       if (data.error) info.push('❌ ' + data.error);
@@ -1706,7 +1819,7 @@ async function testConnection() {
         if (data.version) info.push('Apps Script: ' + data.version);
       }
     }
-  } catch (e) { info.push('❌ ' + e.message + ' (после всех попыток)'); }
+  } catch (e) { info.push('❌ ' + e.message); }
   out.innerHTML = info.join('<br>');
 }
 function resetToDefaults() {
@@ -1716,7 +1829,7 @@ function resetToDefaults() {
   $('gsStatus').className = 'status info'; $('gsStatus').textContent = 'Используются встроенные данные.';
 }
 
-const STORAGE_KEY = 'packgo_calc_state_v111';
+const STORAGE_KEY = 'packgo_calc_state_v112';
 const FIELD_IDS = [
   'manager','clientName','volume','loaders',
   'cityLoad','hoursLoad','rateBrigadierManualLoad','selfCostLoad','clientCostLoad','clientHourlyLoad',
@@ -1725,8 +1838,8 @@ const FIELD_IDS = [
   'loadersUnloadOverride','loadersUnload','evacUnload','evacUnloadCostUs','evacUnloadCostClient',
   'paymentMethod',
   'brPayment','brCargo','brVolume',
-  'brAddressLoad','brWorkLoad2','brWorkLoad3','brCommentLoad',
-  'brAddressUnload','brWorkUnload4','brCommentUnload'
+  'brAddressLoad','brElevatorLoad','brFloorLoad','brWorkLoad2','brWorkLoad3','brCommentLoad',
+  'brAddressUnload','brElevatorUnload','brFloorUnload','brWorkUnload4','brCommentUnload'
 ];
 function saveState() {
   const state = {};
