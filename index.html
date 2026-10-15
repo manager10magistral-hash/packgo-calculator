@@ -314,6 +314,20 @@ body.dark .brig-rating-input button.active { background: #78350f; }
 .brig-card-title { display: flex; align-items: center; gap: 10px; }
 .brig-stat-badge { background: var(--accent-bg); color: var(--accent); font-size: 11px;
   font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .dup-group { background: var(--subblock-bg); border: 1px solid var(--subtle-border);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
+.dup-group-title { font-size: 13px; font-weight: 700; color: var(--accent-dark);
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+.dup-variant { display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+.dup-variant:hover { background: var(--checkbox-hover); }
+.dup-variant input[type="radio"] { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); }
+.dup-variant .dup-name { flex: 1; font-size: 14px; color: var(--text-main); }
+.dup-variant .dup-count { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+.dup-variant.canonical { background: #ecfdf5; border: 1px solid #10b981; }
+body.dark .dup-variant.canonical { background: #064e3b; }
+.dup-actions { margin-top: 10px; display: flex; justify-content: flex-end; }
+.dup-empty { text-align: center; padding: 30px; color: var(--text-faint); font-size: 14px; }
 #pdfTemplate { display: none; }
 .pdf-doc { font-family: 'Segoe UI', Arial, sans-serif; color: #1f2937; font-size: 12px;
   line-height: 1.5; background: #fff; }
@@ -686,6 +700,7 @@ body.dark .brig-rating-input button.active { background: #78350f; }
           <option value="region-desc">Регион Я→А</option>
         </select>
         <button class="btn btn-secondary" style="padding:7px 14px; font-size:13px;" onclick="resetBrigFilters()">Сбросить</button>
+        <button class="btn btn-secondary" style="padding:7px 14px; font-size:13px;" onclick="openDuplicatesModal()" title="Найти похожие названия регионов и городов">🔍 Дубликаты</button>
       </div>
       <div id="brigListWrap"><div class="brig-empty">Загрузка…</div></div>
     </div>
@@ -768,6 +783,8 @@ body.dark .brig-rating-input button.active { background: #78350f; }
           <div class="version-tag">Текущая</div>
         </div>
         <ul class="version-list">
+          <li>Кнопка <b>«🔍 Дубликаты»</b> — находит похожие названия регионов и городов с учётом опечаток, сокращений (обл/область) и разного регистра. Для каждой группы можно выбрать основной вариант и объединить.</li>
+          <li>Кнопка <b>«⚡ Объединить всё автоматически»</b> — для каждой группы автоматически выбирает самый частый вариант как основной.</li>
           <li>Фильтры по региону и городу теперь <b>поля ввода с автодополнением</b> — можно печатать начало названия, а не листать длинный список.</li>
           <li>Работает и точный фильтр (выбрали из подсказки), и поиск по подстроке (ввели «Ирк» — покажет все записи с этим вхождением).</li>
           <li>Поля «Город» и «Регион» в модальном окне бригадира тоже получили автодополнение.</li>
@@ -983,7 +1000,21 @@ body.dark .brig-rating-input button.active { background: #78350f; }
     </div>
   </div>
 </div>
-
+<!-- Модальное окно дубликатов регионов/городов -->
+<div class="modal-backdrop" id="dupModal">
+  <div class="modal-content" style="max-width:760px;">
+    <h3>Дубликаты названий</h3>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">
+      Найдены группы похожих названий. Выберите правильный вариант — все записи будут обновлены на него.
+    </p>
+    <div id="dupModalBody"><div class="brig-empty">Поиск…</div></div>
+    <div class="btn-row" style="margin-top:20px; justify-content:space-between;">
+      <button class="btn btn-secondary" onclick="autoMergeAllDuplicates()" title="Для каждой группы выберет самый частый вариант">⚡ Объединить всё автоматически</button>
+      <button class="btn btn-secondary" onclick="closeDuplicatesModal()">Закрыть</button>
+    </div>
+  </div>
+</div>
+  
 <datalist id="cityList"></datalist>
 <datalist id="hoursList">
   <option value="1"></option><option value="1.5"></option><option value="2"></option>
@@ -1919,6 +1950,138 @@ function resetBrigFilters() {
   $('brigFilterRating').value = '';
   $('brigSort').value = 'city-asc';
   renderBrigadiers();
+}
+  // ======================== ПОИСК ДУБЛИКАТОВ ========================
+function collectVariants(fieldName) {
+  const map = new Map(); // нормализованное значение → [{raw, count}, ...]
+  BRIGADIERS_CACHE.forEach(b => {
+    const raw = String(b[fieldName] || '').trim();
+    if (!raw) return;
+    const norm = normalizeGeoName(raw);
+    if (!map.has(norm)) map.set(norm, new Map());
+    const inner = map.get(norm);
+    inner.set(raw, (inner.get(raw) || 0) + 1);
+  });
+  const groups = [];
+  map.forEach((innerMap, norm) => {
+    if (innerMap.size > 1) {
+      const variants = [...innerMap.entries()]
+        .map(([raw, count]) => ({ raw, count }))
+        .sort((a, b) => b.count - a.count || a.raw.localeCompare(b.raw, 'ru'));
+      groups.push({ fieldName, variants });
+    }
+  });
+  return groups;
+}
+
+let dupGroupsCache = [];
+
+function openDuplicatesModal() {
+  dupGroupsCache = [
+    ...collectVariants('region').map(g => ({...g, label: 'Регион'})),
+    ...collectVariants('city').map(g => ({...g, label: 'Город'}))
+  ];
+  renderDuplicatesModal();
+  $('dupModal').classList.add('open');
+}
+function closeDuplicatesModal() { $('dupModal').classList.remove('open'); }
+
+function renderDuplicatesModal() {
+  const body = $('dupModalBody');
+  if (dupGroupsCache.length === 0) {
+    body.innerHTML = '<div class="dup-empty">Дубликатов не найдено — все названия регионов и городов уникальны. 🎉</div>';
+    return;
+  }
+  body.innerHTML = dupGroupsCache.map((g, gi) => {
+    const variantsHtml = g.variants.map((v, vi) => {
+      const checked = vi === 0 ? 'checked' : '';
+      const cls = vi === 0 ? 'dup-variant canonical' : 'dup-variant';
+      return `<label class="${cls}">
+        <input type="radio" name="dup-${gi}" value="${escapeHtml(v.raw)}" ${checked} onchange="markCanonical(${gi}, ${vi})">
+        <span class="dup-name">${escapeHtml(v.raw)}</span>
+        <span class="dup-count">${v.count} ${v.count === 1 ? 'запись' : (v.count >= 2 && v.count <= 4 ? 'записи' : 'записей')}</span>
+      </label>`;
+    }).join('');
+    return `<div class="dup-group" data-gi="${gi}">
+      <div class="dup-group-title">${g.label}: ${g.variants.length} варианта названия</div>
+      ${variantsHtml}
+      <div class="dup-actions">
+        <button class="btn btn-primary" style="padding:6px 14px; font-size:13px;" onclick="mergeDupGroup(${gi})">Объединить в выбранный</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function markCanonical(gi, vi) {
+  const group = document.querySelector(`.dup-group[data-gi="${gi}"]`);
+  if (!group) return;
+  group.querySelectorAll('.dup-variant').forEach((el, i) => {
+    el.classList.toggle('canonical', i === vi);
+  });
+}
+function getSelectedCanonical(gi) {
+  const checked = document.querySelector(`input[name="dup-${gi}"]:checked`);
+  return checked ? checked.value : null;
+}
+
+async function mergeDupGroup(gi) {
+  const g = dupGroupsCache[gi];
+  if (!g) return;
+  const canonical = getSelectedCanonical(gi);
+  if (!canonical) { alert('Выберите основной вариант'); return; }
+  await applyMerge(g.fieldName, g.variants.map(v => v.raw), canonical);
+  // Пересобираем группы
+  dupGroupsCache = [
+    ...collectVariants('region').map(x => ({...x, label: 'Регион'})),
+    ...collectVariants('city').map(x => ({...x, label: 'Город'}))
+  ];
+  renderDuplicatesModal();
+  fillBrigFilterOptions();
+  renderBrigadiers();
+}
+
+async function autoMergeAllDuplicates() {
+  if (dupGroupsCache.length === 0) return;
+  if (!confirm('Объединить все ' + dupGroupsCache.length + ' групп? В каждой будет выбран самый частый вариант.')) return;
+  for (const g of dupGroupsCache) {
+    const canonical = g.variants[0].raw; // самый частый
+    await applyMerge(g.fieldName, g.variants.map(v => v.raw), canonical);
+  }
+  dupGroupsCache = [
+    ...collectVariants('region').map(x => ({...x, label: 'Регион'})),
+    ...collectVariants('city').map(x => ({...x, label: 'Город'}))
+  ];
+  renderDuplicatesModal();
+  fillBrigFilterOptions();
+  renderBrigadiers();
+}
+
+async function applyMerge(fieldName, allVariants, canonical) {
+  // Находим все записи, у которых поле совпадает с любым из вариантов (кроме самого канонического)
+  const toUpdate = BRIGADIERS_CACHE.filter(b => {
+    const val = String(b[fieldName] || '').trim();
+    return val && val !== canonical && allVariants.includes(val);
+  });
+  if (toUpdate.length === 0) return;
+  let ok = 0, fail = 0;
+  for (const b of toUpdate) {
+    const payload = { ...b, [fieldName]: canonical, type: 'brigadier_save' };
+    try {
+      const r = await fetchWithRetry(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      });
+      const data = await r.json();
+      if (data.error) throw new Error(data.error);
+      b[fieldName] = canonical; // обновляем локально
+      ok++;
+    } catch (e) {
+      console.warn('Ошибка обновления:', b.id, e);
+      fail++;
+    }
+  }
+  if (fail > 0) alert('Обновлено: ' + ok + ', ошибок: ' + fail);
 }
 function openBrigadierModal(id) {
   brigEditingId = id || null;
