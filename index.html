@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v12.1</title>
+<title>Pack&Go — Калькулятор v12.2</title>
 <style>
 :root {
   --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
@@ -415,7 +415,7 @@ body.dark .brig-rating-input button.active { background: #78350f; }
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 12.1</div>
+      <div class="version">Версия 12.2</div>
     </div>
   </div>
   <div class="tabs">
@@ -658,12 +658,10 @@ body.dark .brig-rating-input button.active { background: #78350f; }
       </div>
       <div class="brig-toolbar">
         <input type="text" class="brig-search" id="brigSearch" placeholder="🔍 Поиск по имени, телефону, городу…" oninput="renderBrigadiers()">
-        <select class="brig-select" id="brigFilterRegion" onchange="renderBrigadiers()">
-          <option value="">Все регионы</option>
-        </select>
-        <select class="brig-select" id="brigFilterCity" onchange="renderBrigadiers()">
-          <option value="">Все города</option>
-        </select>
+        <input type="text" class="brig-select" id="brigFilterRegion" list="brigRegionsList"
+               placeholder="🔎 Регион…" autocomplete="off" oninput="renderBrigadiers()">
+        <input type="text" class="brig-select" id="brigFilterCity" list="brigCitiesList"
+               placeholder="🔎 Город…" autocomplete="off" oninput="renderBrigadiers()">
         <select class="brig-select" id="brigFilterInvoice" onchange="renderBrigadiers()">
           <option value="">Все / по счёту</option>
           <option value="yes">Работает по счёту</option>
@@ -763,11 +761,24 @@ body.dark .brig-rating-input button.active { background: #78350f; }
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
     <div class="legend-note">Текущая версия — <b>12.1</b>.</div>
     <div class="changelog">
+            <div class="version-card current">
+        <div class="version-header">
+          <div class="version-number">Версия 12.2</div>
+          <div class="version-title">Ручной ввод в фильтрах и нормализация регионов</div>
+          <div class="version-tag">Текущая</div>
+        </div>
+        <ul class="version-list">
+          <li>Фильтры по региону и городу теперь <b>поля ввода с автодополнением</b> — можно печатать начало названия, а не листать длинный список.</li>
+          <li>Работает и точный фильтр (выбрали из подсказки), и поиск по подстроке (ввели «Ирк» — покажет все записи с этим вхождением).</li>
+          <li>Поля «Город» и «Регион» в модальном окне бригадира тоже получили автодополнение.</li>
+          <li>Добавлена <b>автоматическая нормализация</b> названий: «Иркутская обл», «иркутская область» и «Иркутская Область» будут приведены к одному виду, если такой регион уже есть в базе. Это убирает дубликаты из-за опечаток и разного регистра.</li>
+        </ul>
+      </div>
       <div class="version-card current">
         <div class="version-header">
           <div class="version-number">Версия 12.1</div>
           <div class="version-title">Карточки и сортировка в «Бригадирах»</div>
-          <div class="version-tag">Текущая</div>
+          <div class="version-tag archive">Архив</div>
         </div>
         <ul class="version-list">
           <li>Список бригадиров теперь <b>карточками</b> вместо таблицы — нет горизонтальной прокрутки, все данные видны сразу.</li>
@@ -933,8 +944,8 @@ body.dark .brig-rating-input button.active { background: #78350f; }
   <div class="modal-content" style="max-width:640px;">
     <h3 id="brigModalTitle">Новый подрядчик</h3>
     <div class="row-2">
-      <div><label>Город</label><input type="text" id="brigCity" placeholder="Москва"></div>
-      <div><label>Регион / область</label><input type="text" id="brigRegion" placeholder="Московская область"></div>
+      <div><label>Город</label><input type="text" id="brigCity" list="brigCitiesList" autocomplete="off" placeholder="Москва"></div>
+      <div><label>Регион / область</label><input type="text" id="brigRegion" list="brigRegionsList" autocomplete="off" placeholder="Московская область"></div>
     </div>
     <label>Данные подрядчика</label>
     <input type="text" id="brigName" placeholder="Грузчики Иван, Москва">
@@ -981,7 +992,9 @@ body.dark .brig-rating-input button.active { background: #78350f; }
   <option value="8"></option><option value="10"></option><option value="12"></option>
 </datalist>
 <datalist id="floorsList"></datalist>
-
+<datalist id="brigRegionsList"></datalist>
+<datalist id="brigCitiesList"></datalist>
+  
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzYYjN31fmPXHDgdH2fEFBptDD9mXdf71yCjwortsJOKi_NuoneqMEiPiZepMkQ0b_8w/exec';
 
@@ -1026,6 +1039,35 @@ function escapeHtml(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+  // ★ Нормализация названий регионов и городов для борьбы с дубликатами
+function normalizeGeoName(s) {
+  return String(s || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/\bобл\.?\b/g, 'область')
+    .replace(/\bобл\b/g, 'область')
+    .replace(/\bресп\.?\b/g, 'республика')
+    .replace(/\bресп\b/g, 'республика')
+    .replace(/\bобл$/, 'область')
+    .replace(/\bобл\.$/, 'область')
+    .replace(/\bг\./g, '')
+    .replace(/\./g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function findCanonicalRegion(raw) {
+  if (!raw) return raw;
+  const norm = normalizeGeoName(raw);
+  const match = BRIGADIERS_CACHE.find(b => b.region && normalizeGeoName(b.region) === norm);
+  return match ? match.region : raw;
+}
+function findCanonicalCity(raw) {
+  if (!raw) return raw;
+  const norm = normalizeGeoName(raw);
+  const match = BRIGADIERS_CACHE.find(b => b.city && normalizeGeoName(b.city) === norm);
+  return match ? match.city : raw;
+}
 async function fetchWithRetry(url, options, maxAttempts = 3) {
   let lastError;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -1764,14 +1806,12 @@ async function setFbStatus(idx, status) {
 
 // ======================== БРИГАДИРЫ ========================
 function fillBrigFilterOptions() {
-  const regions = [...new Set(BRIGADIERS_CACHE.map(b => b.region).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru'));
-  const cities = [...new Set(BRIGADIERS_CACHE.map(b => b.city).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru'));
-  const rSel = $('brigFilterRegion'), cSel = $('brigFilterCity');
-  const rCur = rSel.value, cCur = cSel.value;
-  rSel.innerHTML = '<option value="">Все регионы</option>' + regions.map(r => `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join('');
-  cSel.innerHTML = '<option value="">Все города</option>' + cities.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-  if (regions.includes(rCur)) rSel.value = rCur;
-  if (cities.includes(cCur)) cSel.value = cCur;
+  const regions = [...new Set(BRIGADIERS_CACHE.map(b => b.region).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'ru'));
+  const cities = [...new Set(BRIGADIERS_CACHE.map(b => b.city).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'ru'));
+  $('brigRegionsList').innerHTML = regions.map(r => `<option value="${escapeHtml(r)}"></option>`).join('');
+  $('brigCitiesList').innerHTML = cities.map(c => `<option value="${escapeHtml(c)}"></option>`).join('');
 }
 function renderBrigadiers() {
   const list = getFilteredBrigadiers();
@@ -1829,14 +1869,22 @@ function renderStars(n) {
 }
 function getFilteredBrigadiers() {
   const q = ($('brigSearch').value || '').trim().toLowerCase();
-  const region = $('brigFilterRegion').value;
-  const city = $('brigFilterCity').value;
+  const regionFilter = ($('brigFilterRegion').value || '').trim().toLowerCase();
+  const cityFilter = ($('brigFilterCity').value || '').trim().toLowerCase();
   const inv = $('brigFilterInvoice').value;
   const minRating = parseInt($('brigFilterRating').value, 10) || 0;
   const sortMode = $('brigSort').value || 'city-asc';
   let list = BRIGADIERS_CACHE.filter(b => {
-    if (region && b.region !== region) return false;
-    if (city && b.city !== city) return false;
+    // Фильтр по региону — точное совпадение (case-insensitive) или вхождение подстроки
+    if (regionFilter) {
+      const val = String(b.region || '').toLowerCase();
+      if (val !== regionFilter && !val.includes(regionFilter)) return false;
+    }
+    // Фильтр по городу
+    if (cityFilter) {
+      const val = String(b.city || '').toLowerCase();
+      if (val !== cityFilter && !val.includes(cityFilter)) return false;
+    }
     if (inv === 'yes' && !b.byInvoice) return false;
     if (inv === 'no' && b.byInvoice) return false;
     if (minRating > 0 && (b.rating || 0) < minRating) return false;
@@ -1864,8 +1912,12 @@ function getFilteredBrigadiers() {
   return list;
 }
 function resetBrigFilters() {
-  $('brigSearch').value = ''; $('brigFilterRegion').value = ''; $('brigFilterCity').value = '';
-  $('brigFilterInvoice').value = ''; $('brigFilterRating').value = ''; $('brigSort').value = 'city-asc';
+  $('brigSearch').value = '';
+  $('brigFilterRegion').value = '';
+  $('brigFilterCity').value = '';
+  $('brigFilterInvoice').value = '';
+  $('brigFilterRating').value = '';
+  $('brigSort').value = 'city-asc';
   renderBrigadiers();
 }
 function openBrigadierModal(id) {
@@ -1905,11 +1957,14 @@ function setBrigRating(n) {
   });
 }
 async function saveBrigadier() {
+  // ★ Применяем нормализацию — если регион/город уже есть в базе, используем канонический вариант
+  const rawCity = $('brigCity').value.trim();
+  const rawRegion = $('brigRegion').value.trim();
   const payload = {
     type: 'brigadier_save',
     id: brigEditingId || '',
-    city: $('brigCity').value.trim(),
-    region: $('brigRegion').value.trim(),
+    city: findCanonicalCity(rawCity) || rawCity,
+    region: findCanonicalRegion(rawRegion) || rawRegion,
     name: $('brigName').value.trim(),
     phone: $('brigPhone').value.trim(),
     byInvoice: $('brigByInvoice').checked,
