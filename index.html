@@ -292,11 +292,36 @@ body.dark .brig-card-actions .del:hover { background: #991b1b; }
 .brig-card-phone { display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
   font-size: 13px; color: var(--text-muted); font-family: 'SF Mono', Monaco, monospace; }
 .brig-card-phone a { color: var(--accent); text-decoration: underline; }
-.brig-tg { display: inline-block; padding: 3px 10px; background: #F59E0B; color: #fff;
-  border-radius: 10px; font-size: 11px; font-weight: 700; text-decoration: none;
-  margin-left: 6px; vertical-align: middle; transition: all 0.15s; white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
-.brig-tg:hover { background: #D97706; transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
+.brig-tg {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #229ED9 !important;
+  color: #ffffff !important;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none !important;
+  margin-left: 6px;
+  vertical-align: middle;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.brig-tg:hover {
+  background: #1a7fb0 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+/* На всякий случай — чтобы никакие общие стили ссылок не перебили цвет */
+.brig-card-phone a.brig-tg,
+.brig-card a.brig-tg,
+a.brig-tg,
+a.brig-tg:visited,
+a.brig-tg:hover,
+a.brig-tg:active,
+a.brig-tg:focus {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
 .brig-card-row { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12px;
   color: var(--text-muted); align-items: center; }
 .brig-card-price { font-family: 'SF Mono', Monaco, monospace; font-weight: 600; color: var(--text-main); }
