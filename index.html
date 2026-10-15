@@ -269,7 +269,8 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
 .brig-toolbar input, .brig-toolbar select { margin-bottom: 0; }
 .brig-toolbar .brig-search { flex: 1; min-width: 200px; }
 .brig-toolbar .brig-select { min-width: 160px; width: auto; }
-.brig-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.brig-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px; }
+.brig-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1100px; }
 .brig-table th { text-align: left; padding: 10px 10px; background: var(--table-header-bg);
   color: var(--text-dim); font-weight: 600; font-size: 11px; text-transform: uppercase;
   letter-spacing: 0.04em; border-bottom: 1px solid var(--table-row-border); }
@@ -1822,10 +1823,10 @@ function renderBrigadiers() {
       </div></td>
     </tr>`;
   }).join('');
-  $('brigListWrap').innerHTML = `<table class="brig-table"><thead><tr>
+  $('brigListWrap').innerHTML = `<div class="brig-table-wrap"><table class="brig-table"><thead><tr>
     <th>Город</th><th>Подрядчик</th><th>Телефон</th><th>По счёту</th>
     <th>Оценка</th><th>Причина</th><th>РС</th><th>Нал</th><th></th>
-  </tr></thead><tbody>${rows}</tbody></table>`;
+  </tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function renderStars(n) {
   let s = '';
