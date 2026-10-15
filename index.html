@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v12.0</title>
+<title>Pack&Go — Калькулятор v12.1</title>
 <style>
 :root {
   --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
@@ -265,40 +265,49 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
   font-size: 16px; font-family: inherit; transition: all 0.2s; }
 .fb-status-btn:hover { border-color: var(--accent); }
 .fb-status-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+/* ★ Бригадиры — карточки */
 .brig-toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
 .brig-toolbar input, .brig-toolbar select { margin-bottom: 0; }
-.brig-toolbar .brig-search { flex: 1; min-width: 200px; }
-.brig-toolbar .brig-select { min-width: 160px; width: auto; }
-.brig-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px; }
-.brig-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1100px; }
-.brig-table th { text-align: left; padding: 10px 10px; background: var(--table-header-bg);
-  color: var(--text-dim); font-weight: 600; font-size: 11px; text-transform: uppercase;
-  letter-spacing: 0.04em; border-bottom: 1px solid var(--table-row-border); }
-.brig-table td { padding: 10px 10px; border-bottom: 1px solid var(--table-row-border);
-  color: var(--text-main); vertical-align: top; }
-.brig-table tr:hover td { background: var(--section-bg); }
-.brig-table .brig-city { font-weight: 600; }
-.brig-table .brig-region { font-size: 11px; color: var(--text-dim); }
-.brig-table .brig-stars { color: #f59e0b; letter-spacing: 1px; font-size: 14px; white-space: nowrap; }
-.brig-table .brig-stars .empty { color: var(--text-faint); }
-.brig-table .brig-invoice-yes { color: #2f855a; font-weight: 600; }
-.brig-table .brig-invoice-no { color: var(--text-faint); }
-.brig-table .brig-price { font-family: 'SF Mono', Monaco, monospace; white-space: nowrap; }
-.brig-table .brig-actions { display: flex; gap: 4px; }
-.brig-table .brig-actions button { padding: 4px 8px; border-radius: 6px; border: none;
-  cursor: pointer; font-family: inherit; font-size: 13px; transition: all 0.2s; }
-.brig-table .brig-actions .edit { background: var(--accent-bg); color: var(--accent); }
-.brig-table .brig-actions .edit:hover { background: var(--checkbox-hover); }
-.brig-table .brig-actions .del { background: #fef2f2; color: #991b1b; }
-.brig-table .brig-actions .del:hover { background: #fee2e2; }
-body.dark .brig-table .brig-actions .del { background: #7f1d1d; color: #fca5a5; }
-body.dark .brig-table .brig-actions .del:hover { background: #991b1b; }
+.brig-toolbar .brig-search { flex: 1; min-width: 180px; }
+.brig-toolbar .brig-select { min-width: 150px; width: auto; }
+.brig-toolbar .brig-sort { min-width: 190px; width: auto; font-weight: 600; }
+.brig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 12px; }
+.brig-card { background: var(--subblock-bg); border: 1px solid var(--subtle-border);
+  border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.brig-card:hover { box-shadow: 0 4px 12px rgba(44,82,130,0.10); border-color: var(--accent); }
+.brig-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.brig-card-city { font-size: 15px; font-weight: 700; color: var(--accent-dark); line-height: 1.2; }
+.brig-card-region { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.brig-card-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.brig-card-actions button { width: 28px; height: 28px; border-radius: 6px; border: none;
+  cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.15s; padding: 0; }
+.brig-card-actions .edit { background: var(--accent-bg); color: var(--accent); }
+.brig-card-actions .edit:hover { background: var(--checkbox-hover); }
+.brig-card-actions .del { background: #fef2f2; color: #991b1b; }
+.brig-card-actions .del:hover { background: #fee2e2; }
+body.dark .brig-card-actions .del { background: #7f1d1d; color: #fca5a5; }
+body.dark .brig-card-actions .del:hover { background: #991b1b; }
+.brig-card-name { font-size: 14px; font-weight: 600; color: var(--text-main);
+  word-break: break-word; line-height: 1.35; }
+.brig-card-phone { font-size: 13px; color: var(--text-muted);
+  font-family: 'SF Mono', Monaco, monospace; word-break: break-all; }
+.brig-card-phone a { color: var(--accent); text-decoration: underline; }
+.brig-card-row { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12px;
+  color: var(--text-muted); align-items: center; }
+.brig-card-price { font-family: 'SF Mono', Monaco, monospace; font-weight: 600; color: var(--text-main); }
+.brig-card-reason { font-size: 12px; color: var(--text-muted); background: var(--card-bg);
+  padding: 6px 10px; border-radius: 6px; border-left: 2px solid var(--accent);
+  word-break: break-word; display: -webkit-box; -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; overflow: hidden; }
+.brig-card-stars { color: #f59e0b; letter-spacing: 1px; font-size: 14px; }
+.brig-card-stars .empty { color: var(--text-faint); }
+.brig-invoice-yes { color: #2f855a; font-weight: 600; font-size: 12px; }
+.brig-invoice-no { color: var(--text-faint); font-size: 12px; }
 .brig-empty { text-align: center; padding: 30px; color: var(--text-faint); font-size: 13px; }
 .brig-rating-input { display: flex; gap: 4px; align-items: center; }
 .brig-rating-input button { width: 32px; height: 32px; border-radius: 6px;
-  border: 1px solid var(--subtle-border); background: var(--card-bg);
-  color: var(--text-faint); cursor: pointer; font-size: 16px;
-  transition: all 0.15s; font-family: inherit; padding: 0; }
+  border: 1px solid var(--subtle-border); background: var(--card-bg); color: var(--text-faint);
+  cursor: pointer; font-size: 16px; transition: all 0.15s; font-family: inherit; padding: 0; }
 .brig-rating-input button.active { color: #f59e0b; border-color: #f59e0b; background: #fffbeb; }
 body.dark .brig-rating-input button.active { background: #78350f; }
 .brig-rating-input button:hover { transform: scale(1.05); }
@@ -342,7 +351,6 @@ body.dark .brig-rating-input button.active { background: #78350f; }
 </style>
 </head>
 <body>
-
 <div id="pdfTemplate">
   <div class="pdf-doc">
     <div class="pdf-header">
@@ -394,7 +402,6 @@ body.dark .brig-rating-input button.active { background: #78350f; }
     </div>
   </div>
 </div>
-
 <div class="app">
   <div class="header">
     <div class="logo">P&amp;G</div>
@@ -408,10 +415,9 @@ body.dark .brig-rating-input button.active { background: #78350f; }
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 12.0</div>
+      <div class="version">Версия 12.1</div>
     </div>
   </div>
-
   <div class="tabs">
     <button class="tab active" data-tab="calc">Калькулятор и сообщение</button>
     <button class="tab" data-tab="brigadier">Заявки бригадирам</button>
@@ -421,7 +427,6 @@ body.dark .brig-rating-input button.active { background: #78350f; }
     <button class="tab" data-tab="changelog">Журнал изменений</button>
     <button class="tab" data-tab="settings">Справка</button>
   </div>
-
   <div class="panel active" id="panel-calc">
     <div class="grid">
       <div>
@@ -443,10 +448,8 @@ body.dark .brig-rating-input button.active { background: #78350f; }
           <label>Город погрузки</label>
           <input type="text" id="cityLoad" list="cityList" placeholder="Начните вводить город…" autocomplete="off">
           <div class="row-2">
-            <div>
-              <label>Часов на погрузку</label>
-              <input type="text" id="hoursLoad" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off">
-            </div>
+            <div><label>Часов на погрузку</label>
+              <input type="text" id="hoursLoad" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off"></div>
             <div><label>Ставка бригадира, ₽/ч</label><input type="text" id="rateBrigadierLoad" readonly></div>
           </div>
           <label>Ручная ставка бригадира, ₽/ч</label>
@@ -456,14 +459,10 @@ body.dark .brig-rating-input button.active { background: #78350f; }
             <div></div>
           </div>
           <div class="row-2" style="margin-top:12px;">
-            <div>
-              <label>Стоимость для клиента, ₽ <span class="hint-inline">(если пусто — себестоимость)</span></label>
-              <input type="number" id="clientCostLoad" class="client-price" placeholder="Например, 8800" oninput="syncClientCost('Load','total')">
-            </div>
-            <div>
-              <label>Ставка для клиента, ₽/ч/чел <span class="hint-inline">(авто или вручную)</span></label>
-              <input type="number" id="clientHourlyLoad" class="client-price" placeholder="Авто" oninput="syncClientCost('Load','hourly')">
-            </div>
+            <div><label>Стоимость для клиента, ₽ <span class="hint-inline">(если пусто — себестоимость)</span></label>
+              <input type="number" id="clientCostLoad" class="client-price" placeholder="Например, 8800" oninput="syncClientCost('Load','total')"></div>
+            <div><label>Ставка для клиента, ₽/ч/чел <span class="hint-inline">(авто или вручную)</span></label>
+              <input type="number" id="clientHourlyLoad" class="client-price" placeholder="Авто" oninput="syncClientCost('Load','hourly')"></div>
           </div>
           <div class="checkbox-row" style="margin-top:12px;">
             <input type="checkbox" id="loadersLoadOverride">
@@ -491,10 +490,8 @@ body.dark .brig-rating-input button.active { background: #78350f; }
           <label>Город выгрузки</label>
           <input type="text" id="cityUnload" list="cityList" placeholder="Начните вводить город…" autocomplete="off">
           <div class="row-2">
-            <div>
-              <label>Часов на выгрузку</label>
-              <input type="text" id="hoursUnload" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off">
-            </div>
+            <div><label>Часов на выгрузку</label>
+              <input type="text" id="hoursUnload" list="hoursList" inputmode="decimal" value="2" placeholder="2" autocomplete="off"></div>
             <div><label>Ставка бригадира, ₽/ч</label><input type="text" id="rateBrigadierUnload" readonly></div>
           </div>
           <label>Ручная ставка бригадира, ₽/ч</label>
@@ -504,14 +501,10 @@ body.dark .brig-rating-input button.active { background: #78350f; }
             <div></div>
           </div>
           <div class="row-2" style="margin-top:12px;">
-            <div>
-              <label>Стоимость для клиента, ₽ <span class="hint-inline">(если пусто — себестоимость)</span></label>
-              <input type="number" id="clientCostUnload" class="client-price" placeholder="Например, 8000" oninput="syncClientCost('Unload','total')">
-            </div>
-            <div>
-              <label>Ставка для клиента, ₽/ч/чел <span class="hint-inline">(авто или вручную)</span></label>
-              <input type="number" id="clientHourlyUnload" class="client-price" placeholder="Авто" oninput="syncClientCost('Unload','hourly')">
-            </div>
+            <div><label>Стоимость для клиента, ₽ <span class="hint-inline">(если пусто — себестоимость)</span></label>
+              <input type="number" id="clientCostUnload" class="client-price" placeholder="Например, 8000" oninput="syncClientCost('Unload','total')"></div>
+            <div><label>Ставка для клиента, ₽/ч/чел <span class="hint-inline">(авто или вручную)</span></label>
+              <input type="number" id="clientHourlyUnload" class="client-price" placeholder="Авто" oninput="syncClientCost('Unload','hourly')"></div>
           </div>
           <div class="checkbox-row" style="margin-top:12px;">
             <input type="checkbox" id="loadersUnloadOverride">
@@ -684,6 +677,16 @@ body.dark .brig-rating-input button.active { background: #78350f; }
           <option value="2">2+ звёзд</option>
           <option value="1">1+ звезда</option>
         </select>
+        <select class="brig-select brig-sort" id="brigSort" onchange="renderBrigadiers()">
+          <option value="city-asc">Сортировка: Город А→Я</option>
+          <option value="city-desc">Город Я→А</option>
+          <option value="rating-desc">Оценка: сначала высокие</option>
+          <option value="rating-asc">Оценка: сначала низкие</option>
+          <option value="name-asc">Имя А→Я</option>
+          <option value="name-desc">Имя Я→А</option>
+          <option value="region-asc">Регион А→Я</option>
+          <option value="region-desc">Регион Я→А</option>
+        </select>
         <button class="btn btn-secondary" style="padding:7px 14px; font-size:13px;" onclick="resetBrigFilters()">Сбросить</button>
       </div>
       <div id="brigListWrap"><div class="brig-empty">Загрузка…</div></div>
@@ -758,137 +761,123 @@ body.dark .brig-rating-input button.active { background: #78350f; }
 
   <div class="panel" id="panel-changelog">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
-    <div class="legend-note">Текущая версия — <b>12.0</b>.</div>
+    <div class="legend-note">Текущая версия — <b>12.1</b>.</div>
     <div class="changelog">
       <div class="version-card current">
         <div class="version-header">
-          <div class="version-number">Версия 12.0</div>
-          <div class="version-title">Раздел «Бригадиры» с фильтрами и редактированием</div>
+          <div class="version-number">Версия 12.1</div>
+          <div class="version-title">Карточки и сортировка в «Бригадирах»</div>
           <div class="version-tag">Текущая</div>
         </div>
         <ul class="version-list">
-          <li>Новая вкладка <b>«Бригадиры»</b> — учёт подрядчиков и бригадиров по городам и регионам.</li>
-          <li>Фильтры: поиск по имени/телефону/городу, регион, город, «Работает по счёту», рейтинг.</li>
-          <li>Столбцы «Город» и «Регион» разделены — фильтрация работает и по городу, и по региону.</li>
-          <li>Полное редактирование: добавить, изменить, удалить подрядчика прямо на сайте через модальное окно.</li>
-          <li>Оценка — интерактивные звёзды (1–5).</li>
-          <li>Данные хранятся в листе <b>«Бригадиры»</b> вашей Google Таблицы.</li>
+          <li>Список бригадиров теперь <b>карточками</b> вместо таблицы — нет горизонтальной прокрутки, все данные видны сразу.</li>
+          <li>Ссылки в поле телефона (например, на Авито) автоматически сокращаются до домена и не ломают вёрстку.</li>
+          <li>Длинная «Причина оценки» обрезается до 3 строк с всплывающей подсказкой.</li>
+          <li>Добавлена <b>сортировка</b>:
+            <br>— по городу (А→Я и Я→А),
+            <br>— по рейтингу (сначала высокие / сначала низкие),
+            <br>— по имени (А→Я и Я→А),
+            <br>— по региону (А→Я и Я→А).
+          </li>
+          <li>Фильтры и сортировка работают одновременно: можно отфильтровать по городу и отсортировать по рейтингу.</li>
         </ul>
       </div>
-
       <div class="version-card">
         <div class="version-header">
-          <div class="version-number">Версия 11.2.1</div>
-          <div class="version-title">Багфикс: обводка, этажи, лимит дашборда</div>
+          <div class="version-number">Версия 12.0</div>
+          <div class="version-title">Раздел «Бригадиры» с фильтрами и редактированием</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list"><li>Исправление обводки менеджера, этажи 1–100, лимит 20 записей в дашборде.</li></ul>
+        <ul class="version-list">
+          <li>Новая вкладка «Бригадиры» — учёт подрядчиков.</li>
+          <li>Фильтры, редактирование, добавление, удаление.</li>
+          <li>Столбцы «Город» и «Регион» разделены.</li>
+        </ul>
       </div>
-
       <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 11.2</div>
-          <div class="version-title">Очистка блоков, лифт/этаж, архив обратной связи</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
+        <div class="version-header"><div class="version-number">Версия 11.2.1</div><div class="version-title">Багфикс: обводка, этажи, лимит дашборда</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Исправление обводки менеджера, этажи 1–100, лимит 20 записей.</li></ul>
+      </div>
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 11.2</div><div class="version-title">Очистка блоков, лифт/этаж, архив обратной связи</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Кнопки «Очистить» для блоков, поля «Лифт» и «Этаж», архив обратной связи.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 11.1</div><div class="version-title">Datalist часов и авто-retry</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Часы с автодополнением, авто-retry при 404.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 11</div><div class="version-title">Обратная связь, часовая ставка, фильтр типов</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Вкладка «Обратная связь», часовая ставка, фильтр по типу расчёта.</li></ul>
+        <ul class="version-list"><li>Вкладка «Обратная связь», часовая ставка, фильтр по типу.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.6</div><div class="version-title">Исправление дат</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Формат ts в Google Sheets.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.5</div><div class="version-title">Диагностика дашборда</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Кнопка «Диагностика».</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.4</div><div class="version-title">Предрасчет, логотип</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Способ оплаты «Предрасчет», логотип в PDF.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.3</div><div class="version-title">Поиск городов, грузчики по адресам</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам, детали расчётов.</li></ul>
+        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.2</div><div class="version-title">PDF-КП</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Экспорт КП в PDF.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.1</div><div class="version-title">Общая статистика</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Статистика через Google Sheets.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10</div><div class="version-title">Дашборд, тёмная тема</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Дашборд, KPI, график, тёмная тема.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 9.2</div><div class="version-title">Выбор менеджера</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Селектор менеджера.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 9.1</div><div class="version-title">Упрощение работ</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Упаковка, разборка, сборка.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 9</div><div class="version-title">Заявки бригадирам</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Вкладка «Заявки бригадирам».</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 8</div><div class="version-title">Себестоимость и клиентские цены</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Разделение себестоимости и цены клиента.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 7</div><div class="version-title">Карточки</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Карточки-блоки.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 6</div><div class="version-title">Google Sheets</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Apps Script.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 5</div><div class="version-title">Перевод в HTML</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Перенос из Google Таблиц.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 4</div><div class="version-title">Эвакуатор</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Две галочки эвакуатора.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 3</div><div class="version-title">Ставка бригадира</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Ставка бригадира.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 2</div><div class="version-title">Способы оплаты</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Счёт и самозанятость.</li></ul>
       </div>
-
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 1</div><div class="version-title">Базовый калькулятор</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Google Таблицы.</li></ul>
@@ -911,29 +900,20 @@ body.dark .brig-rating-input button.active { background: #78350f; }
       <div class="card-title">Бригадиры</div>
       <ol>
         <li>Данные хранятся на листе <b>«Бригадиры»</b> Google Таблицы.</li>
-        <li>Обязательные столбцы: ID, Город, Регион, Данные подрядчика, Контактный номер, Работает по счёту, Личная оценка, Причина оценки, РС, Нал.</li>
-        <li>Столбец <b>ID</b> уникален — например, <code>bg_001</code>, <code>bg_002</code>. Заполните заранее.</li>
-        <li>Город и Регион пишите без скобок: «Москва» и «Московская область» — отдельно.</li>
-        <li>При редактировании через сайт изменения сохраняются в Google Таблицу.</li>
+        <li>Столбцы: ID, Город, Регион, Данные подрядчика, Контактный номер, Работает по счёту, Личная оценка, Причина оценки, РС, Нал.</li>
+        <li>ID — уникальное значение (<code>bg_001</code>, <code>bg_002</code>…).</li>
+        <li>Город и Регион пишите без скобок — отдельно.</li>
+        <li>Сортировка: по городу, рейтингу, имени, региону — плюс фильтры.</li>
       </ol>
     </div>
     <div class="card">
-      <div class="card-title">Обратная связь: как работают кнопки</div>
+      <div class="card-title">Обратная связь</div>
       <ol>
         <li><b>✓ — Сделано.</b> Уходит в архив.</li>
-        <li><b>🕐 — В работе.</b> Остаётся активным, жёлтая подсветка.</li>
-        <li><b>❓ — Непонятно.</b> Остаётся активным, фиолетовая подсветка.</li>
-        <li><b>✗ — Не будет.</b> Остаётся активным, красная подсветка.</li>
-        <li><b>— — Сброс.</b> Очищает статус, запрос возвращается как новый. Строка не удаляется.</li>
-      </ol>
-    </div>
-    <div class="card">
-      <div class="card-title">Обновление сайта на GitHub</div>
-      <ol>
-        <li>Репозиторий → файл <code>index.html</code> → карандаш ✏️.</li>
-        <li>Ctrl+A → удалить → вставить новый код.</li>
-        <li>Commit changes.</li>
-        <li>Через 1–2 минуты обновить страницу с <b>Ctrl+Shift+R</b>.</li>
+        <li><b>🕐 — В работе.</b> Активный, жёлтая подсветка.</li>
+        <li><b>❓ — Непонятно.</b> Активный, фиолетовая подсветка.</li>
+        <li><b>✗ — Не будет.</b> Активный, красная подсветка.</li>
+        <li><b>— — Сброс.</b> Очищает статус, запрос возвращается как новый.</li>
       </ol>
     </div>
   </div>
@@ -1226,7 +1206,6 @@ function calculate() {
   $('badgeUnload').style.color = v.cityUnload ? '#166534' : 'var(--text-dim)';
   saveState();
 }
-
 function buildCalcMessage() {
   const v = computeValues();
   const name = $('clientName').value || 'Клиент';
@@ -1292,7 +1271,6 @@ function buildCalcMessage() {
   msg += 'Вам об этом беспокоиться не нужно';
   return msg;
 }
-
 function generateBrigadierRequests() {
   const payment = $('brPayment').value;
   let paymentText = 'не указана';
@@ -1334,7 +1312,6 @@ function generateBrigadierRequests() {
   $('brOutputBoth').textContent = msgL + '\n\n———\n\n' + msgU;
   saveState();
 }
-
 function fillPdfTemplate() {
   const v = computeValues();
   const name = $('clientName').value || 'Клиент';
@@ -1388,7 +1365,6 @@ function generateMessage() {
   catch (e) { console.error(e); $('messageOutput').textContent = 'Ошибка: ' + e.message; }
 }
 function manualGenerate() { generateMessage(); }
-
 function copyText(text, emptyMsg) {
   if (!text || text.length < 20) { alert(emptyMsg || 'Сначала заполните данные'); return; }
   navigator.clipboard.writeText(text).then(() => alert('Текст скопирован'))
@@ -1804,29 +1780,47 @@ function renderBrigadiers() {
     $('brigListWrap').innerHTML = '<div class="brig-empty">Ничего не найдено. Измените фильтры или добавьте нового подрядчика.</div>';
     return;
   }
-  const rows = list.map(b => {
+  const cards = list.map(b => {
     const stars = renderStars(b.rating);
-    const invoice = b.byInvoice ? '<span class="brig-invoice-yes">✓ Да</span>' : '<span class="brig-invoice-no">— Нет</span>';
-    const region = b.region ? `<div class="brig-region">${escapeHtml(b.region)}</div>` : '';
-    return `<tr>
-      <td><div class="brig-city">${escapeHtml(b.city || '—')}</div>${region}</td>
-      <td>${escapeHtml(b.name || '—')}</td>
-      <td>${escapeHtml(b.phone || '—')}</td>
-      <td>${invoice}</td>
-      <td><span class="brig-stars">${stars}</span></td>
-      <td>${escapeHtml(b.ratingReason || '—')}</td>
-      <td class="brig-price">${escapeHtml(b.priceRS || '—')}</td>
-      <td class="brig-price">${escapeHtml(b.priceNal || '—')}</td>
-      <td><div class="brig-actions">
-        <button class="edit" onclick="openBrigadierModal('${escapeHtml(b.id)}')" title="Редактировать">✎</button>
-        <button class="del" onclick="deleteBrigadier('${escapeHtml(b.id)}')" title="Удалить">🗑</button>
-      </div></td>
-    </tr>`;
+    const invoice = b.byInvoice
+      ? '<span class="brig-invoice-yes">✓ по счёту</span>'
+      : '<span class="brig-invoice-no">— без счёта</span>';
+    const prices = [];
+    if (b.priceRS) prices.push('<span>РС: <span class="brig-card-price">' + escapeHtml(b.priceRS) + '</span></span>');
+    if (b.priceNal) prices.push('<span>Нал: <span class="brig-card-price">' + escapeHtml(b.priceNal) + '</span></span>');
+    const phoneHtml = formatPhoneField(b.phone);
+    return `<div class="brig-card">
+      <div class="brig-card-head">
+        <div>
+          <div class="brig-card-city">${escapeHtml(b.city || 'Без города')}</div>
+          ${b.region ? `<div class="brig-card-region">${escapeHtml(b.region)}</div>` : ''}
+        </div>
+        <div class="brig-card-actions">
+          <button class="edit" onclick="openBrigadierModal('${escapeHtml(b.id)}')" title="Редактировать">✎</button>
+          <button class="del" onclick="deleteBrigadier('${escapeHtml(b.id)}')" title="Удалить">🗑</button>
+        </div>
+      </div>
+      <div class="brig-card-name">${escapeHtml(b.name || '—')}</div>
+      ${phoneHtml ? `<div class="brig-card-phone">${phoneHtml}</div>` : ''}
+      <div class="brig-card-row">
+        <span class="brig-card-stars">${stars}</span>
+        ${invoice}
+      </div>
+      ${prices.length ? `<div class="brig-card-row">${prices.join('')}</div>` : ''}
+      ${b.ratingReason ? `<div class="brig-card-reason" title="${escapeHtml(b.ratingReason)}">${escapeHtml(b.ratingReason)}</div>` : ''}
+    </div>`;
   }).join('');
-  $('brigListWrap').innerHTML = `<div class="brig-table-wrap"><table class="brig-table"><thead><tr>
-    <th>Город</th><th>Подрядчик</th><th>Телефон</th><th>По счёту</th>
-    <th>Оценка</th><th>Причина</th><th>РС</th><th>Нал</th><th></th>
-  </tr></thead><tbody>${rows}</tbody></table></div>`;
+  $('brigListWrap').innerHTML = '<div class="brig-grid">' + cards + '</div>';
+}
+function formatPhoneField(raw) {
+  if (!raw) return '';
+  const s = String(raw).trim();
+  if (/^https?:\/\//i.test(s)) {
+    const m = s.match(/^https?:\/\/([^\/\?#]+)/i);
+    const domain = m ? m[1].replace(/^www\./i, '') : 'ссылка';
+    return `<a href="${escapeHtml(s)}" target="_blank" rel="noopener">${escapeHtml(domain)}</a>`;
+  }
+  return escapeHtml(s);
 }
 function renderStars(n) {
   let s = '';
@@ -1839,7 +1833,8 @@ function getFilteredBrigadiers() {
   const city = $('brigFilterCity').value;
   const inv = $('brigFilterInvoice').value;
   const minRating = parseInt($('brigFilterRating').value, 10) || 0;
-  return BRIGADIERS_CACHE.filter(b => {
+  const sortMode = $('brigSort').value || 'city-asc';
+  let list = BRIGADIERS_CACHE.filter(b => {
     if (region && b.region !== region) return false;
     if (city && b.city !== city) return false;
     if (inv === 'yes' && !b.byInvoice) return false;
@@ -1852,10 +1847,25 @@ function getFilteredBrigadiers() {
     }
     return true;
   });
+  const cmpStr = (a, b) => String(a || '').localeCompare(String(b || ''), 'ru');
+  list.sort((a, b) => {
+    switch (sortMode) {
+      case 'city-asc': return cmpStr(a.city, b.city);
+      case 'city-desc': return cmpStr(b.city, a.city);
+      case 'region-asc': return cmpStr(a.region, b.region);
+      case 'region-desc': return cmpStr(b.region, a.region);
+      case 'name-asc': return cmpStr(a.name, b.name);
+      case 'name-desc': return cmpStr(b.name, a.name);
+      case 'rating-desc': return (b.rating || 0) - (a.rating || 0);
+      case 'rating-asc': return (a.rating || 0) - (b.rating || 0);
+      default: return cmpStr(a.city, b.city);
+    }
+  });
+  return list;
 }
 function resetBrigFilters() {
   $('brigSearch').value = ''; $('brigFilterRegion').value = ''; $('brigFilterCity').value = '';
-  $('brigFilterInvoice').value = ''; $('brigFilterRating').value = '';
+  $('brigFilterInvoice').value = ''; $('brigFilterRating').value = ''; $('brigSort').value = 'city-asc';
   renderBrigadiers();
 }
 function openBrigadierModal(id) {
@@ -2029,7 +2039,7 @@ function resetToDefaults() {
   $('gsStatus').className = 'status info'; $('gsStatus').textContent = 'Используются встроенные данные.';
 }
 
-const STORAGE_KEY = 'packgo_calc_state_v120';
+const STORAGE_KEY = 'packgo_calc_state_v121';
 const FIELD_IDS = [
   'manager','clientName','volume','loaders',
   'cityLoad','hoursLoad','rateBrigadierManualLoad','selfCostLoad','clientCostLoad','clientHourlyLoad',
