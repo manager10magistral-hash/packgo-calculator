@@ -314,6 +314,11 @@ body.dark .brig-rating-input button.active { background: #78350f; }
 .brig-card-title { display: flex; align-items: center; gap: 10px; }
 .brig-stat-badge { background: var(--accent-bg); color: var(--accent); font-size: 11px;
   font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .brig-tg { display: inline-block; padding: 3px 10px; background: #229ED9; color: #fff;
+  border-radius: 10px; font-size: 11px; font-weight: 600; text-decoration: none;
+  margin-left: 6px; vertical-align: middle; transition: all 0.15s; white-space: nowrap; }
+.brig-tg:hover { background: #1a7fb0; transform: translateY(-1px); }
+.brig-card-phone { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
   .dup-group { background: var(--subblock-bg); border: 1px solid var(--subtle-border);
   border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
 .dup-group-title { font-size: 13px; font-weight: 700; color: var(--accent-dark);
@@ -1893,6 +1898,31 @@ function formatPhoneField(raw) {
   }
   return escapeHtml(s);
 }
+  // ★ Приводит любой формат телефона к 11 цифрам (7XXXXXXXXXX) или возвращает ''
+function normalizePhoneDigits(raw) {
+  if (!raw) return '';
+  let digits = String(raw).replace(/\D/g, '');
+  if (!digits) return '';
+  // Полноширинные цифры → обычные (на случай вставки из других источников)
+  digits = digits.replace(/[\uFF10-\uFF19]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0));
+  if (digits.length === 11 && digits[0] === '8') digits = '7' + digits.slice(1);
+  if (digits.length === 10) digits = '7' + digits;
+  return digits;
+}
+
+// Ссылка на Telegram-чат по номеру
+function phoneToTgLink(raw) {
+  const digits = normalizePhoneDigits(raw);
+  if (digits.length !== 11 || digits[0] !== '7') return '';
+  return 'https://t.me/+' + digits;
+}
+
+// Отформатированное отображение номера: +7 XXX XXX-XX-XX
+function formatPhoneDisplay(raw) {
+  const digits = normalizePhoneDigits(raw);
+  if (digits.length !== 11) return String(raw || '').trim();
+  return '+7 ' + digits.slice(1, 4) + ' ' + digits.slice(4, 7) + '-' + digits.slice(7, 9) + '-' + digits.slice(9, 11);
+}
 function renderStars(n) {
   let s = '';
   for (let i = 1; i <= 5; i++) s += (i <= n ? '★' : '<span class="empty">☆</span>');
@@ -1919,10 +1949,19 @@ function getFilteredBrigadiers() {
     if (inv === 'yes' && !b.byInvoice) return false;
     if (inv === 'no' && b.byInvoice) return false;
     if (minRating > 0 && (b.rating || 0) < minRating) return false;
-    if (q) {
+      if (q) {
       const hay = [b.city, b.region, b.name, b.phone, b.ratingReason, b.priceRS, b.priceNal]
         .filter(Boolean).join(' ').toLowerCase();
-      if (!hay.includes(q)) return false;
+      let matched = hay.includes(q);
+      // ★ Поиск по цифрам: если в строке поиска есть цифры, сравниваем и с нормализованным телефоном
+      if (!matched) {
+        const qDigits = q.replace(/\D/g, '');
+        if (qDigits.length >= 3) {
+          const phoneDigits = normalizePhoneDigits(b.phone);
+          if (phoneDigits && phoneDigits.includes(qDigits)) matched = true;
+        }
+      }
+      if (!matched) return false;
     }
     return true;
   });
