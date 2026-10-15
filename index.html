@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v12.2</title>
+<title>Pack&Go — Калькулятор v12.3</title>
 <style>
 :root {
   --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
@@ -270,7 +270,7 @@ body.dark .fb-item.fb-cancel { background: #7f1d1d; }
 .brig-toolbar input, .brig-toolbar select { margin-bottom: 0; }
 .brig-toolbar .brig-search { flex: 1; min-width: 180px; }
 .brig-toolbar .brig-select { min-width: 150px; width: auto; }
-.brig-toolbar .brig-sort { min-width: 190px; width: auto; font-weight: 600; }
+.brig-toolbar .brig-sort { min-width: 200px; width: auto; font-weight: 600; }
 .brig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 12px; }
 .brig-card { background: var(--subblock-bg); border: 1px solid var(--subtle-border);
   border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
@@ -289,9 +289,13 @@ body.dark .brig-card-actions .del { background: #7f1d1d; color: #fca5a5; }
 body.dark .brig-card-actions .del:hover { background: #991b1b; }
 .brig-card-name { font-size: 14px; font-weight: 600; color: var(--text-main);
   word-break: break-word; line-height: 1.35; }
-.brig-card-phone { font-size: 13px; color: var(--text-muted);
-  font-family: 'SF Mono', Monaco, monospace; word-break: break-all; }
+.brig-card-phone { display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  font-size: 13px; color: var(--text-muted); font-family: 'SF Mono', Monaco, monospace; }
 .brig-card-phone a { color: var(--accent); text-decoration: underline; }
+.brig-tg { display: inline-block; padding: 3px 10px; background: #229ED9; color: #fff;
+  border-radius: 10px; font-size: 11px; font-weight: 600; text-decoration: none;
+  margin-left: 6px; vertical-align: middle; transition: all 0.15s; white-space: nowrap; }
+.brig-tg:hover { background: #1a7fb0; transform: translateY(-1px); }
 .brig-card-row { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12px;
   color: var(--text-muted); align-items: center; }
 .brig-card-price { font-family: 'SF Mono', Monaco, monospace; font-weight: 600; color: var(--text-main); }
@@ -314,12 +318,7 @@ body.dark .brig-rating-input button.active { background: #78350f; }
 .brig-card-title { display: flex; align-items: center; gap: 10px; }
 .brig-stat-badge { background: var(--accent-bg); color: var(--accent); font-size: 11px;
   font-weight: 600; padding: 3px 10px; border-radius: 20px; }
-  .brig-tg { display: inline-block; padding: 3px 10px; background: #229ED9; color: #fff;
-  border-radius: 10px; font-size: 11px; font-weight: 600; text-decoration: none;
-  margin-left: 6px; vertical-align: middle; transition: all 0.15s; white-space: nowrap; }
-.brig-tg:hover { background: #1a7fb0; transform: translateY(-1px); }
-.brig-card-phone { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
-  .dup-group { background: var(--subblock-bg); border: 1px solid var(--subtle-border);
+.dup-group { background: var(--subblock-bg); border: 1px solid var(--subtle-border);
   border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
 .dup-group-title { font-size: 13px; font-weight: 700; color: var(--accent-dark);
   margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -434,7 +433,7 @@ body.dark .dup-variant.canonical { background: #064e3b; }
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 12.2</div>
+      <div class="version">Версия 12.3</div>
     </div>
   </div>
   <div class="tabs">
@@ -779,113 +778,104 @@ body.dark .dup-variant.canonical { background: #064e3b; }
 
   <div class="panel" id="panel-changelog">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
-    <div class="legend-note">Текущая версия — <b>12.1</b>.</div>
+    <div class="legend-note">Текущая версия — <b>12.3</b>.</div>
     <div class="changelog">
-            <div class="version-card current">
+      <div class="version-card current">
         <div class="version-header">
-          <div class="version-number">Версия 12.2</div>
-          <div class="version-title">Ручной ввод в фильтрах и нормализация регионов</div>
+          <div class="version-number">Версия 12.3</div>
+          <div class="version-title">Кнопка «Бульк» и умный поиск по телефону</div>
           <div class="version-tag">Текущая</div>
         </div>
         <ul class="version-list">
-          <li>Кнопка <b>«🔍 Дубликаты»</b> — находит похожие названия регионов и городов с учётом опечаток, сокращений (обл/область) и разного регистра. Для каждой группы можно выбрать основной вариант и объединить.</li>
-          <li>Кнопка <b>«⚡ Объединить всё автоматически»</b> — для каждой группы автоматически выбирает самый частый вариант как основной.</li>
-          <li>Фильтры по региону и городу теперь <b>поля ввода с автодополнением</b> — можно печатать начало названия, а не листать длинный список.</li>
-          <li>Работает и точный фильтр (выбрали из подсказки), и поиск по подстроке (ввели «Ирк» — покажет все записи с этим вхождением).</li>
-          <li>Поля «Город» и «Регион» в модальном окне бригадира тоже получили автодополнение.</li>
-          <li>Добавлена <b>автоматическая нормализация</b> названий: «Иркутская обл», «иркутская область» и «Иркутская Область» будут приведены к одному виду, если такой регион уже есть в базе. Это убирает дубликаты из-за опечаток и разного регистра.</li>
+          <li>На каждой карточке бригадира появилась синяя кнопка <b>«Бульк»</b> — открывает чат в Telegram по номеру телефона в формате <code>https://t.me/+7XXXXXXXXXX</code>.</li>
+          <li>Телефоны автоматически приводятся к единому виду при отображении: <code>+7 999 123-45-67</code>. Работает с любым исходным форматом — с 8, с 7, без плюса, с пробелами и тире.</li>
+          <li>Поиск теперь работает и по цифрам: <code>999692</code>, <code>+7 999</code>, <code>8 999</code> — всё найдёт одного и того же подрядчика.</li>
+          <li>Приводить номера к единообразию в Google Таблице вручную <b>не нужно</b> — система нормализует их на лету.</li>
         </ul>
       </div>
-      <div class="version-card current">
+      <div class="version-card">
         <div class="version-header">
-          <div class="version-number">Версия 12.1</div>
-          <div class="version-title">Карточки и сортировка в «Бригадирах»</div>
+          <div class="version-number">Версия 12.2</div>
+          <div class="version-title">Ручной ввод в фильтрах и нормализация регионов</div>
           <div class="version-tag archive">Архив</div>
         </div>
         <ul class="version-list">
-          <li>Список бригадиров теперь <b>карточками</b> вместо таблицы — нет горизонтальной прокрутки, все данные видны сразу.</li>
-          <li>Ссылки в поле телефона (например, на Авито) автоматически сокращаются до домена и не ломают вёрстку.</li>
-          <li>Длинная «Причина оценки» обрезается до 3 строк с всплывающей подсказкой.</li>
-          <li>Добавлена <b>сортировка</b>:
-            <br>— по городу (А→Я и Я→А),
-            <br>— по рейтингу (сначала высокие / сначала низкие),
-            <br>— по имени (А→Я и Я→А),
-            <br>— по региону (А→Я и Я→А).
-          </li>
-          <li>Фильтры и сортировка работают одновременно: можно отфильтровать по городу и отсортировать по рейтингу.</li>
+          <li>Фильтры региона и города — поля ввода с автодополнением.</li>
+          <li>Нормализация названий регионов и городов.</li>
+          <li>Кнопка «🔍 Дубликаты».</li>
         </ul>
       </div>
       <div class="version-card">
         <div class="version-header">
-          <div class="version-number">Версия 12.0</div>
-          <div class="version-title">Раздел «Бригадиры» с фильтрами и редактированием</div>
+          <div class="version-number">Версия 12.1</div>
+          <div class="version-title">Карточки и сортировка</div>
           <div class="version-tag archive">Архив</div>
         </div>
-        <ul class="version-list">
-          <li>Новая вкладка «Бригадиры» — учёт подрядчиков.</li>
-          <li>Фильтры, редактирование, добавление, удаление.</li>
-          <li>Столбцы «Город» и «Регион» разделены.</li>
-        </ul>
+        <ul class="version-list"><li>Карточки вместо таблицы, сортировка.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11.2.1</div><div class="version-title">Багфикс: обводка, этажи, лимит дашборда</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Исправление обводки менеджера, этажи 1–100, лимит 20 записей.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 12.0</div><div class="version-title">Раздел «Бригадиры»</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Новая вкладка «Бригадиры».</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11.2</div><div class="version-title">Очистка блоков, лифт/этаж, архив обратной связи</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Кнопки «Очистить» для блоков, поля «Лифт» и «Этаж», архив обратной связи.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 11.2.1</div><div class="version-title">Багфикс</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Обводка, этажи, лимит.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11.1</div><div class="version-title">Datalist часов и авто-retry</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Часы с автодополнением, авто-retry при 404.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 11.2</div><div class="version-title">Очистка блоков</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Кнопки «Очистить», лифт/этаж, архив ОС.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11</div><div class="version-title">Обратная связь, часовая ставка, фильтр типов</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Вкладка «Обратная связь», часовая ставка, фильтр по типу.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 11.1</div><div class="version-title">Авто-retry</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Автодополнение часов, retry при 404.</li></ul>
+      </div>
+      <div class="version-card">
+        <div class="version-header"><div class="version-number">Версия 11</div><div class="version-title">Обратная связь</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Вкладка ОС, часовая ставка.</li></ul>
       </div>
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 10.6</div><div class="version-title">Исправление дат</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Формат ts в Google Sheets.</li></ul>
+        <ul class="version-list"><li>Формат ts.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.5</div><div class="version-title">Диагностика дашборда</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 10.5</div><div class="version-title">Диагностика</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Кнопка «Диагностика».</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.4</div><div class="version-title">Предрасчет, логотип</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Способ оплаты «Предрасчет», логотип в PDF.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 10.4</div><div class="version-title">Предрасчет</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Способ оплаты «Предрасчет».</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.3</div><div class="version-title">Поиск городов, грузчики по адресам</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 10.3</div><div class="version-title">Поиск городов</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Автодополнение городов, грузчики по адресам.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.2</div><div class="version-title">PDF-КП</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 10.2</div><div class="version-title">PDF</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Экспорт КП в PDF.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.1</div><div class="version-title">Общая статистика</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Статистика через Google Sheets.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 10.1</div><div class="version-title">Статистика</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Общая статистика.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10</div><div class="version-title">Дашборд, тёмная тема</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Дашборд, KPI, график, тёмная тема.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 10</div><div class="version-title">Дашборд</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Дашборд, KPI.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 9.2</div><div class="version-title">Выбор менеджера</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 9.2</div><div class="version-title">Менеджер</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Селектор менеджера.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 9.1</div><div class="version-title">Упрощение работ</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 9.1</div><div class="version-title">Работы</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Упаковка, разборка, сборка.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 9</div><div class="version-title">Заявки бригадирам</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 9</div><div class="version-title">Заявки</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Вкладка «Заявки бригадирам».</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 8</div><div class="version-title">Себестоимость и клиентские цены</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Разделение себестоимости и цены клиента.</li></ul>
+        <div class="version-header"><div class="version-number">Версия 8</div><div class="version-title">Себестоимость</div><div class="version-tag archive">Архив</div></div>
+        <ul class="version-list"><li>Разделение себестоимости и цены.</li></ul>
       </div>
       <div class="version-card">
         <div class="version-header"><div class="version-number">Версия 7</div><div class="version-title">Карточки</div><div class="version-tag archive">Архив</div></div>
@@ -896,7 +886,7 @@ body.dark .dup-variant.canonical { background: #064e3b; }
         <ul class="version-list"><li>Apps Script.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 5</div><div class="version-title">Перевод в HTML</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 5</div><div class="version-title">HTML</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Перенос из Google Таблиц.</li></ul>
       </div>
       <div class="version-card">
@@ -912,7 +902,7 @@ body.dark .dup-variant.canonical { background: #064e3b; }
         <ul class="version-list"><li>Счёт и самозанятость.</li></ul>
       </div>
       <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 1</div><div class="version-title">Базовый калькулятор</div><div class="version-tag archive">Архив</div></div>
+        <div class="version-header"><div class="version-number">Версия 1</div><div class="version-title">Базовый</div><div class="version-tag archive">Архив</div></div>
         <ul class="version-list"><li>Google Таблицы.</li></ul>
       </div>
     </div>
@@ -934,9 +924,9 @@ body.dark .dup-variant.canonical { background: #064e3b; }
       <ol>
         <li>Данные хранятся на листе <b>«Бригадиры»</b> Google Таблицы.</li>
         <li>Столбцы: ID, Город, Регион, Данные подрядчика, Контактный номер, Работает по счёту, Личная оценка, Причина оценки, РС, Нал.</li>
-        <li>ID — уникальное значение (<code>bg_001</code>, <code>bg_002</code>…).</li>
-        <li>Город и Регион пишите без скобок — отдельно.</li>
-        <li>Сортировка: по городу, рейтингу, имени, региону — плюс фильтры.</li>
+        <li>Кнопка <b>«Бульк»</b> на карточке открывает чат в Telegram по номеру — формат ссылки <code>https://t.me/+7XXXXXXXXXX</code>.</li>
+        <li>Телефоны можно вводить в любом формате — система сама приведёт к единому виду.</li>
+        <li>Кнопка <b>«🔍 Дубликаты»</b> находит похожие названия регионов и городов и позволяет объединить.</li>
       </ol>
     </div>
     <div class="card">
@@ -1005,7 +995,7 @@ body.dark .dup-variant.canonical { background: #064e3b; }
     </div>
   </div>
 </div>
-<!-- Модальное окно дубликатов регионов/городов -->
+
 <div class="modal-backdrop" id="dupModal">
   <div class="modal-content" style="max-width:760px;">
     <h3>Дубликаты названий</h3>
@@ -1019,7 +1009,7 @@ body.dark .dup-variant.canonical { background: #064e3b; }
     </div>
   </div>
 </div>
-  
+
 <datalist id="cityList"></datalist>
 <datalist id="hoursList">
   <option value="1"></option><option value="1.5"></option><option value="2"></option>
@@ -1030,7 +1020,7 @@ body.dark .dup-variant.canonical { background: #064e3b; }
 <datalist id="floorsList"></datalist>
 <datalist id="brigRegionsList"></datalist>
 <datalist id="brigCitiesList"></datalist>
-  
+
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzYYjN31fmPXHDgdH2fEFBptDD9mXdf71yCjwortsJOKi_NuoneqMEiPiZepMkQ0b_8w/exec';
 
@@ -1075,35 +1065,6 @@ function escapeHtml(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-  // ★ Нормализация названий регионов и городов для борьбы с дубликатами
-function normalizeGeoName(s) {
-  return String(s || '')
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, ' ')
-    .replace(/\bобл\.?\b/g, 'область')
-    .replace(/\bобл\b/g, 'область')
-    .replace(/\bресп\.?\b/g, 'республика')
-    .replace(/\bресп\b/g, 'республика')
-    .replace(/\bобл$/, 'область')
-    .replace(/\bобл\.$/, 'область')
-    .replace(/\bг\./g, '')
-    .replace(/\./g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-function findCanonicalRegion(raw) {
-  if (!raw) return raw;
-  const norm = normalizeGeoName(raw);
-  const match = BRIGADIERS_CACHE.find(b => b.region && normalizeGeoName(b.region) === norm);
-  return match ? match.region : raw;
-}
-function findCanonicalCity(raw) {
-  if (!raw) return raw;
-  const norm = normalizeGeoName(raw);
-  const match = BRIGADIERS_CACHE.find(b => b.city && normalizeGeoName(b.city) === norm);
-  return match ? match.city : raw;
-}
 async function fetchWithRetry(url, options, maxAttempts = 3) {
   let lastError;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -1462,7 +1423,6 @@ function copyMessage() {
 function copyBrLoad() { copyText($('brOutputLoad').textContent, 'Заявка ещё не сформирована'); }
 function copyBrUnload() { copyText($('brOutputUnload').textContent, 'Заявка ещё не сформирована'); }
 function copyBrBoth() { copyText($('brOutputBoth').textContent, 'Заявки ещё не сформированы'); }
-
 function clearClientBlock() {
   if (!confirm('Очистить блок «Клиент и груз»?')) return;
   $('clientName').value = ''; $('volume').value = ''; $('loaders').value = '';
@@ -1849,6 +1809,7 @@ function fillBrigFilterOptions() {
   $('brigRegionsList').innerHTML = regions.map(r => `<option value="${escapeHtml(r)}"></option>`).join('');
   $('brigCitiesList').innerHTML = cities.map(c => `<option value="${escapeHtml(c)}"></option>`).join('');
 }
+
 function renderBrigadiers() {
   const list = getFilteredBrigadiers();
   $('brigStatsBadge').textContent = list.length + ' из ' + BRIGADIERS_CACHE.length;
@@ -1864,7 +1825,18 @@ function renderBrigadiers() {
     const prices = [];
     if (b.priceRS) prices.push('<span>РС: <span class="brig-card-price">' + escapeHtml(b.priceRS) + '</span></span>');
     if (b.priceNal) prices.push('<span>Нал: <span class="brig-card-price">' + escapeHtml(b.priceNal) + '</span></span>');
-    const phoneHtml = formatPhoneField(b.phone);
+
+    const rawPhone = String(b.phone || '').trim();
+    const phoneDisplay = formatPhoneDisplay(rawPhone);
+    const tgLink = phoneToTgLink(rawPhone);
+    let phoneBlock = '';
+    if (phoneDisplay || tgLink) {
+      phoneBlock = '<div class="brig-card-phone">';
+      if (phoneDisplay) phoneBlock += '<span>' + escapeHtml(phoneDisplay) + '</span>';
+      if (tgLink) phoneBlock += '<a class="brig-tg" href="' + tgLink + '" target="_blank" rel="noopener" title="Написать в Telegram">Бульк</a>';
+      phoneBlock += '</div>';
+    }
+
     return `<div class="brig-card">
       <div class="brig-card-head">
         <div>
@@ -1877,7 +1849,7 @@ function renderBrigadiers() {
         </div>
       </div>
       <div class="brig-card-name">${escapeHtml(b.name || '—')}</div>
-      ${phoneHtml ? `<div class="brig-card-phone">${phoneHtml}</div>` : ''}
+      ${phoneBlock}
       <div class="brig-card-row">
         <span class="brig-card-stars">${stars}</span>
         ${invoice}
@@ -1888,41 +1860,28 @@ function renderBrigadiers() {
   }).join('');
   $('brigListWrap').innerHTML = '<div class="brig-grid">' + cards + '</div>';
 }
-function formatPhoneField(raw) {
-  if (!raw) return '';
-  const s = String(raw).trim();
-  if (/^https?:\/\//i.test(s)) {
-    const m = s.match(/^https?:\/\/([^\/\?#]+)/i);
-    const domain = m ? m[1].replace(/^www\./i, '') : 'ссылка';
-    return `<a href="${escapeHtml(s)}" target="_blank" rel="noopener">${escapeHtml(domain)}</a>`;
-  }
-  return escapeHtml(s);
-}
-  // ★ Приводит любой формат телефона к 11 цифрам (7XXXXXXXXXX) или возвращает ''
+
+// ★ Приводит любой формат телефона к 11 цифрам (7XXXXXXXXXX) или возвращает ''
 function normalizePhoneDigits(raw) {
   if (!raw) return '';
   let digits = String(raw).replace(/\D/g, '');
   if (!digits) return '';
-  // Полноширинные цифры → обычные (на случай вставки из других источников)
   digits = digits.replace(/[\uFF10-\uFF19]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0));
   if (digits.length === 11 && digits[0] === '8') digits = '7' + digits.slice(1);
   if (digits.length === 10) digits = '7' + digits;
   return digits;
 }
-
-// Ссылка на Telegram-чат по номеру
 function phoneToTgLink(raw) {
   const digits = normalizePhoneDigits(raw);
   if (digits.length !== 11 || digits[0] !== '7') return '';
-  return 'https://t.me/+' + digits;
+  return 'https://t.me/+7' + digits.slice(1);
 }
-
-// Отформатированное отображение номера: +7 XXX XXX-XX-XX
 function formatPhoneDisplay(raw) {
   const digits = normalizePhoneDigits(raw);
   if (digits.length !== 11) return String(raw || '').trim();
   return '+7 ' + digits.slice(1, 4) + ' ' + digits.slice(4, 7) + '-' + digits.slice(7, 9) + '-' + digits.slice(9, 11);
 }
+
 function renderStars(n) {
   let s = '';
   for (let i = 1; i <= 5; i++) s += (i <= n ? '★' : '<span class="empty">☆</span>');
@@ -1936,12 +1895,10 @@ function getFilteredBrigadiers() {
   const minRating = parseInt($('brigFilterRating').value, 10) || 0;
   const sortMode = $('brigSort').value || 'city-asc';
   let list = BRIGADIERS_CACHE.filter(b => {
-    // Фильтр по региону — точное совпадение (case-insensitive) или вхождение подстроки
     if (regionFilter) {
       const val = String(b.region || '').toLowerCase();
       if (val !== regionFilter && !val.includes(regionFilter)) return false;
     }
-    // Фильтр по городу
     if (cityFilter) {
       const val = String(b.city || '').toLowerCase();
       if (val !== cityFilter && !val.includes(cityFilter)) return false;
@@ -1949,11 +1906,10 @@ function getFilteredBrigadiers() {
     if (inv === 'yes' && !b.byInvoice) return false;
     if (inv === 'no' && b.byInvoice) return false;
     if (minRating > 0 && (b.rating || 0) < minRating) return false;
-      if (q) {
+    if (q) {
       const hay = [b.city, b.region, b.name, b.phone, b.ratingReason, b.priceRS, b.priceNal]
         .filter(Boolean).join(' ').toLowerCase();
       let matched = hay.includes(q);
-      // ★ Поиск по цифрам: если в строке поиска есть цифры, сравниваем и с нормализованным телефоном
       if (!matched) {
         const qDigits = q.replace(/\D/g, '');
         if (qDigits.length >= 3) {
@@ -1990,9 +1946,38 @@ function resetBrigFilters() {
   $('brigSort').value = 'city-asc';
   renderBrigadiers();
 }
-  // ======================== ПОИСК ДУБЛИКАТОВ ========================
+
+// ★ Нормализация названий
+function normalizeGeoName(s) {
+  return String(s || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/\bобл\.?\b/g, 'область')
+    .replace(/\bобл\b/g, 'область')
+    .replace(/\bресп\.?\b/g, 'республика')
+    .replace(/\bресп\b/g, 'республика')
+    .replace(/\bг\./g, '')
+    .replace(/\./g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function findCanonicalRegion(raw) {
+  if (!raw) return raw;
+  const norm = normalizeGeoName(raw);
+  const match = BRIGADIERS_CACHE.find(b => b.region && normalizeGeoName(b.region) === norm);
+  return match ? match.region : raw;
+}
+function findCanonicalCity(raw) {
+  if (!raw) return raw;
+  const norm = normalizeGeoName(raw);
+  const match = BRIGADIERS_CACHE.find(b => b.city && normalizeGeoName(b.city) === norm);
+  return match ? match.city : raw;
+}
+
+// ======================== ПОИСК ДУБЛИКАТОВ ========================
 function collectVariants(fieldName) {
-  const map = new Map(); // нормализованное значение → [{raw, count}, ...]
+  const map = new Map();
   BRIGADIERS_CACHE.forEach(b => {
     const raw = String(b[fieldName] || '').trim();
     if (!raw) return;
@@ -2012,9 +1997,7 @@ function collectVariants(fieldName) {
   });
   return groups;
 }
-
 let dupGroupsCache = [];
-
 function openDuplicatesModal() {
   dupGroupsCache = [
     ...collectVariants('region').map(g => ({...g, label: 'Регион'})),
@@ -2024,7 +2007,6 @@ function openDuplicatesModal() {
   $('dupModal').classList.add('open');
 }
 function closeDuplicatesModal() { $('dupModal').classList.remove('open'); }
-
 function renderDuplicatesModal() {
   const body = $('dupModalBody');
   if (dupGroupsCache.length === 0) {
@@ -2061,14 +2043,12 @@ function getSelectedCanonical(gi) {
   const checked = document.querySelector(`input[name="dup-${gi}"]:checked`);
   return checked ? checked.value : null;
 }
-
 async function mergeDupGroup(gi) {
   const g = dupGroupsCache[gi];
   if (!g) return;
   const canonical = getSelectedCanonical(gi);
   if (!canonical) { alert('Выберите основной вариант'); return; }
   await applyMerge(g.fieldName, g.variants.map(v => v.raw), canonical);
-  // Пересобираем группы
   dupGroupsCache = [
     ...collectVariants('region').map(x => ({...x, label: 'Регион'})),
     ...collectVariants('city').map(x => ({...x, label: 'Город'}))
@@ -2077,12 +2057,11 @@ async function mergeDupGroup(gi) {
   fillBrigFilterOptions();
   renderBrigadiers();
 }
-
 async function autoMergeAllDuplicates() {
   if (dupGroupsCache.length === 0) return;
   if (!confirm('Объединить все ' + dupGroupsCache.length + ' групп? В каждой будет выбран самый частый вариант.')) return;
   for (const g of dupGroupsCache) {
-    const canonical = g.variants[0].raw; // самый частый
+    const canonical = g.variants[0].raw;
     await applyMerge(g.fieldName, g.variants.map(v => v.raw), canonical);
   }
   dupGroupsCache = [
@@ -2093,9 +2072,7 @@ async function autoMergeAllDuplicates() {
   fillBrigFilterOptions();
   renderBrigadiers();
 }
-
 async function applyMerge(fieldName, allVariants, canonical) {
-  // Находим все записи, у которых поле совпадает с любым из вариантов (кроме самого канонического)
   const toUpdate = BRIGADIERS_CACHE.filter(b => {
     const val = String(b[fieldName] || '').trim();
     return val && val !== canonical && allVariants.includes(val);
@@ -2113,7 +2090,7 @@ async function applyMerge(fieldName, allVariants, canonical) {
       });
       const data = await r.json();
       if (data.error) throw new Error(data.error);
-      b[fieldName] = canonical; // обновляем локально
+      b[fieldName] = canonical;
       ok++;
     } catch (e) {
       console.warn('Ошибка обновления:', b.id, e);
@@ -2122,6 +2099,7 @@ async function applyMerge(fieldName, allVariants, canonical) {
   }
   if (fail > 0) alert('Обновлено: ' + ok + ', ошибок: ' + fail);
 }
+
 function openBrigadierModal(id) {
   brigEditingId = id || null;
   if (id) {
@@ -2159,7 +2137,6 @@ function setBrigRating(n) {
   });
 }
 async function saveBrigadier() {
-  // ★ Применяем нормализацию — если регион/город уже есть в базе, используем канонический вариант
   const rawCity = $('brigCity').value.trim();
   const rawRegion = $('brigRegion').value.trim();
   const payload = {
@@ -2296,7 +2273,7 @@ function resetToDefaults() {
   $('gsStatus').className = 'status info'; $('gsStatus').textContent = 'Используются встроенные данные.';
 }
 
-const STORAGE_KEY = 'packgo_calc_state_v121';
+const STORAGE_KEY = 'packgo_calc_state_v123';
 const FIELD_IDS = [
   'manager','clientName','volume','loaders',
   'cityLoad','hoursLoad','rateBrigadierManualLoad','selfCostLoad','clientCostLoad','clientHourlyLoad',
