@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v12.3</title>
+<title>Pack&Go — Калькулятор v12.4</title>
 <style>
 :root {
   --body-bg: linear-gradient(135deg, #eef2f7 0%, #e2eaf3 100%);
@@ -311,7 +311,6 @@ body.dark .brig-card-actions .del:hover { background: #991b1b; }
   color: #ffffff !important;
   transform: translateY(-1px);
 }
-/* На всякий случай — чтобы никакие общие стили ссылок не перебили цвет */
 .brig-card-phone a.brig-tg,
 .brig-card a.brig-tg,
 a.brig-tg,
@@ -459,7 +458,7 @@ body.dark .dup-variant.canonical { background: #064e3b; }
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 12.3</div>
+      <div class="version">Версия 12.4</div>
     </div>
   </div>
   <div class="tabs">
@@ -578,6 +577,50 @@ body.dark .dup-variant.canonical { background: #064e3b; }
             <option value="Оплата по счёту">Оплата по счёту</option>
             <option value="Оплата по самозанятости">Оплата по самозанятости</option>
           </select>
+        </div>
+        <!-- ★ NEW v12.4: Дополнительно в сообщении -->
+        <div class="card">
+          <div class="card-title">Дополнительно в сообщении</div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="attachRequestText">
+            <label for="attachRequestText">Добавить текст про заявку на погрузо-разгрузочные работы</label>
+          </div>
+          <div class="checkbox-row" style="margin-top:10px;">
+            <input type="checkbox" id="showSupportManager">
+            <label for="showSupportManager">Указывать менеджера по сопровождению с номером</label>
+          </div>
+          <div class="subblock" id="supportManagerBlock" style="display:none;">
+            <label>Формат</label>
+            <select id="supportManagerMode">
+              <option value="unified">Один менеджер для погрузки и выгрузки</option>
+              <option value="separate">Отдельно на погрузку и на выгрузку</option>
+            </select>
+            <div id="supportManagerUnifiedBlock">
+              <label>Менеджер</label>
+              <select id="supportManagerUnified">
+                <option value="Полина">Полина (+7 923 000 20 23)</option>
+                <option value="Александр">Александр (+7 923 000 42 20)</option>
+              </select>
+            </div>
+            <div id="supportManagerSeparateBlock" style="display:none;">
+              <div class="row-2">
+                <div>
+                  <label>На погрузку</label>
+                  <select id="supportManagerLoad">
+                    <option value="Полина">Полина (+7 923 000 20 23)</option>
+                    <option value="Александр">Александр (+7 923 000 42 20)</option>
+                  </select>
+                </div>
+                <div>
+                  <label>На выгрузку</label>
+                  <select id="supportManagerUnload">
+                    <option value="Полина">Полина (+7 923 000 20 23)</option>
+                    <option value="Александр">Александр (+7 923 000 42 20)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div>
@@ -804,13 +847,25 @@ body.dark .dup-variant.canonical { background: #064e3b; }
 
   <div class="panel" id="panel-changelog">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
-    <div class="legend-note">Текущая версия — <b>12.3</b>.</div>
+    <div class="legend-note">Текущая версия — <b>12.4</b>.</div>
     <div class="changelog">
       <div class="version-card current">
         <div class="version-header">
+          <div class="version-number">Версия 12.4</div>
+          <div class="version-title">Менеджер по сопровождению и заявка на ПГР</div>
+          <div class="version-tag">Текущая</div>
+        </div>
+        <ul class="version-list">
+          <li>В сообщение клиенту добавлен блок <b>«Менеджер по сопровождению»</b> — галочка, режим «единый / отдельно на погрузку и выгрузку» и выбор менеджера (Полина или Александр). Номер подставляется автоматически.</li>
+          <li>В сообщение клиенту добавлен текст <b>про заявку на погрузо-разгрузочные работы</b> — по галочке, между блоком остатка и реквизитами.</li>
+          <li>В предрасчёте оба текста встраиваются перед финальным вопросом «Как вам наше предложение?».</li>
+        </ul>
+      </div>
+      <div class="version-card">
+        <div class="version-header">
           <div class="version-number">Версия 12.3</div>
           <div class="version-title">Кнопка «Бульк» и умный поиск по телефону</div>
-          <div class="version-tag">Текущая</div>
+          <div class="version-tag archive">Архив</div>
         </div>
         <ul class="version-list">
           <li>На каждой карточке бригадира появилась синяя кнопка <b>«Бульк»</b> — открывает чат в Telegram по номеру телефона в формате <code>https://t.me/+7XXXXXXXXXX</code>.</li>
@@ -1060,6 +1115,14 @@ const DEFAULT_REQUISITES = {
   'Оплата по счёту':         'Реквизиты для оплаты по счёту:\nООО «Pack&Go»\nИНН 0000000000\nКПП 000000000\nР/с 00000000000000000000\nБанк: ...',
   'Оплата по самозанятости': 'Реквизиты для оплаты самозанятому:\nФИО: Иванов И.И.\nИНН: 000000000000\nТелефон: +7 (900) 000-00-00'
 };
+
+// ★ NEW v12.4 — менеджеры по сопровождению
+const SUPPORT_MANAGER_PHONES = {
+  'Полина': '+7 923 000 20 23',
+  'Александр': '+7 923 000 42 20'
+};
+const ATTACH_REQUEST_TEXT = 'Прикрепляю заявку на предоставление погрузо-разгрузочных работ. Ее необходимо подписать и отправить скан (или фото в хорошем качестве) ответным сообщением';
+
 let CITY_DATA = JSON.parse(JSON.stringify(DEFAULT_CITY_DATA));
 let REQUISITES = JSON.parse(JSON.stringify(DEFAULT_REQUISITES));
 let STATS_CACHE = [];
@@ -1089,6 +1152,29 @@ function hourPlural(n) {
 }
 function escapeHtml(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ★ NEW v12.4 — текст с менеджером по сопровождению
+function getSupportManagerText() {
+  if (!$('showSupportManager') || !$('showSupportManager').checked) return '';
+  const cityLoad = normalizeCity($('cityLoad').value);
+  const cityUnload = normalizeCity($('cityUnload').value);
+  if (!cityLoad && !cityUnload) return '';
+  const mode = $('supportManagerMode').value;
+  if (mode === 'unified') {
+    const m = $('supportManagerUnified').value;
+    return 'Ваш менеджер по сопровождению ' + m + ' ' + (SUPPORT_MANAGER_PHONES[m] || '');
+  }
+  const lines = [];
+  if (cityLoad) {
+    const ml = $('supportManagerLoad').value;
+    lines.push('Ваш менеджер по сопровождению на погрузке ' + ml + ' ' + (SUPPORT_MANAGER_PHONES[ml] || ''));
+  }
+  if (cityUnload) {
+    const mu = $('supportManagerUnload').value;
+    lines.push('Ваш менеджер по сопровождению на выгрузке ' + mu + ' ' + (SUPPORT_MANAGER_PHONES[mu] || ''));
+  }
+  return lines.join('\n');
 }
 
 async function fetchWithRetry(url, options, maxAttempts = 3) {
@@ -1315,6 +1401,13 @@ function buildCalcMessage() {
     msg += '\nПо времени погрузки и выгрузки мы самостоятельно информируем грузчиков.\n';
     msg += 'У нас будет связь и с вашим менеджером по сопровождению, и с водителем.\n';
     msg += 'Вам об этом беспокоиться не нужно\n\n';
+    // ★ NEW v12.4 — заявка на ПГР в предрасчёте
+    if ($('attachRequestText').checked) {
+      msg += ATTACH_REQUEST_TEXT + '\n\n';
+    }
+    // ★ NEW v12.4 — менеджер по сопровождению в предрасчёте
+    const smPrecalc = getSupportManagerText();
+    if (smPrecalc) msg += smPrecalc + '\n\n';
     msg += 'Как вам наше предложение?';
     return msg;
   }
@@ -1325,6 +1418,10 @@ function buildCalcMessage() {
   if (v.evacSelfUnload > 0) remainLines.push('Выгрузка эвакуатор: ' + fmt(v.evacSelfUnload) + ' руб.');
   msg += '\nПосле внесения предоплаты, остаток по адресам:\n\n';
   if (remainLines.length) msg += remainLines.join('\n') + '\n';
+  // ★ NEW v12.4 — заявка на ПГР: после остатка, перед реквизитами
+  if ($('attachRequestText').checked) {
+    msg += '\n' + ATTACH_REQUEST_TEXT + '\n';
+  }
   if (paymentMethod === 'Оплата по счёту') msg += '\nПредоплату необходимо внести по ссылке\n\n';
   else msg += '\nПредоплату необходимо внести по следующим реквизитам\n\n';
   if (paymentMethod && REQUISITES[paymentMethod]) msg += REQUISITES[paymentMethod] + '\n\n';
@@ -1334,6 +1431,9 @@ function buildCalcMessage() {
   msg += '\nПо времени погрузки и выгрузки мы самостоятельно информируем грузчиков.\n';
   msg += 'У нас будет связь и с вашим менеджером по сопровождению, и с водителем.\n';
   msg += 'Вам об этом беспокоиться не нужно';
+  // ★ NEW v12.4 — менеджер по сопровождению в самом конце
+  const smFinal = getSupportManagerText();
+  if (smFinal) msg += '\n\n' + smFinal;
   return msg;
 }
 function generateBrigadierRequests() {
@@ -1483,6 +1583,14 @@ function updateConditionalBlocks() {
   $('evacUnloadBlock').style.display = $('evacUnload').checked ? 'block' : 'none';
   $('loadersLoadBlock').style.display = $('loadersLoadOverride').checked ? 'block' : 'none';
   $('loadersUnloadBlock').style.display = $('loadersUnloadOverride').checked ? 'block' : 'none';
+  // ★ NEW v12.4
+  const showSM = $('showSupportManager').checked;
+  $('supportManagerBlock').style.display = showSM ? 'block' : 'none';
+  if (showSM) {
+    const mode = $('supportManagerMode').value;
+    $('supportManagerUnifiedBlock').style.display = mode === 'unified' ? 'block' : 'none';
+    $('supportManagerSeparateBlock').style.display = mode === 'separate' ? 'block' : 'none';
+  }
 }
 function collectDetails(v) {
   return {
@@ -1887,7 +1995,6 @@ function renderBrigadiers() {
   $('brigListWrap').innerHTML = '<div class="brig-grid">' + cards + '</div>';
 }
 
-// ★ Приводит любой формат телефона к 11 цифрам (7XXXXXXXXXX) или возвращает ''
 function normalizePhoneDigits(raw) {
   if (!raw) return '';
   let digits = String(raw).replace(/\D/g, '');
@@ -1973,7 +2080,6 @@ function resetBrigFilters() {
   renderBrigadiers();
 }
 
-// ★ Нормализация названий
 function normalizeGeoName(s) {
   return String(s || '')
     .trim()
@@ -2307,6 +2413,9 @@ const FIELD_IDS = [
   'cityUnload','hoursUnload','rateBrigadierManualUnload','selfCostUnload','clientCostUnload','clientHourlyUnload',
   'loadersUnloadOverride','loadersUnload','evacUnload','evacUnloadCostUs','evacUnloadCostClient',
   'paymentMethod',
+  // ★ NEW v12.4
+  'attachRequestText','showSupportManager','supportManagerMode',
+  'supportManagerUnified','supportManagerLoad','supportManagerUnload',
   'brPayment','brCargo','brVolume',
   'brAddressLoad','brElevatorLoad','brFloorLoad','brWorkLoad2','brWorkLoad3','brCommentLoad',
   'brAddressUnload','brElevatorUnload','brFloorUnload','brWorkUnload4','brCommentUnload'
