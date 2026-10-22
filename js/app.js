@@ -58,8 +58,6 @@ function loadState() {
   } catch(e) {}
 }
 
-// ★ FIX: removeItem — после calculate/generateMessage, иначе стёртое состояние
-// может быть перезаписано сохранением из calculate → saveState()
 function clearAll() {
   if (!confirm('Очистить все поля?')) return;
   document.querySelectorAll('input, select, textarea').forEach(el => {
@@ -75,6 +73,73 @@ function clearAll() {
   updateConditionalBlocks(); calculate(); generateMessage();
   localStorage.removeItem(STORAGE_KEY);
   logPending = false;
+}
+
+// ============================================================
+// ПРЕСЕТЫ (ШАБЛОНЫ)
+// ============================================================
+const PRESETS_KEY = 'packgo_presets_v1';
+
+function renderPresets() {
+  const select = $('presetSelect');
+  if (!select) return;
+  const presets = JSON.parse(localStorage.getItem(PRESETS_KEY) || '{}');
+  const keys = Object.keys(presets);
+  if (keys.length === 0) {
+    select.innerHTML = '<option value="">— Нет сохранённых шаблонов —</option>';
+    return;
+  }
+  select.innerHTML = '<option value="">— Выберите шаблон —</option>' + 
+    keys.map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`).join('');
+}
+
+function savePreset() {
+  const name = prompt('Введите название для шаблона (например, "Квартира 2к"):');
+  if (!name || !name.trim()) return;
+  
+  const presets = JSON.parse(localStorage.getItem(PRESETS_KEY) || '{}');
+  const currentState = {};
+  
+  FIELD_IDS.forEach(id => {
+    if (id === 'clientName') return; 
+    const el = $(id); if (!el) return;
+    currentState[id] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+  
+  presets[name.trim()] = currentState;
+  localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
+  renderPresets();
+  alert('Шаблон «' + name.trim() + '» сохранён!');
+}
+
+function loadPreset() {
+  const name = $('presetSelect').value;
+  if (!name) { alert('Выберите шаблон из списка'); return; }
+  
+  const presets = JSON.parse(localStorage.getItem(PRESETS_KEY) || '{}');
+  const state = presets[name];
+  if (!state) return;
+  
+  Object.keys(state).forEach(id => {
+    const el = $(id); if (!el) return;
+    if (el.type === 'checkbox') el.checked = state[id]; else el.value = state[id];
+  });
+  
+  updateConditionalBlocks();
+  calculate();
+  generateMessage();
+  markChanged();
+}
+
+function deletePreset() {
+  const name = $('presetSelect').value;
+  if (!name) { alert('Выберите шаблон для удаления'); return; }
+  if (!confirm('Удалить шаблон «' + name + '»?')) return;
+  
+  const presets = JSON.parse(localStorage.getItem(PRESETS_KEY) || '{}');
+  delete presets[name];
+  localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
+  renderPresets();
 }
 
 // ============================================================
@@ -100,7 +165,7 @@ async function loadFromGoogleSheets() {
     if (Array.isArray(data.brigadiers)) { BRIGADIERS_CACHE = data.brigadiers; }
     fillCityDatalist(); fillBrigFilterOptions(); calculate(); generateMessage();
     renderFeedback(); renderBrigadiers();
-    logPending = false;  // ★ стартовое состояние — не логируем до первого ввода пользователя
+    logPending = false;
     status.className = 'status ok';
     status.textContent = '✓ Данные: ' + Object.keys(CITY_DATA).length + ' городов, статистика — ' + STATS_CACHE.length
       + ', обратная связь — ' + FEEDBACK_CACHE.length + ', бригадиров — ' + BRIGADIERS_CACHE.length + '.'
@@ -155,6 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   fillCityDatalist();
   fillFloorsDatalist();
   loadState();
+  renderPresets(); // <-- Инициализация списка шаблонов
   updateConditionalBlocks();
 
   // Табы
@@ -170,14 +236,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // ★ FIX: brigSearch сам вызывает renderBrigadiers() через inline oninput —
-  // поэтому исключаем его (и остальные brig-поля) из общего listener.
-  // ★ FIX: logPending ставим в true только на пользовательских изменениях полей калькулятора.
+  // Обработчики полей
   document.querySelectorAll('input, select, textarea').forEach(el => {
     el.addEventListener('input', () => {
       if (el.id.startsWith('clientCost') || el.id.startsWith('clientHourly')) return;
       if (el.id.startsWith('fb')) return;
-      if (el.id.startsWith('brig')) return;  // brigSearch, brigFilter*, brigSort — у них свои oninput
+      if (el.id.startsWith('brig')) return;
       if (el.closest('#panel-calc')) markChanged();
       calculate();
       if (el.closest('#panel-calc')) generateMessage();
@@ -195,12 +259,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (el.id === 'hoursLoad' || el.id === 'hoursUnload') el.addEventListener('blur', () => validateHours(el));
   });
 
-  // ★ FIX: сброс brigEditingId при клике на фон модалки (симметрично detailModal)
+  // Горячие клавиши
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        copyMessage();
+      }
+      if (e.key === 's' || e.key === 'ы') {
+        e.preventDefault();
+        downloadPdf();
+      }
+      if (e.key === 'q' || e.key === 'й') {
+        e.preventDefault();
+        clearAll();
+      }
+    }
+  });
+
+  // Закрытие модалок по клику на фон
   document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target.id === 'detailModal') closeDetailModal(); });
   document.getElementById('brigModal').addEventListener('click', (e) => { if (e.target.id === 'brigModal') closeBrigModal(); });
   document.getElementById('dupModal').addEventListener('click', (e) => { if (e.target.id === 'dupModal') closeDuplicatesModal(); });
 
   calculate(); generateMessage(); generateBrigadierRequests(); updateDashStatus();
   await loadFromGoogleSheets();
-  logPending = false;  // ★ старт — ждём реального ввода пользователя
+  logPending = false;
 });

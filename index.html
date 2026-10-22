@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack&Go — Калькулятор v12.4</title>
+<title>Pack&Go — Калькулятор v12.5</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -71,7 +71,7 @@
         <select id="manager"><option value="Юлия">Юлия</option><option value="Александр">Александр</option></select>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему"><span id="themeIcon">☾</span></button>
-      <div class="version">Версия 12.4</div>
+      <div class="version">Версия 12.5</div>
     </div>
   </div>
   <div class="tabs">
@@ -259,6 +259,16 @@
             <button class="btn btn-pdf" onclick="downloadPdf()">Скачать PDF</button>
             <button class="btn btn-secondary" onclick="clearAll()">Очистить всё</button>
           </div>
+          
+          <div class="btn-row" style="margin-bottom:14px; align-items:center; background:var(--subtle-bg); padding:10px; border-radius:8px; border:1px solid var(--subtle-border);">
+            <select id="presetSelect" style="margin-bottom:0; flex:1; max-width:200px; padding:6px 10px; font-size:13px;">
+              <option value="">— Выберите шаблон —</option>
+            </select>
+            <button class="btn btn-primary" style="padding:6px 12px; font-size:13px;" onclick="loadPreset()">Применить</button>
+            <button class="btn btn-secondary" style="padding:6px 12px; font-size:13px;" onclick="savePreset()">💾 Сохранить текущее</button>
+            <button class="btn btn-secondary" style="padding:6px 10px; font-size:13px; color:#991b1b;" onclick="deletePreset()" title="Удалить выбранный шаблон">🗑</button>
+          </div>
+          
           <div class="result-box" id="messageOutput">Заполните данные слева — сообщение сформируется автоматически.</div>
         </div>
       </div>
@@ -427,6 +437,12 @@
     </div>
     <div class="card"><div class="card-title">Расчётов за последние 7 дней</div><div id="dayChart"></div></div>
     <div class="card"><div class="card-title">Сравнение менеджеров</div><div id="managerCompare"></div></div>
+    
+    <div class="card">
+      <div class="card-title">Маржа по городам</div>
+      <div id="cityMarginTableWrap"><div class="empty-state">Расчёт данных…</div></div>
+    </div>
+    
     <div class="card"><div class="card-title">Последние расчёты (максимум 20)</div><div id="recentTableWrap"></div></div>
   </div>
 
@@ -460,13 +476,26 @@
 
   <div class="panel" id="panel-changelog">
     <h2 style="font-size:18px; margin-bottom:16px; color: var(--heading);">Журнал изменений</h2>
-    <div class="legend-note">Текущая версия — <b>12.4</b>. Внутренняя структура вынесена в отдельные JS-файлы (v12.4-файлы).</div>
+    <div class="legend-note">Текущая версия — <b>12.5</b>.</div>
     <div class="changelog">
       <div class="version-card current">
         <div class="version-header">
+          <div class="version-number">Версия 12.5</div>
+          <div class="version-title">Пресеты, аналитика и горячие клавиши</div>
+          <div class="version-tag">Текущая</div>
+        </div>
+        <ul class="version-list">
+          <li>В калькулятор добавлены <b>шаблоны заказов (пресеты)</b>. Теперь можно сохранить частое заполнение полей под именем (например, «Офис 50м2») и загружать его в один клик.</li>
+          <li>На дашборд добавлена таблица <b>«Маржа по городам»</b> — показывает средний чек и среднюю маржу по каждому городу погрузки/выгрузки.</li>
+          <li>Добавлены <b>горячие клавиши</b> для ускорения работы: <code>Ctrl+Enter</code> — копировать сообщение, <code>Ctrl+S</code> — скачать PDF, <code>Ctrl+Q</code> — очистить всё.</li>
+          <li>Легенда горячих клавиш добавлена на вкладку «Справка».</li>
+        </ul>
+      </div>
+      <div class="version-card">
+        <div class="version-header">
           <div class="version-number">Версия 12.4</div>
           <div class="version-title">Менеджер по сопровождению и заявка на ПГР</div>
-          <div class="version-tag">Текущая</div>
+          <div class="version-tag archive">Архив</div>
         </div>
         <ul class="version-list">
           <li>В сообщение клиенту добавлен блок <b>«Менеджер по сопровождению»</b> — галочка, режим «единый / отдельно на погрузку и выгрузку» и выбор менеджера (Полина или Александр). Номер подставляется автоматически.</li>
@@ -485,118 +514,6 @@
           <li>Телефоны автоматически приводятся к единому виду: <code>+7 999 123-45-67</code>.</li>
           <li>Поиск работает и по цифрам: <code>999692</code>, <code>+7 999</code>, <code>8 999</code>.</li>
         </ul>
-      </div>
-            <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 12.2</div>
-          <div class="version-title">Ручной ввод в фильтрах и нормализация регионов</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
-        <ul class="version-list">
-          <li>Фильтры региона и города — поля ввода с автодополнением.</li>
-          <li>Нормализация названий регионов и городов.</li>
-          <li>Кнопка «🔍 Дубликаты».</li>
-        </ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-number">Версия 12.1</div>
-          <div class="version-title">Карточки и сортировка</div>
-          <div class="version-tag archive">Архив</div>
-        </div>
-        <ul class="version-list"><li>Карточки вместо таблицы, сортировка.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 12.0</div><div class="version-title">Раздел «Бригадиры»</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Новая вкладка «Бригадиры».</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11.2.1</div><div class="version-title">Багфикс</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Обводка, этажи, лимит.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11.2</div><div class="version-title">Очистка блоков</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Кнопки «Очистить», лифт/этаж, архив ОС.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11.1</div><div class="version-title">Авто-retry</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Автодополнение часов, retry при 404.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 11</div><div class="version-title">Обратная связь</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Вкладка ОС, часовая ставка.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.6</div><div class="version-title">Исправление дат</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Формат ts.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.5</div><div class="version-title">Диагностика</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Кнопка «Диагностика».</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.4</div><div class="version-title">Предрасчет</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Способ оплаты «Предрасчет».</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.3</div><div class="version-title">Поиск городов</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Автодополнение городов, грузчики по адресам.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.2</div><div class="version-title">PDF</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Экспорт КП в PDF.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10.1</div><div class="version-title">Статистика</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Общая статистика.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 10</div><div class="version-title">Дашборд</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Дашборд, KPI.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 9.2</div><div class="version-title">Менеджер</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Селектор менеджера.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 9.1</div><div class="version-title">Работы</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Упаковка, разборка, сборка.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 9</div><div class="version-title">Заявки</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Вкладка «Заявки бригадирам».</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 8</div><div class="version-title">Себестоимость</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Разделение себестоимости и цены.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 7</div><div class="version-title">Карточки</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Карточки-блоки.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 6</div><div class="version-title">Google Sheets</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Apps Script.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 5</div><div class="version-title">HTML</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Перенос из Google Таблиц.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 4</div><div class="version-title">Эвакуатор</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Две галочки эвакуатора.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 3</div><div class="version-title">Ставка бригадира</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Ставка бригадира.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 2</div><div class="version-title">Способы оплаты</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Счёт и самозанятость.</li></ul>
-      </div>
-      <div class="version-card">
-        <div class="version-header"><div class="version-number">Версия 1</div><div class="version-title">Базовый</div><div class="version-tag archive">Архив</div></div>
-        <ul class="version-list"><li>Google Таблицы.</li></ul>
       </div>
     </div>
   </div>
@@ -632,6 +549,15 @@
         <li><b>— — Сброс.</b> Очищает статус, запрос возвращается как новый.</li>
       </ol>
     </div>
+    
+    <div class="card">
+      <div class="card-title">Горячие клавиши</div>
+      <div class="info-line"><span class="label">Скопировать сообщение</span><span class="value">Ctrl + Enter</span></div>
+      <div class="info-line"><span class="label">Скачать PDF (КП)</span><span class="value">Ctrl + S</span></div>
+      <div class="info-line"><span class="label">Очистить всё</span><span class="value">Ctrl + Q</span></div>
+      <p style="margin-top:10px; font-size:12px; color:var(--text-dim);">Для Mac используйте Cmd вместо Ctrl.</p>
+    </div>
+
     <div class="card">
       <div class="card-title">Структура проекта</div>
       <ol>

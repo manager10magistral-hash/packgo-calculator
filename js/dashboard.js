@@ -70,8 +70,10 @@ function renderDashboard() {
   $('kpiSum').textContent = sumClient ? fmt(sumClient) + ' ₽' : '0 ₽';
   $('kpiAvg').textContent = avg ? fmt(avg) + ' ₽' : '0 ₽';
   $('kpiMargin').textContent = sumMargin ? fmt(sumMargin) + ' ₽' : '0 ₽';
+  
   renderDayChart(filtered);
   renderManagerCompare(filterByRange(filterByType(all, dashboardTypeFilter), dashboardRange));
+  renderCityMargin(filtered);
   renderRecentTable(filtered);
   updateDashStatus();
 }
@@ -108,7 +110,49 @@ function renderManagerCompare(all) {
   }).join('');
 }
 
-// ★ FIX: экранируем clientName и route — пользовательский ввод
+function renderCityMargin(data) {
+  if (data.length === 0) {
+    $('cityMarginTableWrap').innerHTML = '<div class="empty-state">Нет данных для анализа</div>';
+    return;
+  }
+
+  const cities = {};
+  
+  data.forEach(e => {
+    if (e.cityLoad) {
+      if (!cities[e.cityLoad]) cities[e.cityLoad] = { count: 0, totalMargin: 0, totalClient: 0 };
+      cities[e.cityLoad].count++;
+      cities[e.cityLoad].totalMargin += e.margin;
+      cities[e.cityLoad].totalClient += e.clientTotal;
+    }
+    if (e.cityUnload && e.cityUnload !== e.cityLoad) {
+      if (!cities[e.cityUnload]) cities[e.cityUnload] = { count: 0, totalMargin: 0, totalClient: 0 };
+      cities[e.cityUnload].count++;
+      cities[e.cityUnload].totalMargin += e.margin;
+      cities[e.cityUnload].totalClient += e.clientTotal;
+    }
+  });
+
+  const rows = Object.entries(cities).map(([city, stats]) => {
+    const avgMargin = Math.round(stats.totalMargin / stats.count);
+    const avgClient = Math.round(stats.totalClient / stats.count);
+    return `<tr>
+      <td style="font-weight:600;">${escapeHtml(city)}</td>
+      <td>${stats.count}</td>
+      <td>${fmt(avgClient)} ₽</td>
+      <td style="color:#2f855a; font-weight:600;">${fmt(avgMargin)} ₽</td>
+    </tr>`;
+  }).join('');
+
+  $('cityMarginTableWrap').innerHTML = `
+    <table class="stats-table">
+      <thead>
+        <tr><th>Город</th><th>Заказов</th><th>Средний чек</th><th>Средняя маржа</th></tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
 function renderRecentTable(data) {
   if (data.length === 0) { $('recentTableWrap').innerHTML = '<div class="empty-state">Пока нет расчётов за выбранный период.</div>'; return; }
   const rows = data.slice(0, STATS_LIMIT).map((e, idx) => {
